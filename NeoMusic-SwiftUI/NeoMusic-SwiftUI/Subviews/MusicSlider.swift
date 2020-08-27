@@ -12,24 +12,20 @@ import SwiftUI
 
 struct MusicSlider: View {
     @ObservedObject var musicController: MusicController
+    @EnvironmentObject var settingsController: SettingsController
     @State var currentTime: Double = 0
+    @State var dragAmount: Double = 0
     
     let timer = Timer.publish(every: 0.1, on: .current, in: .common).autoconnect()
     
-    let total: Double
-    let topGradColor: Color
-    
-    init(musicController: MusicController, topGradientColor: Color) {
+    init(musicController: MusicController) {
         self.musicController = musicController
-        self.total = musicController.totalPlaybackTime
-        self.topGradColor = topGradientColor
-        
-        
     }
     
     var body: some View {
-        let progress = musicController.currentPlaybackTime / musicController.totalPlaybackTime
+        let size = UIScreen.main.bounds.size.width - Constants.spacing * 2
         
+        let progress = musicController.currentPlaybackTime / musicController.totalPlaybackTime
         VStack {
             HStack {
                 Text(format(currentTime))
@@ -41,14 +37,28 @@ struct MusicSlider: View {
                 
                 Spacer()
                 
-                Text(format(total))
+                Text(format(musicController.totalPlaybackTime))
             }
             .foregroundColor(.gray)
             .font(Font.system(.caption))
+            .frame(width: size)
             
-            RoundedRectangle(cornerRadius: 3)
-                .fill(LinearGradient(gradient: Gradient(colors: [topGradColor, .black]), startPoint: .bottom, endPoint: .top))
-                .frame(height: 6)
+            ZStack(alignment: .leading) {
+                let lineHeight: CGFloat = 6
+                
+                RoundedRectangle(cornerRadius: lineHeight / 2)
+                    .fill(LinearGradient(gradient: Gradient(colors: [settingsController.colorScheme.backgroundGradient.color1.color, .black]), startPoint: .bottom, endPoint: .top))
+                    .frame(height: lineHeight)
+                
+                RoundedRectangle(cornerRadius: (lineHeight - 2) / 2)
+                    .fill(LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.pauseGradient.colors), startPoint: .bottom, endPoint: .top))
+                    .frame(width: CGFloat(progress) * size, height: lineHeight - 2)
+                
+                Circle()
+                    .fill(LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.backgroundGradient.colors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
+                    .frame(width: size / 12, height: size / 12)
+                    .offset(x: CGFloat(progress) * (size - size / 24) - size / 48, y: 0)
+            }
         }
     }
     
@@ -77,6 +87,7 @@ struct MusicSlider: View {
 
 struct MusicSlider_Previews: PreviewProvider {
     static var previews: some View {
-        MusicSlider(musicController: MusicController(), topGradientColor: Color(red: 0.8, green: 0.8, blue: 0.8))
+        MusicSlider(musicController: MusicController())
+            .environmentObject(SettingsController())
     }
 }

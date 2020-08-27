@@ -32,10 +32,10 @@ struct DefaultButton: View {
         Button(action: action) {
             ZStack {
                 Circle()
-                    .fill(LinearGradient(gradient: Gradient(colors: gradient), startPoint: .topLeading, endPoint: .bottomTrailing))
+                    .fill(LinearGradient(gradient: Gradient(colors: gradient.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
                 
                 Circle()
-                    .fill(LinearGradient(gradient: Gradient(colors: gradient.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
+                    .fill(LinearGradient(gradient: Gradient(colors: gradient), startPoint: .topLeading, endPoint: .bottomTrailing))
                     .frame(width: buttonSize * 0.95, height: buttonSize * 0.95)
                 
                 Image(systemName: image)

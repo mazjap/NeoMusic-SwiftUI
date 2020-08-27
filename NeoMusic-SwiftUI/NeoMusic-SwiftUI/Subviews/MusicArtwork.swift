@@ -18,7 +18,7 @@ struct MusicArtwork: View {
         let size = UIScreen.main.bounds.size.width * 0.9 - Constants.spacing * 2
         ZStack {
             Circle()
-                .fill(LinearGradient(gradient: Gradient(colors: gradient), startPoint: .topLeading, endPoint: .bottomTrailing))
+                .fill(LinearGradient(gradient: Gradient(colors: gradient.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
                 .frame(width: size, height: size)
             
             image

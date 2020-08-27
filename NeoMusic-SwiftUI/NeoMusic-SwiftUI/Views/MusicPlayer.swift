@@ -35,7 +35,7 @@ struct MusicPlayer: View {
             LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.backgroundGradient.colors), startPoint: .top, endPoint: .bottom)
             
             VStack {
-                NavBar(gradient: settingsController.colorScheme.backgroundGradient.colors, back: {
+                NavBar(gradient: settingsController.colorScheme.backgroundGradient.colors, textColor: settingsController.colorScheme.textColor.color, back: {
                     // TODO: - Dismiss view
                     impact.impactOccurred()
                 }, list: {
@@ -49,16 +49,21 @@ struct MusicPlayer: View {
                 
                 Spacer()
                    
-                
-                Text(musicController.currentSong.title)
-                    .font(.title)
-                    .foregroundColor(.white)
+                HStack {
+                    Text(musicController.currentSong.title)
+                        .font(.title)
+                        .foregroundColor(settingsController.colorScheme.textColor.color)
+                    if musicController.currentSong.isExplicit {
+                        Image(systemName: "e.square.fill")
+                            .foregroundColor(settingsController.colorScheme.textColor.color)
+                    }
+                }
                 
                 Text(musicController.currentSong.artist)
                     .font(.subheadline)
-                    .foregroundColor(.white)
+                    .foregroundColor(settingsController.colorScheme.textColor.color)
                 
-                MusicSlider(musicController: musicController, topGradientColor: settingsController.colorScheme.backgroundGradient.color1.color)
+                MusicSlider(musicController: musicController)
                     .padding(.bottom)
                 
                 MusicControlButtons(isPlaying: musicController.isPlaying, colorScheme: settingsController.colorScheme, back: {
@@ -81,6 +86,7 @@ struct MusicPlayer: View {
 
 struct NavBar: View { // Navigation
     let gradient: [Color]
+    let textColor: Color
     let back: () -> Void
     let list: () -> Void
     
@@ -90,7 +96,7 @@ struct NavBar: View { // Navigation
             
             Text("Now Playing")
                 .frame(maxWidth: .infinity)
-                .foregroundColor(.white)
+                .foregroundColor(textColor)
             
             DefaultButton(imageName: "line.horizontal.3", gradientColors: gradient, action: list)
         }

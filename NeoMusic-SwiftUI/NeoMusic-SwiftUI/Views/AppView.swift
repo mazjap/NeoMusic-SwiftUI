@@ -31,10 +31,11 @@ struct AppView: View {
              .foregroundColor(settingsController.colorScheme.backgroundGradient.color1.color)
              .edgesIgnoringSafeArea(.top)
              .frame(height: 0)
+            
             TabView {
                 MusicPlayer(musicController: musicController)
                 .tabItem {
-                    Image(systemName: "play.fill")
+                    Image(systemName: musicController.isPlaying ? "pause.fill" : "play.fill")
                     Text("Music")
                 }
             }
