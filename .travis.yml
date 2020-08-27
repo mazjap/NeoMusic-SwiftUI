@@ -3,4 +3,4 @@ language: swift
 osx_image: xcode12u
 xcode_project: NeoMusic-SwiftUI/NeoMusic-SwiftUI.xcodeproj # path to your xcodeproj
 xcode_scheme: NeoMusic-SwiftUITests
-xcode_destination: platform=iOS Simulator,OS=14.0,name=iPhone X
+xcode_destination: platform=iOS Simulator,OS=14.0,name=iPhone 11
