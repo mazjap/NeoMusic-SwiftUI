@@ -26,7 +26,12 @@ struct MusicSlider: View {
     var body: some View {
         let size = UIScreen.main.bounds.size.width - Constants.spacing * 2
         
-        let progress: CGFloat = musicController.currentPlaybackTime / musicController.totalPlaybackTime >= 0 ? CGFloat(musicController.currentPlaybackTime) / CGFloat(musicController.totalPlaybackTime) : 0
+        let progress: CGFloat = musicController.currentPlaybackTime / musicController.totalPlaybackTime > 0 && musicController.currentPlaybackTime != musicController.totalPlaybackTime ? CGFloat(musicController.currentPlaybackTime) / CGFloat(musicController.totalPlaybackTime) : 0
+        
+        let completedWidth = progress * size
+        
+        let lineHeight: CGFloat = 6
+        
         
         VStack {
             HStack {
@@ -53,19 +58,13 @@ struct MusicSlider: View {
             .frame(width: size)
             
             ZStack(alignment: .leading) {
-                let lineHeight: CGFloat = 6
-                let completedWidth: CGFloat = CGFloat(progress) * size
-                
                 RoundedRectangle(cornerRadius: lineHeight / 2)
                     .fill(LinearGradient(gradient: Gradient(colors: [settingsController.colorScheme.backgroundGradient.color1.color, .black]), startPoint: .bottom, endPoint: .top))
                     .frame(height: lineHeight)
                 
-                
                 RoundedRectangle(cornerRadius: (lineHeight - 2) / 2)
                     .fill(LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.pauseGradient.colors), startPoint: .bottom, endPoint: .top))
                     .frame(width: Double(completedWidth).isFinite ? completedWidth : 0, height: lineHeight - 2)
-                
-                
                 
                 Circle()
                     .fill(LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.backgroundGradient.colors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))

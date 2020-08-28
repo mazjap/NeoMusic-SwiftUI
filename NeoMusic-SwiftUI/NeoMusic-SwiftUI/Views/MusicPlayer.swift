@@ -35,7 +35,7 @@ struct MusicPlayer: View {
             LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.backgroundGradient.colors), startPoint: .top, endPoint: .bottom)
             
             VStack {
-                NavBar(gradient: settingsController.colorScheme.backgroundGradient.colors, textColor: settingsController.colorScheme.textColor.color, back: {
+                NavBar(gradient: settingsController.colorScheme.backgroundGradient.colors, textColor: settingsController.colorScheme.textColor.color, isPlaying: musicController.isPlaying, back: {
                     // TODO: - Dismiss view
                     impact.impactOccurred()
                 }, list: {
@@ -87,6 +87,7 @@ struct MusicPlayer: View {
 struct NavBar: View { // Navigation
     let gradient: [Color]
     let textColor: Color
+    let isPlaying: Bool
     let back: () -> Void
     let list: () -> Void
     
@@ -94,7 +95,7 @@ struct NavBar: View { // Navigation
         HStack {
             DefaultButton(imageName: "arrow.left", gradientColors: gradient, action: back)
             
-            Text("Now Playing")
+            Text(isPlaying ? "Now Playing" : "Paused")
                 .frame(maxWidth: .infinity)
                 .foregroundColor(textColor)
             

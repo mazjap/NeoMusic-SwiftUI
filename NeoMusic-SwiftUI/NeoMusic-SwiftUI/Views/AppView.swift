@@ -29,21 +29,16 @@ struct AppView: View {
     // MARK: - Body
     
     var body: some View {
-        VStack {
-            Rectangle()
-             .foregroundColor(settingsController.colorScheme.backgroundGradient.color1.color)
-             .edgesIgnoringSafeArea(.top)
-             .frame(height: 0)
-            
-            TabView {
-                MusicPlayer(musicController: musicController)
+        TabView {
+            MusicPlayer(musicController: musicController)
+                .statusBar(hidden: true)
+                .edgesIgnoringSafeArea(.top)
                 .tabItem {
-                    Image(systemName: musicController.isPlaying ? "pause.fill" : "play.fill")
-                    Text("Music")
-                }
+                Image(systemName: musicController.isPlaying ? "pause.fill" : "play.fill")
+                Text("Music")
             }
-            .foregroundColor(.black)
         }
+        .foregroundColor(.black)
         .accentColor(settingsController.colorScheme.textColor.color)
     }
 }
