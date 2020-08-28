@@ -20,7 +20,10 @@ struct AppView: View {
     // MARK: - Initializer
     
     init(color: Color = .black) {
-        UITabBar.appearance().barTintColor = color.uiColor
+        let tab = UITabBar.appearance()
+        
+        tab.barTintColor = color.uiColor
+        tab.isTranslucent = false
     }
     
     // MARK: - Body

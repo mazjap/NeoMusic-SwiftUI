@@ -45,7 +45,7 @@ $ git clone https://github.com/mazjap/REPO-NAME
 
 ## Features
 
-- [ ] Apple Music support
+- [x] Apple Music support
 - [ ] Spotify support
 - [ ] Spinnable artwork
 - [ ] Toggleable music player view

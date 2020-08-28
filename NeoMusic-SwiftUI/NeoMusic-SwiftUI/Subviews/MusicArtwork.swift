@@ -15,17 +15,17 @@ struct MusicArtwork: View {
     let image: Image
     
     var body: some View {
-        let size = UIScreen.main.bounds.size.width * 0.9 - Constants.spacing * 2
-        ZStack {
-            Circle()
-                .fill(LinearGradient(gradient: Gradient(colors: gradient.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
-                .frame(width: size, height: size)
-            
-            image
-                .resizable()
-                .scaledToFill()
-                .frame(width: size * 0.95, height: size * 0.95)
-                .clipShape(Circle())
+        GeometryReader { geometry in
+            ZStack {
+                Circle()
+                    .fill(LinearGradient(gradient: Gradient(colors: gradient.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
+                
+                image
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: geometry.size.width * 0.95, height: geometry.size.height * 0.95)
+                    .clipShape(Circle())
+            }
         }
     }
 }
@@ -33,5 +33,6 @@ struct MusicArtwork: View {
 struct Artwork_Previews: PreviewProvider {
     static var previews: some View {
         MusicArtwork(gradient: Constants.defaultColorScheme.backgroundGradient.colors, image: .placeholder)
+            .previewLayout(.fixed(width: 400, height: 400))
     }
 }

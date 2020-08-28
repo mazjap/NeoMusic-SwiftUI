@@ -14,6 +14,7 @@ struct MusicSlider: View {
     @ObservedObject var musicController: MusicController
     @EnvironmentObject var settingsController: SettingsController
     @State var currentTime: Double = 0
+    @State var totalTime: Double = 0
     @State var dragAmount: Double = 0
     
     let timer = Timer.publish(every: 0.1, on: .current, in: .common).autoconnect()
@@ -25,19 +26,27 @@ struct MusicSlider: View {
     var body: some View {
         let size = UIScreen.main.bounds.size.width - Constants.spacing * 2
         
-        let progress = musicController.currentPlaybackTime / musicController.totalPlaybackTime
+        let progress: CGFloat = musicController.currentPlaybackTime / musicController.totalPlaybackTime >= 0 ? CGFloat(musicController.currentPlaybackTime) / CGFloat(musicController.totalPlaybackTime) : 0
+        
         VStack {
             HStack {
                 Text(format(currentTime))
                     .onReceive(timer) { _ in
                         DispatchQueue.main.async {
-                            currentTime = musicController.currentPlaybackTime
+                            if musicController.currentPlaybackTime == musicController.totalPlaybackTime {
+                                currentTime = 0
+                            } else {
+                                currentTime = musicController.currentPlaybackTime
+                            }
                         }
                     }
                 
                 Spacer()
                 
-                Text(format(musicController.totalPlaybackTime))
+                Text(format(totalTime))
+                    .onReceive(timer) { _ in
+                        totalTime = musicController.totalPlaybackTime
+                    }
             }
             .foregroundColor(.gray)
             .font(Font.system(.caption))
@@ -45,14 +54,18 @@ struct MusicSlider: View {
             
             ZStack(alignment: .leading) {
                 let lineHeight: CGFloat = 6
+                let completedWidth: CGFloat = CGFloat(progress) * size
                 
                 RoundedRectangle(cornerRadius: lineHeight / 2)
                     .fill(LinearGradient(gradient: Gradient(colors: [settingsController.colorScheme.backgroundGradient.color1.color, .black]), startPoint: .bottom, endPoint: .top))
                     .frame(height: lineHeight)
                 
+                
                 RoundedRectangle(cornerRadius: (lineHeight - 2) / 2)
                     .fill(LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.pauseGradient.colors), startPoint: .bottom, endPoint: .top))
-                    .frame(width: CGFloat(progress) * size, height: lineHeight - 2)
+                    .frame(width: Double(completedWidth).isFinite ? completedWidth : 0, height: lineHeight - 2)
+                
+                
                 
                 Circle()
                     .fill(LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.backgroundGradient.colors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
