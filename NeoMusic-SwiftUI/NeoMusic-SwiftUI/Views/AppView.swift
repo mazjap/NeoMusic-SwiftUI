@@ -16,27 +16,61 @@ struct AppView: View {
     
     @EnvironmentObject var settingsController: SettingsController
     @ObservedObject var musicController = MusicController()
+    @State var selectedIndex: Int = 0 {
+        didSet {
+            impact.impactOccurred()
+        }
+    }
+    
+    // MARK: - Variables
+    
+    let impact = UIImpactFeedbackGenerator(style: .rigid)
     
     // MARK: - Initializer
     
     init(color: Color = .black) {
-        let tab = UITabBar.appearance()
+        let tabBarAppearance = UITabBar.appearance()
         
-        tab.barTintColor = color.uiColor
-        tab.isTranslucent = false
+        // Set Tab Bar to opaque custom color
+        tabBarAppearance.barTintColor = color.uiColor
+        tabBarAppearance.isTranslucent = false
+        
+        // Remove Tab Bar top shadow
+        tabBarAppearance.backgroundImage = UIImage()
+        tabBarAppearance.shadowImage = UIImage()
     }
     
     // MARK: - Body
     
     var body: some View {
-        TabView {
-            MusicPlayer(musicController: musicController)
+        TabView(selection: $selectedIndex) {
+            MusicPlayer(musicController: musicController, impact: impact)
                 .statusBar(hidden: true)
-                .edgesIgnoringSafeArea(.top)
                 .tabItem {
-                Image(systemName: musicController.isPlaying ? "pause.fill" : "play.fill")
-                Text("Music")
-            }
+                    Image(systemName: "magnifyingglass")
+                    Text("Search")
+                }.tag(0)
+            
+            MusicPlayer(musicController: musicController, impact: impact)
+                .tabItem {
+                    Image(systemName: musicController.isPlaying ? "pause.fill" : "play.fill")
+                    Text("Music")
+                }.tag(1)
+            
+            Text("Not yet implemented")
+                .foregroundColor(.white)
+                .tabItem {
+                    Image(systemName: "clock.fill")
+                    Text("History")
+                }.tag(2)
+            
+            Text("Not yet implemented")
+                .foregroundColor(.white)
+                .statusBar(hidden: true)
+                .tabItem {
+                    Image(systemName: "person.fill")
+                    Text("Profile")
+                }.tag(3)
         }
         .foregroundColor(.black)
         .accentColor(settingsController.colorScheme.textColor.color)

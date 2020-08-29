@@ -12,50 +12,47 @@ import SwiftUI
 
 struct DefaultButton: View {
     let image: String
-    let imageColor: Color
-    let gradient: [Color]
     let mult: CGFloat
+    let gradientColors: [Color]
+    let buttonColor: Color
     let action: () -> Void
     
-    init(imageName: String, imageColor: Color = .white, gradientColors: [Color], mult: CGFloat = 1, action: @escaping () -> Void) {
+    init(imageName: String, gradient: [Color], buttonColor: Color, mult: CGFloat = 1, action: @escaping () -> Void) {
         self.image = imageName
-        self.imageColor = imageColor
-        self.gradient = gradientColors
         self.mult = mult
+        self.gradientColors = gradient
+        self.buttonColor = buttonColor
         self.action = action
-        
     }
     
     var body: some View {
-        let buttonSize = UIScreen.main.bounds.size.width / 5.5 * mult
-        
         Button(action: action) {
+            let size = UIScreen.main.bounds.width / 5.5 * mult
+            
             ZStack {
                 Circle()
-                    .fill(LinearGradient(gradient: Gradient(colors: gradient.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
+                    .fill(LinearGradient(gradient: Gradient(colors: gradientColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
                 
                 Circle()
-                    .fill(LinearGradient(gradient: Gradient(colors: gradient), startPoint: .topLeading, endPoint: .bottomTrailing))
-                    .frame(width: buttonSize * 0.95, height: buttonSize * 0.95)
+                    .fill(LinearGradient(gradient: Gradient(colors: gradientColors), startPoint: .topLeading, endPoint: .bottomTrailing))
+                    .frame(width: size * 0.95, height: size * 0.95)
                 
                 Image(systemName: image)
                     .resizable()
                     .scaledToFit()
-                    .foregroundColor(imageColor)
-                    .frame(width: buttonSize * 0.35, height: buttonSize * 0.35)
+                    .foregroundColor(buttonColor)
+                    .frame(width: size * 0.35, height: size * 0.35)
             }
+            .frame(width: size, height: size)
         }
-        .frame(width: buttonSize, height: buttonSize)
     }
 }
 
 struct DefaultButton_Previews: PreviewProvider {
     static var previews: some View {
-        let previewSize = UIScreen.main.bounds.size.width / 5
-        
-        DefaultButton(imageName: "play.fill", gradientColors: Constants.defaultColorScheme.backgroundGradient.colors) {
+        DefaultButton(imageName: "play.fill", gradient: Constants.defaultColorScheme.backgroundGradient.colors, buttonColor: .white) {
             
         }
-        .previewLayout(.fixed(width: previewSize, height: previewSize))
+        .previewLayout(.fixed(width: 100, height: 100))
     }
 }

@@ -18,6 +18,7 @@
 		0E8B8B4924F5C1480029B27D /* MusicController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8B8B4824F5C1480029B27D /* MusicController.swift */; };
 		0E8B8B4B24F5C19A0029B27D /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8B8B4A24F5C1990029B27D /* Song.swift */; };
 		0E8B8B4E24F5C71E0029B27D /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8B8B4D24F5C71E0029B27D /* AppView.swift */; };
+		0EACBBD824F8DFC100F1A227 /* FloatingPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EACBBD724F8DFC100F1A227 /* FloatingPoint+Extension.swift */; };
 		0EDE700C24F465D300E72D0C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE700B24F465D300E72D0C /* AppDelegate.swift */; };
 		0EDE700E24F465D300E72D0C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE700D24F465D300E72D0C /* SceneDelegate.swift */; };
 		0EDE701024F465D300E72D0C /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE700F24F465D300E72D0C /* MusicPlayer.swift */; };
@@ -57,6 +58,7 @@
 		0E8B8B4824F5C1480029B27D /* MusicController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicController.swift; sourceTree = "<group>"; };
 		0E8B8B4A24F5C1990029B27D /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		0E8B8B4D24F5C71E0029B27D /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
+		0EACBBD724F8DFC100F1A227 /* FloatingPoint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FloatingPoint+Extension.swift"; sourceTree = "<group>"; };
 		0EDE700824F465D300E72D0C /* NeoMusic-SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NeoMusic-SwiftUI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EDE700B24F465D300E72D0C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0EDE700D24F465D300E72D0C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 				0E8B8B3E24F587B10029B27D /* UIImage+Extension.swift */,
 				0E8B8B4224F5A04D0029B27D /* Color+Extension.swift */,
 				0E2C908024F5CF2600AB950D /* Constants.swift */,
+				0EACBBD724F8DFC100F1A227 /* FloatingPoint+Extension.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -355,6 +358,7 @@
 				0E8B8B4B24F5C19A0029B27D /* Song.swift in Sources */,
 				0EDE700E24F465D300E72D0C /* SceneDelegate.swift in Sources */,
 				0E2C908124F5CF2600AB950D /* Constants.swift in Sources */,
+				0EACBBD824F8DFC100F1A227 /* FloatingPoint+Extension.swift in Sources */,
 				0EDE701024F465D300E72D0C /* MusicPlayer.swift in Sources */,
 				0E8B8B4E24F5C71E0029B27D /* AppView.swift in Sources */,
 				0E2C908324F5D5A400AB950D /* ColorScheme.swift in Sources */,

@@ -19,12 +19,13 @@ struct MusicPlayer: View {
     
     // MARK: - Variables
     
-    let impact = UIImpactFeedbackGenerator()
+    let impact: UIImpactFeedbackGenerator
     
     // MARK: Initializers
     
-    init(musicController: MusicController) {
+    init(musicController: MusicController, impact: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator()) {
         self.musicController = musicController
+        self.impact = impact
     }
     
     // MARK: - Body
@@ -33,9 +34,10 @@ struct MusicPlayer: View {
         ZStack {
             // Background
             LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.backgroundGradient.colors), startPoint: .top, endPoint: .bottom)
+                .edgesIgnoringSafeArea(.top)
             
             VStack {
-                NavBar(gradient: settingsController.colorScheme.backgroundGradient.colors, textColor: settingsController.colorScheme.textColor.color, isPlaying: musicController.isPlaying, back: {
+                NavBar(colorScheme: settingsController.colorScheme, isPlaying: musicController.isPlaying, back: {
                     // TODO: - Dismiss view
                     impact.impactOccurred()
                 }, list: {
@@ -47,10 +49,11 @@ struct MusicPlayer: View {
                 
                 MusicArtwork(gradient: settingsController.colorScheme.backgroundGradient.colors, image: musicController.currentSong.artwork)
                 
-                Spacer()
+                MusicArtwork(impact: impact, gradient: settingsController.colorScheme.backgroundGradient.colors, image: musicController.currentSong.artwork)
                    
                 HStack {
                     Text(musicController.currentSong.title)
+                        .lineLimit(1)
                         .font(.title)
                         .foregroundColor(settingsController.colorScheme.textColor.color)
                     if musicController.currentSong.isExplicit {
@@ -60,10 +63,11 @@ struct MusicPlayer: View {
                 }
                 
                 Text(musicController.currentSong.artist)
+                    .lineLimit(1)
                     .font(.subheadline)
                     .foregroundColor(settingsController.colorScheme.textColor.color)
                 
-                MusicSlider(musicController: musicController)
+                MusicSlider(musicController: musicController, impact: impact, colorScheme: settingsController.colorScheme)
                     .padding(.bottom)
                 
                 MusicControlButtons(isPlaying: musicController.isPlaying, colorScheme: settingsController.colorScheme, back: {
@@ -85,21 +89,23 @@ struct MusicPlayer: View {
 // MARK: - Components
 
 struct NavBar: View { // Navigation
-    let gradient: [Color]
-    let textColor: Color
+    let colorScheme: ColorScheme
     let isPlaying: Bool
     let back: () -> Void
     let list: () -> Void
     
     var body: some View {
         HStack {
-            DefaultButton(imageName: "arrow.left", gradientColors: gradient, action: back)
+            DefaultButton(imageName: "arrow.left", gradient: colorScheme.backgroundGradient.colors, buttonColor: colorScheme.secondaryButtonColor.color, action: back)
+            
+            Spacer()
             
             Text(isPlaying ? "Now Playing" : "Paused")
-                .frame(maxWidth: .infinity)
-                .foregroundColor(textColor)
+                .foregroundColor(colorScheme.textColor.color)
             
-            DefaultButton(imageName: "line.horizontal.3", gradientColors: gradient, action: list)
+            Spacer()
+            
+            DefaultButton(imageName: "line.horizontal.3", gradient: colorScheme.backgroundGradient.colors, buttonColor: colorScheme.secondaryButtonColor.color, action: list)
         }
     }
 }
@@ -115,15 +121,15 @@ struct MusicControlButtons: View { // Control music
         HStack {
             Spacer()
             
-            DefaultButton(imageName: "backward.fill", gradientColors: colorScheme.backgroundGradient.colors, mult: 1.1, action: back)
+            DefaultButton(imageName: "backward.fill", gradient: colorScheme.backgroundGradient.colors, buttonColor: colorScheme.mainButtonColor.color, mult: 1.1, action: back)
             
             Spacer()
             
-            DefaultButton(imageName: isPlaying ? "pause.fill" : "play.fill", gradientColors: isPlaying ? colorScheme.playGradient.colors : colorScheme.pauseGradient.colors, mult: 1.25, action: play)
+            DefaultButton(imageName: isPlaying ? "pause.fill" : "play.fill", gradient: isPlaying ? colorScheme.playGradient.colors : colorScheme.pauseGradient.colors, buttonColor: colorScheme.mainButtonColor.color, mult: 1.25, action: play)
             
             Spacer()
             
-            DefaultButton(imageName: "forward.fill", gradientColors: colorScheme.backgroundGradient.colors, mult: 1.1, action: forward)
+            DefaultButton(imageName: "forward.fill", gradient: colorScheme.backgroundGradient.colors, buttonColor: colorScheme.mainButtonColor.color, mult: 1.1, action: forward)
             
             Spacer()
         }

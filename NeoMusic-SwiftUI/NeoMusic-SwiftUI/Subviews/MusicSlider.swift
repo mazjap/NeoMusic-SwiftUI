@@ -12,26 +12,17 @@ import SwiftUI
 
 struct MusicSlider: View {
     @ObservedObject var musicController: MusicController
-    @EnvironmentObject var settingsController: SettingsController
     @State var currentTime: Double = 0
     @State var totalTime: Double = 0
-    @State var dragAmount: Double = 0
+    @State var isDragging = false
+    @State var dragOffset: CGFloat = 0
     
+    let impact: UIImpactFeedbackGenerator
+    let colorScheme: ColorScheme
     let timer = Timer.publish(every: 0.1, on: .current, in: .common).autoconnect()
     
-    init(musicController: MusicController) {
-        self.musicController = musicController
-    }
-    
     var body: some View {
-        let size = UIScreen.main.bounds.size.width - Constants.spacing * 2
-        
-        let progress: CGFloat = musicController.currentPlaybackTime / musicController.totalPlaybackTime > 0 && musicController.currentPlaybackTime != musicController.totalPlaybackTime ? CGFloat(musicController.currentPlaybackTime) / CGFloat(musicController.totalPlaybackTime) : 0
-        
-        let completedWidth = progress * size
-        
         let lineHeight: CGFloat = 6
-        
         
         VStack {
             HStack {
@@ -55,26 +46,65 @@ struct MusicSlider: View {
             }
             .foregroundColor(.gray)
             .font(Font.system(.caption))
-            .frame(width: size)
-            
-            ZStack(alignment: .leading) {
-                RoundedRectangle(cornerRadius: lineHeight / 2)
-                    .fill(LinearGradient(gradient: Gradient(colors: [settingsController.colorScheme.backgroundGradient.color1.color, .black]), startPoint: .bottom, endPoint: .top))
-                    .frame(height: lineHeight)
                 
-                RoundedRectangle(cornerRadius: (lineHeight - 2) / 2)
-                    .fill(LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.pauseGradient.colors), startPoint: .bottom, endPoint: .top))
-                    .frame(width: Double(completedWidth).isFinite ? completedWidth : 0, height: lineHeight - 2)
+            GeometryReader { geometry in
+                let progress: CGFloat = musicController.currentPlaybackTime / musicController.totalPlaybackTime > 0 && musicController.currentPlaybackTime != musicController.totalPlaybackTime ? CGFloat(musicController.currentPlaybackTime) / CGFloat(musicController.totalPlaybackTime) : 0
                 
-                Circle()
-                    .fill(LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.backgroundGradient.colors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
-                    .frame(width: size / 12, height: size / 12)
-                    .offset(x: CGFloat(progress) * (size - size / 24) - size / 48, y: 0)
+                let completedWidth = progress * geometry.size.width
+                
+                ZStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: lineHeight / 2)
+                        .fill(LinearGradient(gradient: Gradient(colors: [colorScheme.backgroundGradient.color1.color, .black]), startPoint: .bottom, endPoint: .top))
+                        .frame(height: lineHeight)
+                    
+                    RoundedRectangle(cornerRadius: (lineHeight - 2) / 2)
+                        .fill(LinearGradient(gradient: Gradient(colors: colorScheme.pauseGradient.colors), startPoint: .bottom, endPoint: .top))
+                        .frame(width: Double(completedWidth + dragOffset).isFinite ? completedWidth + dragOffset : 0, height: lineHeight - 2)
+                    
+                    let sliderSize = geometry.size.width / 12
+                    
+                    ZStack {
+                        Circle()
+                            .fill(LinearGradient(gradient: Gradient(colors: colorScheme.backgroundGradient.colors), startPoint: .topLeading, endPoint: .bottomTrailing))
+                        
+                        Circle()
+                            .fill(LinearGradient(gradient: Gradient(colors: colorScheme.backgroundGradient.colors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
+                            .frame(width: sliderSize * 0.95, height: sliderSize * 0.95)
+                    }
+                    .frame(width: sliderSize, height: sliderSize)
+                    .offset(x: CGFloat(progress) * (geometry.size.width - geometry.size.width / 24) - geometry.size.width / 48 + dragOffset, y: 0)
+                    .gesture(DragGesture()
+                        .onChanged { value in
+                            let dragProgress = CGFloat(currentTime / totalTime) * geometry.size.width + value.translation.width
+                            print(dragProgress)
+                            
+                            if !isDragging {
+                                impact.impactOccurred(intensity: 0.35)
+                                isDragging = true
+                            }
+                            
+                            if dragProgress <= geometry.size.width && dragProgress >= 0 {
+                                dragOffset = value.translation.width
+                            }
+                        }
+                        .onEnded { value in
+                            isDragging = false
+                            let val = dragOffset / geometry.size.width
+                            let time = musicController.currentPlaybackTime + Double(val) * musicController.totalPlaybackTime
+                            
+                            impact.impactOccurred(intensity: abs(val))
+                            
+                            musicController.set(time: time)
+                            dragOffset = 0
+                        }
+                    )
+                }
             }
         }
+        .frame(height: 40)
     }
     
-    func format(_ num: Double) -> String {
+    private func format(_ num: Double) -> String {
         let hours = Int(num) / 3600
         let minutes = (Int(num) / 60) % 60
         let seconds = Int(num) % 60
@@ -99,7 +129,6 @@ struct MusicSlider: View {
 
 struct MusicSlider_Previews: PreviewProvider {
     static var previews: some View {
-        MusicSlider(musicController: MusicController())
-            .environmentObject(SettingsController())
+        MusicSlider(musicController: MusicController(), impact: UIImpactFeedbackGenerator(), colorScheme: Constants.defaultColorScheme)
     }
 }

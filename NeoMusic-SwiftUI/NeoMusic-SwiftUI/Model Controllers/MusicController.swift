@@ -59,7 +59,11 @@ class MusicController: ObservableObject {
     }
 
     func skipToPreviousItem() {
-        player.skipToPreviousItem()
+        if currentPlaybackTime <= 5 {
+            player.skipToPreviousItem()
+        } else {
+            set(time: 0)
+        }
     }
 
     func skipToNextItem() {
