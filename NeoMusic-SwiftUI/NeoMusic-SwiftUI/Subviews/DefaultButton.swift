@@ -11,11 +11,16 @@
 import SwiftUI
 
 struct DefaultButton: View {
+    
+    // MARK: - Variables
+    
     let image: String
     let mult: CGFloat
     let gradientColors: [Color]
     let buttonColor: Color
     let action: () -> Void
+    
+    // MARK: - Initializer
     
     init(imageName: String, gradient: [Color], buttonColor: Color, mult: CGFloat = 1, action: @escaping () -> Void) {
         self.image = imageName
@@ -25,6 +30,8 @@ struct DefaultButton: View {
         self.action = action
     }
     
+    // MARK: - Body
+    
     var body: some View {
         Button(action: action) {
             let size = UIScreen.main.bounds.width / 5.5 * mult
@@ -32,6 +39,8 @@ struct DefaultButton: View {
             ZStack {
                 Circle()
                     .fill(LinearGradient(gradient: Gradient(colors: gradientColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
+                    .shadow(color: Color.black.opacity(1), radius: 20, x: 5, y: 5)
+                    .shadow(color: Color.white.opacity(0.3), radius: 10, x: -5, y: -5)
                 
                 Circle()
                     .fill(LinearGradient(gradient: Gradient(colors: gradientColors), startPoint: .topLeading, endPoint: .bottomTrailing))
@@ -47,6 +56,8 @@ struct DefaultButton: View {
         }
     }
 }
+
+// MARK: - Preview
 
 struct DefaultButton_Previews: PreviewProvider {
     static var previews: some View {

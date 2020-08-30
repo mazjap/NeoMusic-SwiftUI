@@ -11,15 +11,22 @@
 import SwiftUI
 
 struct MusicSlider: View {
+    
+    // MARK: - State
+    
     @ObservedObject var musicController: MusicController
     @State var currentTime: Double = 0
     @State var totalTime: Double = 0
     @State var isDragging = false
     @State var dragOffset: CGFloat = 0
     
+    // MARK: - Variables
+    
     let impact: UIImpactFeedbackGenerator
     let colorScheme: ColorScheme
     let timer = Timer.publish(every: 0.1, on: .current, in: .common).autoconnect()
+    
+    // MARK: - Body
     
     var body: some View {
         let lineHeight: CGFloat = 6
@@ -104,6 +111,8 @@ struct MusicSlider: View {
         .frame(height: 40)
     }
     
+    // MARK: - Functions
+    
     private func format(_ num: Double) -> String {
         let hours = Int(num) / 3600
         let minutes = (Int(num) / 60) % 60
@@ -126,6 +135,8 @@ struct MusicSlider: View {
         }
     }
 }
+
+// MARK: - Preview
 
 struct MusicSlider_Previews: PreviewProvider {
     static var previews: some View {

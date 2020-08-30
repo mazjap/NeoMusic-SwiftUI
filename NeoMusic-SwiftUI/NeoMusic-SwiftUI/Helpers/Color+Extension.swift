@@ -39,6 +39,14 @@ extension Color {
         return (Double(r), Double(g), Double(b))
     }
     
+    // Credit to Darel Rex Finley: http://alienryderflex.com/hsp.html
+    var perceivedBrightness: Double {
+        let vals = rgb
+        
+        // brightness = sqrt(r^2 * 0.299 + g^2 * 0.587 + b^2 * 0.114)
+        return sqrt(vals.r * vals.r * 0.299 + vals.g * vals.g * 0.587 + vals.b * vals.b * 0.114)
+    }
+    
     var uiColor: UIColor {
         return UIColor(self)
     }

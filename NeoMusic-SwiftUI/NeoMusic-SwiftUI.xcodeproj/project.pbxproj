@@ -11,13 +11,14 @@
 		0E2C908324F5D5A400AB950D /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E2C908224F5D5A400AB950D /* ColorScheme.swift */; };
 		0E42F9F724F4EC9200901C89 /* DefaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E42F9F624F4EC9200901C89 /* DefaultButton.swift */; };
 		0E42F9F924F4F63B00901C89 /* MusicArtwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E42F9F824F4F63B00901C89 /* MusicArtwork.swift */; };
-		0E8B8B3F24F587B10029B27D /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8B8B3E24F587B10029B27D /* UIImage+Extension.swift */; };
+		0E8B8B3F24F587B10029B27D /* Image+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8B8B3E24F587B10029B27D /* Image+Extension.swift */; };
 		0E8B8B4124F59CB80029B27D /* MusicSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8B8B4024F59CB80029B27D /* MusicSlider.swift */; };
 		0E8B8B4324F5A04D0029B27D /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8B8B4224F5A04D0029B27D /* Color+Extension.swift */; };
 		0E8B8B4624F5A0B10029B27D /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8B8B4524F5A0B10029B27D /* SettingsController.swift */; };
 		0E8B8B4924F5C1480029B27D /* MusicController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8B8B4824F5C1480029B27D /* MusicController.swift */; };
 		0E8B8B4B24F5C19A0029B27D /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8B8B4A24F5C1990029B27D /* Song.swift */; };
 		0E8B8B4E24F5C71E0029B27D /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8B8B4D24F5C71E0029B27D /* AppView.swift */; };
+		0EA1848424FB1EBD00111B84 /* Notification.Name+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA1848324FB1EBC00111B84 /* Notification.Name+Extension.swift */; };
 		0EACBBD824F8DFC100F1A227 /* FloatingPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EACBBD724F8DFC100F1A227 /* FloatingPoint+Extension.swift */; };
 		0EDE700C24F465D300E72D0C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE700B24F465D300E72D0C /* AppDelegate.swift */; };
 		0EDE700E24F465D300E72D0C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE700D24F465D300E72D0C /* SceneDelegate.swift */; };
@@ -51,13 +52,14 @@
 		0E2C908224F5D5A400AB950D /* ColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorScheme.swift; sourceTree = "<group>"; };
 		0E42F9F624F4EC9200901C89 /* DefaultButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultButton.swift; sourceTree = "<group>"; };
 		0E42F9F824F4F63B00901C89 /* MusicArtwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicArtwork.swift; sourceTree = "<group>"; };
-		0E8B8B3E24F587B10029B27D /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
+		0E8B8B3E24F587B10029B27D /* Image+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Extension.swift"; sourceTree = "<group>"; };
 		0E8B8B4024F59CB80029B27D /* MusicSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicSlider.swift; sourceTree = "<group>"; };
 		0E8B8B4224F5A04D0029B27D /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		0E8B8B4524F5A0B10029B27D /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		0E8B8B4824F5C1480029B27D /* MusicController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicController.swift; sourceTree = "<group>"; };
 		0E8B8B4A24F5C1990029B27D /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		0E8B8B4D24F5C71E0029B27D /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
+		0EA1848324FB1EBC00111B84 /* Notification.Name+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+Extension.swift"; sourceTree = "<group>"; };
 		0EACBBD724F8DFC100F1A227 /* FloatingPoint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FloatingPoint+Extension.swift"; sourceTree = "<group>"; };
 		0EDE700824F465D300E72D0C /* NeoMusic-SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NeoMusic-SwiftUI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EDE700B24F465D300E72D0C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -103,10 +105,11 @@
 		0E8B8B4424F5A09E0029B27D /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				0E8B8B3E24F587B10029B27D /* UIImage+Extension.swift */,
+				0E8B8B3E24F587B10029B27D /* Image+Extension.swift */,
 				0E8B8B4224F5A04D0029B27D /* Color+Extension.swift */,
 				0E2C908024F5CF2600AB950D /* Constants.swift */,
 				0EACBBD724F8DFC100F1A227 /* FloatingPoint+Extension.swift */,
+				0EA1848324FB1EBC00111B84 /* Notification.Name+Extension.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -350,6 +353,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EA1848424FB1EBD00111B84 /* Notification.Name+Extension.swift in Sources */,
 				0E8B8B4624F5A0B10029B27D /* SettingsController.swift in Sources */,
 				0E8B8B4924F5C1480029B27D /* MusicController.swift in Sources */,
 				0E42F9F924F4F63B00901C89 /* MusicArtwork.swift in Sources */,
@@ -363,7 +367,7 @@
 				0E8B8B4E24F5C71E0029B27D /* AppView.swift in Sources */,
 				0E2C908324F5D5A400AB950D /* ColorScheme.swift in Sources */,
 				0E42F9F724F4EC9200901C89 /* DefaultButton.swift in Sources */,
-				0E8B8B3F24F587B10029B27D /* UIImage+Extension.swift in Sources */,
+				0E8B8B3F24F587B10029B27D /* Image+Extension.swift in Sources */,
 				0E8B8B4324F5A04D0029B27D /* Color+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
