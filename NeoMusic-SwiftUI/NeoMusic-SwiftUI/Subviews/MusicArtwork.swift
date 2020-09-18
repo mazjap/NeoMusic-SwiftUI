@@ -14,19 +14,19 @@ struct MusicArtwork: View {
     
     // MARK: - State
     
-    @State var rotation: Double = 0
-    @State var isDragging: Bool = false
-    @State var startRotationAngle: Double = 0
+    @State private var rotation: Double = 0
+    @State private var isDragging: Bool = false
+    @State private var startRotationAngle: Double = 0
     
     // MARK: - Variables
     
-    let impact: UIImpactFeedbackGenerator
-    let colorScheme: ColorScheme
-    let image: Image
+    private let impact: UIImpactFeedbackGenerator?
+    private let colorScheme: ColorScheme
+    private let image: Image
     
     // MARK: - Initializer
     
-    init(impact: UIImpactFeedbackGenerator, colorScheme: ColorScheme, image: Image) {
+    init(colorScheme: ColorScheme, image: Image, impact: UIImpactFeedbackGenerator? = nil) {
         self.impact = impact
         self.colorScheme = colorScheme
         self.image = image
@@ -55,22 +55,22 @@ struct MusicArtwork: View {
                             let gestureRotation = angle(from: circleCenter, to: location) - startRotationAngle
                             
                             if !isDragging {
-                                impact.impactOccurred()
+                                impact?.impactOccurred()
                                 isDragging = true
                                 startRotationAngle = angle(from: circleCenter, to: location)
                             }
                             
-                            rotation -= gestureRotation
+                            rotation = gestureRotation
                         }
                         .onEnded { value in
-                            impact.impactOccurred()
+                            impact?.impactOccurred()
                             
                             let circleCenter = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
                             
                             let gestureRotation = angle(from: circleCenter, to: value.location) - startRotationAngle
                             
                             isDragging = false
-                            rotation -= gestureRotation
+                            rotation = gestureRotation
                         }
                 )
             }
@@ -82,9 +82,17 @@ struct MusicArtwork: View {
     private func angle(from center: CGPoint, to location: CGPoint) -> Double {
         let deltaY = location.y - center.y
         let deltaX = location.x - center.x
-        let angle = atan2(deltaY, deltaX)
+        var angle = atan2(deltaY, deltaX)
         
-        return Double(angle < 0 ? abs(angle) : 360 - angle)
+        while angle > 2 * .pi {
+            angle -= 2 * .pi
+        }
+        
+        while angle < 0 {
+            angle += 2 * .pi
+        }
+        
+        return Double(angle)
     }
 }
 
@@ -92,7 +100,7 @@ struct MusicArtwork: View {
 
 struct Artwork_Previews: PreviewProvider {
     static var previews: some View {
-        MusicArtwork(impact: UIImpactFeedbackGenerator(), colorScheme: Constants.defaultColorScheme, image: .placeholder)
+        MusicArtwork(colorScheme: Constants.defaultColorScheme, image: .placeholder)
             .previewLayout(.fixed(width: 400, height: 400))
     }
 }

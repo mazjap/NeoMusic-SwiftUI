@@ -47,7 +47,7 @@ struct MusicPlayer: View {
                 
                 Spacer()
                 
-                MusicArtwork(impact: impact, colorScheme: settingsController.colorScheme, image: musicController.currentSong.artwork)
+                MusicArtwork(colorScheme: settingsController.colorScheme, image: musicController.currentSong.artwork, impact: impact)
                    
                 HStack {
                     Text(musicController.currentSong.title)
