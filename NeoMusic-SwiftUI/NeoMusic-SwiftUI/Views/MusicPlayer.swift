@@ -47,8 +47,6 @@ struct MusicPlayer: View {
                 
                 Spacer()
                 
-                MusicArtwork(gradient: settingsController.colorScheme.backgroundGradient.colors, image: musicController.currentSong.artwork)
-                
                 MusicArtwork(impact: impact, colorScheme: settingsController.colorScheme, image: musicController.currentSong.artwork)
                    
                 HStack {

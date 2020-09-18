@@ -43,37 +43,31 @@ struct AppView: View {
     // MARK: - Body
     
     var body: some View {
-        TabView(selection: $selectedIndex) {
-            MusicPlayer(musicController: musicController, impact: impact)
-                .statusBar(hidden: true)
-                .tabItem {
-                    Image(systemName: "magnifyingglass")
-                    Text("Search")
-                }.tag(0)
+        
+        ZStack {
+            TabBar {
+                TabItem(title: "Search", imageName: "magnifyingglass", impact: impact) {
+                    Text("Content here")
+                }
+                
+                TabItem(title: "Music", imageName: "play.fill", impact: impact) {
+                    Text("Content here")
+                }
+                
+                TabItem(title: "History", imageName: "clock.fill", impact: impact) {
+                    Text("Content here")
+                }
+                
+                TabItem(title: "Profile", imageName: "person.fill", impact: impact) {
+                    Text("Content here")
+                }
+            }
+            .accentColor(settingsController.colorScheme.textColor.color)
             
             MusicPlayer(musicController: musicController, impact: impact)
-                .tabItem {
-                    Image(systemName: musicController.isPlaying ? "pause.fill" : "play.fill")
-                    Text("Music")
-                }.tag(1)
-            
-            Text("Not yet implemented")
-                .foregroundColor(.white)
-                .tabItem {
-                    Image(systemName: "clock.fill")
-                    Text("History")
-                }.tag(2)
-            
-            Text("Not yet implemented")
-                .foregroundColor(.white)
-                .statusBar(hidden: true)
-                .tabItem {
-                    Image(systemName: "person.fill")
-                    Text("Profile")
-                }.tag(3)
+                .frame(height: 500)
+                .offset(y: -40)
         }
-        .foregroundColor(.black)
-        .accentColor(settingsController.colorScheme.textColor.color)
     }
 }
 

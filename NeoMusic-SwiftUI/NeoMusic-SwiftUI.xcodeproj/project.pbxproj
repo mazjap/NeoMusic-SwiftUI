@@ -28,6 +28,8 @@
 		0EDE701824F465D600E72D0C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EDE701624F465D600E72D0C /* LaunchScreen.storyboard */; };
 		0EDE702324F465D700E72D0C /* NeoMusic_SwiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE702224F465D700E72D0C /* NeoMusic_SwiftUITests.swift */; };
 		0EDE702E24F465D700E72D0C /* NeoMusic_SwiftUIUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE702D24F465D700E72D0C /* NeoMusic_SwiftUIUITests.swift */; };
+		49E153542515705000767842 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E153532515705000767842 /* TabBar.swift */; };
+		49E1535C251570A500767842 /* TabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E1535B251570A500767842 /* TabItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +77,8 @@
 		0EDE702924F465D700E72D0C /* NeoMusic-SwiftUIUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "NeoMusic-SwiftUIUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EDE702D24F465D700E72D0C /* NeoMusic_SwiftUIUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeoMusic_SwiftUIUITests.swift; sourceTree = "<group>"; };
 		0EDE702F24F465D700E72D0C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		49E153532515705000767842 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TabBar.swift; path = ../Views/TabBar.swift; sourceTree = "<group>"; };
+		49E1535B251570A500767842 /* TabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TabItem.swift; path = ../Views/TabItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +139,8 @@
 		0E8B8B4F24F5C83D0029B27D /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
+				49E153532515705000767842 /* TabBar.swift */,
+				49E1535B251570A500767842 /* TabItem.swift */,
 				0E42F9F624F4EC9200901C89 /* DefaultButton.swift */,
 				0E42F9F824F4F63B00901C89 /* MusicArtwork.swift */,
 				0E8B8B4024F59CB80029B27D /* MusicSlider.swift */,
@@ -355,11 +361,13 @@
 			files = (
 				0EA1848424FB1EBD00111B84 /* Notification.Name+Extension.swift in Sources */,
 				0E8B8B4624F5A0B10029B27D /* SettingsController.swift in Sources */,
+				49E153542515705000767842 /* TabBar.swift in Sources */,
 				0E8B8B4924F5C1480029B27D /* MusicController.swift in Sources */,
 				0E42F9F924F4F63B00901C89 /* MusicArtwork.swift in Sources */,
 				0E8B8B4124F59CB80029B27D /* MusicSlider.swift in Sources */,
 				0EDE700C24F465D300E72D0C /* AppDelegate.swift in Sources */,
 				0E8B8B4B24F5C19A0029B27D /* Song.swift in Sources */,
+				49E1535C251570A500767842 /* TabItem.swift in Sources */,
 				0EDE700E24F465D300E72D0C /* SceneDelegate.swift in Sources */,
 				0E2C908124F5CF2600AB950D /* Constants.swift in Sources */,
 				0EACBBD824F8DFC100F1A227 /* FloatingPoint+Extension.swift in Sources */,
