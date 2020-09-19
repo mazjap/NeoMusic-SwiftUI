@@ -21,7 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Create the SwiftUI view that provides the window contents.
         let setCon = SettingsController()
         
-        let contentView = AppView(color: setCon.colorScheme.backgroundGradient.color2.color)
+        let contentView = AppView()
             .environmentObject(setCon)
 
         // Use a UIHostingController as window root view controller.

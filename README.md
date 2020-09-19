@@ -15,7 +15,13 @@ NeoMusic is an iOS music player app designed to connect many music streaming ser
 
 [![Download-iOS][appstore-image]][appstore-url]
 
-![First Graphic](http://i.imgur.com/dt8AUb6.png)
+<!-- Project Images -->
+
+<a href="#"><img src="src/img-1.png" alt="img-1" width="300"></a>
+<a href="#"><img src="src/img-2.png" alt="img-2" width="300"></a>
+<a href="#"><img src="src/img-3.png" alt="img-3" width="300"></a>
+
+<!-- App in Use Gifs -->
 
 **App in use:**
 
@@ -44,7 +50,8 @@ $ git clone https://github.com/mazjap/NeoMusic-SwiftUI.git
 $ open NeoMusic-SwiftUI/NeoMusic-SwiftUI/NeoMusic-SwiftUI.xcodeproj
 ```
 - Step 3: 
-Connect device and run
+
+Connect device or select simulator from drop down and run project
 
 ---
 
@@ -53,9 +60,9 @@ Connect device and run
 - [x] Apple Music support
 - [x] Spinnable artwork
 - [x] iOS 14 Widget
-- [ ] Spotify support
 - [ ] Toggleable music player view
 - [ ] Music searching/filtering
+- [ ] Spotify support
 
 ---
 
@@ -71,7 +78,7 @@ Please refer to the [wiki][wiki-url] for technical details on the project.
 
 2. :dancers: Clone your newly forked repo to your local machine using:
 ```shell
-$ git clone https://github.com/mazjap/REPO-NAME
+$ git clone https://github.com/mazjap/NeoMusic-SwiftUI
 ```
 3. :computer: Add some code
 
@@ -98,10 +105,9 @@ $ git clone https://github.com/mazjap/REPO-NAME
 
 ## License
 
-[![License][license-image]][license-url]
+This project is licensed under the MIT License
 
 - **[MIT license][license-url]**
-- Copyright 2020 © [Jordan Christensen][website-url].
 
 <!-- Badge Images -->
 [build-image]: http://img.shields.io/travis/mazjap/NeoMusic-SwiftUI?style=flat-square/ "Unit Tests Passing"

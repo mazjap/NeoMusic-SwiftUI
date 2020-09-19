@@ -22,6 +22,8 @@ class Controller: TimelineEntry {
         self.player = .systemMusicPlayer
         self.colorScheme = SettingsController().colorScheme
         
+        player.beginGeneratingPlaybackNotifications()
+        
         NotificationCenter.default.addObserver(self, selector: #selector(update), name: .MPMusicPlayerControllerNowPlayingItemDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(update), name: .MPMusicPlayerControllerPlaybackStateDidChange, object: nil)
     }

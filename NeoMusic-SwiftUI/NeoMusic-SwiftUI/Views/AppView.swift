@@ -26,20 +26,6 @@ struct AppView: View {
     
     let impact = UIImpactFeedbackGenerator(style: .rigid)
     
-    // MARK: - Initializer
-    
-    init(color: Color = .black) {
-        let tabBarAppearance = UITabBar.appearance()
-        
-        // Set Tab Bar to opaque custom color
-        tabBarAppearance.barTintColor = color.uiColor
-        tabBarAppearance.isTranslucent = false
-        
-        // Remove Tab Bar top shadow
-        tabBarAppearance.backgroundImage = UIImage()
-        tabBarAppearance.shadowImage = UIImage()
-    }
-    
     // MARK: - Body
     
     var body: some View {
@@ -65,8 +51,8 @@ struct AppView: View {
             .accentColor(settingsController.colorScheme.textColor.color)
             
             MusicPlayer(musicController: musicController, impact: impact)
-                .frame(height: 500)
-                .offset(y: -40)
+//                .frame(height: 500)
+//                .offset(y: -40)
         }
     }
 }
@@ -75,9 +61,7 @@ struct AppView: View {
 
 struct AppView_Previews: PreviewProvider {
     static var previews: some View {
-        let setCon = SettingsController()
-        
-        AppView(color: setCon.colorScheme.backgroundGradient.color2.color)
-            .environmentObject(setCon)
+        AppView()
+            .environmentObject(SettingsController())
     }
 }
