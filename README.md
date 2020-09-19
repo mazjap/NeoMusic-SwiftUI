@@ -37,19 +37,24 @@ NeoMusic is an iOS music player app designed to connect many music streaming ser
 
 - Step 1: 
 ```shell
-$ git clone https://github.com/mazjap/REPO-NAME
+$ git clone https://github.com/mazjap/NeoMusic-SwiftUI.git
 ```
 - Step 2: 
+```shell
+$ open NeoMusic-SwiftUI/NeoMusic-SwiftUI/NeoMusic-SwiftUI.xcodeproj
+```
+- Step 3: 
+Connect device and run
 
 ---
 
 ## Features
 
 - [x] Apple Music support
+- [x] Spinnable artwork
+- [x] iOS 14 Widget
 - [ ] Spotify support
-- [ ] Spinnable artwork
 - [ ] Toggleable music player view
-- [ ] iOS 14 Widget
 - [ ] Music searching/filtering
 
 ---

@@ -34,10 +34,13 @@ struct NeoWidgetEntryView : View {
             LinearGradient(gradient: Gradient(colors: controller.colorScheme.backgroundGradient.colors), startPoint: .top, endPoint: .bottom)
             
             VStack {
+                Spacer()
                 // Title
                 HStack {
                     Text(song.title)
+                        .font(.footnote)
                         .lineLimit(1)
+                        .foregroundColor(controller.colorScheme.textColor.color)
                     
                     if song.isExplicit {
                         Image(systemName: "e.square.fill")
@@ -46,6 +49,8 @@ struct NeoWidgetEntryView : View {
                 
                 // Artwork
                 WidgetArtwork(colorScheme: controller.colorScheme, image: controller.song.artwork)
+                
+                Spacer()
             }
         }
     }
