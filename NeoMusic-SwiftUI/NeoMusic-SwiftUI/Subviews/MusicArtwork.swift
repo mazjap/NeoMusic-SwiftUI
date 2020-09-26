@@ -39,8 +39,6 @@ struct MusicArtwork: View {
             ZStack {
                 Circle()
                     .fill(LinearGradient(gradient: Gradient(colors: colorScheme.backgroundGradient.colors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
-                    .shadow(color: Color.black.opacity(1), radius: 20, x: 5, y: 5)
-                    .shadow(color: Color.white.opacity(0.3), radius: 10, x: -5, y: -5)
                 
                 image
                     .resizable()

@@ -17,6 +17,8 @@ struct ColorScheme: Codable, Equatable {
         case pause
     }
     
+    static var `default` = Constants.defaultColorScheme
+    
     var backgroundGradient: EasyGradient
     var playGradient: EasyGradient
     var pauseGradient: EasyGradient

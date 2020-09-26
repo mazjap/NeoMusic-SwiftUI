@@ -39,8 +39,6 @@ struct DefaultButton: View {
             ZStack {
                 Circle()
                     .fill(LinearGradient(gradient: Gradient(colors: gradientColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
-                    .shadow(color: Color.black.opacity(1), radius: 20, x: 5, y: 5)
-                    .shadow(color: Color.white.opacity(0.3), radius: 10, x: -5, y: -5)
                 
                 Circle()
                     .fill(LinearGradient(gradient: Gradient(colors: gradientColors), startPoint: .topLeading, endPoint: .bottomTrailing))

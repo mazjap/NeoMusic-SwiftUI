@@ -13,29 +13,25 @@ NeoMusic is an iOS music player app designed to connect many music streaming ser
 [![License][license-image]][license-url]
 [![GitHub Pull Requests][pr-image]][pr-url]
 
-[![Download-iOS][appstore-image]][appstore-url]
+<!-- [![Download-iOS][appstore-image]][appstore-url] -->
 
 <!-- Project Images -->
 
-<a href="#"><img src="src/img-1.png" alt="img-1" width="300"></a>
-<a href="#"><img src="src/img-2.png" alt="img-2" width="300"></a>
-<a href="#"><img src="src/img-3.png" alt="img-3" width="300"></a>
+<a href="#"><img src="src/img-1.png" alt="img-1" width="250"></a>
+<a href="#"><img src="src/img-2.png" alt="img-2" width="250"></a>
+<a href="#"><img src="src/img-3.png" alt="img-3" width="250"></a>
 
-<!-- App in Use Gifs -->
+<!-- App in Use Gifs
 
 **App in use:**
 
-![Recordit GIF](http://g.recordit.co/iLN6A0vSD8.gif)
-
-**Terminal session:**
-
-![ttystudio GIF](https://raw.githubusercontent.com/chjj/ttystudio/master/img/example.gif)
+![Recordit GIF](http://g.recordit.co/iLN6A0vSD8.gif)  -->
 
 ---
 
 ## Installation
 
-1. This project can be found on [the App Store][appstore-url].
+1. ~~This project can be found on [the App Store][appstore-url].~~
 
 2. Become a beta tester and [download the most recent beta][testflight-url] on TestFlight.
 

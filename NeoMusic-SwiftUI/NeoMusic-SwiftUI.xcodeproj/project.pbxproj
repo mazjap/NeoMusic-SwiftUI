@@ -19,6 +19,8 @@
 		0E8B8B4B24F5C19A0029B27D /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8B8B4A24F5C1990029B27D /* Song.swift */; };
 		0E8B8B4E24F5C71E0029B27D /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8B8B4D24F5C71E0029B27D /* AppView.swift */; };
 		0EA1848424FB1EBD00111B84 /* Notification.Name+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA1848324FB1EBC00111B84 /* Notification.Name+Extension.swift */; };
+		0EBAE2D2251FB01000752EDE /* Neumorph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE2D1251FB01000752EDE /* Neumorph.swift */; };
+		0EBAE2DF251FB22600752EDE /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE2DE251FB22600752EDE /* View+Extension.swift */; };
 		0EDE700C24F465D300E72D0C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE700B24F465D300E72D0C /* AppDelegate.swift */; };
 		0EDE700E24F465D300E72D0C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE700D24F465D300E72D0C /* SceneDelegate.swift */; };
 		0EDE701024F465D300E72D0C /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE700F24F465D300E72D0C /* MusicPlayer.swift */; };
@@ -87,6 +89,8 @@
 		0E8B8B4A24F5C1990029B27D /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		0E8B8B4D24F5C71E0029B27D /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		0EA1848324FB1EBC00111B84 /* Notification.Name+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+Extension.swift"; sourceTree = "<group>"; };
+		0EBAE2D1251FB01000752EDE /* Neumorph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Neumorph.swift; sourceTree = "<group>"; };
+		0EBAE2DE251FB22600752EDE /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		0EDE700824F465D300E72D0C /* NeoMusic-SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NeoMusic-SwiftUI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EDE700B24F465D300E72D0C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0EDE700D24F465D300E72D0C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -106,8 +110,8 @@
 		4960889025158368003F1089 /* NeoWidget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeoWidget.swift; sourceTree = "<group>"; };
 		4960889525158392003F1089 /* WidgetArtwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetArtwork.swift; sourceTree = "<group>"; };
 		4960889625158392003F1089 /* Controller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Controller.swift; sourceTree = "<group>"; };
-		49E153532515705000767842 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TabBar.swift; path = ../Views/TabBar.swift; sourceTree = "<group>"; };
-		49E1535B251570A500767842 /* TabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TabItem.swift; path = ../Views/TabItem.swift; sourceTree = "<group>"; };
+		49E153532515705000767842 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
+		49E1535B251570A500767842 /* TabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,13 +173,30 @@
 		0E8B8B4F24F5C83D0029B27D /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
-				49E153532515705000767842 /* TabBar.swift */,
-				49E1535B251570A500767842 /* TabItem.swift */,
+				0EBAE2D6251FB20200752EDE /* Custom TabView */,
 				0E42F9F624F4EC9200901C89 /* DefaultButton.swift */,
 				0E42F9F824F4F63B00901C89 /* MusicArtwork.swift */,
 				0E8B8B4024F59CB80029B27D /* MusicSlider.swift */,
 			);
 			path = Subviews;
+			sourceTree = "<group>";
+		};
+		0EBAE2D6251FB20200752EDE /* Custom TabView */ = {
+			isa = PBXGroup;
+			children = (
+				49E153532515705000767842 /* TabBar.swift */,
+				49E1535B251570A500767842 /* TabItem.swift */,
+			);
+			path = "Custom TabView";
+			sourceTree = "<group>";
+		};
+		0EBAE2DA251FB21400752EDE /* View Modifiers */ = {
+			isa = PBXGroup;
+			children = (
+				0EBAE2D1251FB01000752EDE /* Neumorph.swift */,
+				0EBAE2DE251FB22600752EDE /* View+Extension.swift */,
+			);
+			path = "View Modifiers";
 			sourceTree = "<group>";
 		};
 		0EDE6FFF24F465D300E72D0C = {
@@ -205,6 +226,7 @@
 				0EDE703B24F465F200E72D0C /* Resources */,
 				0EDE703C24F465FA00E72D0C /* Views */,
 				0E8B8B4F24F5C83D0029B27D /* Subviews */,
+				0EBAE2DA251FB21400752EDE /* View Modifiers */,
 				0E8B8B4C24F5C19E0029B27D /* Models */,
 				0E8B8B4724F5BC390029B27D /* Model Controllers */,
 				0E8B8B4424F5A09E0029B27D /* Helpers */,
@@ -407,12 +429,14 @@
 				0EA1848424FB1EBD00111B84 /* Notification.Name+Extension.swift in Sources */,
 				0E8B8B4624F5A0B10029B27D /* SettingsController.swift in Sources */,
 				49E153542515705000767842 /* TabBar.swift in Sources */,
+				0EBAE2DF251FB22600752EDE /* View+Extension.swift in Sources */,
 				0E8B8B4924F5C1480029B27D /* MusicController.swift in Sources */,
 				0E42F9F924F4F63B00901C89 /* MusicArtwork.swift in Sources */,
 				0E8B8B4124F59CB80029B27D /* MusicSlider.swift in Sources */,
 				0EDE700C24F465D300E72D0C /* AppDelegate.swift in Sources */,
 				0E8B8B4B24F5C19A0029B27D /* Song.swift in Sources */,
 				49E1535C251570A500767842 /* TabItem.swift in Sources */,
+				0EBAE2D2251FB01000752EDE /* Neumorph.swift in Sources */,
 				0EDE700E24F465D300E72D0C /* SceneDelegate.swift in Sources */,
 				0E2C908124F5CF2600AB950D /* Constants.swift in Sources */,
 				0EDE701024F465D300E72D0C /* MusicPlayer.swift in Sources */,
