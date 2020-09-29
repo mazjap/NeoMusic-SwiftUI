@@ -24,7 +24,7 @@ struct MusicSlider: View {
     
     let impact: UIImpactFeedbackGenerator
     let colorScheme: ColorScheme
-    let timer = Timer.publish(every: 0.1, on: .current, in: .common).autoconnect()
+    let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
     
     // MARK: - Body
     
@@ -35,12 +35,10 @@ struct MusicSlider: View {
             HStack {
                 Text(format(currentTime))
                     .onReceive(timer) { _ in
-                        DispatchQueue.main.async {
-                            if musicController.currentPlaybackTime == musicController.totalPlaybackTime {
-                                currentTime = 0
-                            } else {
-                                currentTime = musicController.currentPlaybackTime
-                            }
+                        if musicController.currentPlaybackTime == musicController.totalPlaybackTime {
+                            currentTime = 0
+                        } else {
+                            currentTime = musicController.currentPlaybackTime
                         }
                     }
                 
@@ -55,7 +53,7 @@ struct MusicSlider: View {
             .font(Font.system(.caption))
                 
             GeometryReader { geometry in
-                let progress: CGFloat = musicController.currentPlaybackTime / musicController.totalPlaybackTime > 0 && musicController.currentPlaybackTime != musicController.totalPlaybackTime ? CGFloat(musicController.currentPlaybackTime) / CGFloat(musicController.totalPlaybackTime) : 0
+                let progress: CGFloat = musicController.currentPlaybackTime / musicController.totalPlaybackTime > 0 && musicController.currentPlaybackTime != musicController.totalPlaybackTime ? CGFloat(musicController.currentPlaybackTime / musicController.totalPlaybackTime) : 0
                 
                 let completedWidth = progress * geometry.size.width
                 
@@ -82,15 +80,15 @@ struct MusicSlider: View {
                     .offset(x: CGFloat(progress) * (geometry.size.width - geometry.size.width / 24) - geometry.size.width / 48 + dragOffset, y: 0)
                     .gesture(DragGesture()
                         .onChanged { value in
-                            let dragProgress = CGFloat(currentTime / totalTime) * geometry.size.width + value.translation.width
-                            print(dragProgress)
-                            
                             if !isDragging {
                                 impact.impactOccurred(intensity: 0.35)
                                 isDragging = true
                             }
                             
-                            if dragProgress <= geometry.size.width && dragProgress >= 0 {
+                            let sliderPosition = completedWidth + value.translation.width
+                            
+                            if sliderPosition >= 0 && sliderPosition <= geometry.size.width {
+                                print(sliderPosition)
                                 dragOffset = value.translation.width
                             }
                         }
