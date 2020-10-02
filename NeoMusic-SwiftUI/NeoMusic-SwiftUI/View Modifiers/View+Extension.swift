@@ -11,6 +11,10 @@
 import SwiftUI
 
 extension View {
+    func asAny() -> AnyView {
+        AnyView(self)
+    }
+    
     func neumorph() -> some View {
         self.modifier(Neumorph())
     }

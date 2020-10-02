@@ -20,6 +20,8 @@ extension Color {
     static let playGradientTop = Color("PlayGradientDark")
     static let playGradientBottom = Color("PlayGradientLight")
     
+    static let falseWhite = Color(red: 0.92, green: 0.92, blue: 0.98)
+    
     var rgb: (r: Double, g: Double, b: Double) {
         #if canImport(UIKit)
         typealias NativeColor = UIColor
@@ -30,13 +32,30 @@ extension Color {
         var r: CGFloat = 0
         var g: CGFloat = 0
         var b: CGFloat = 0
-        var a: CGFloat = 0
         
-        guard NativeColor(self).getRed(&r, green: &g, blue: &b, alpha: &a) else {
+        guard NativeColor(self).getRed(&r, green: &g, blue: &b, alpha: nil) else {
             return (-1, -1, -1)
         }
 
         return (Double(r), Double(g), Double(b))
+    }
+    
+    var hsb: (h: Double, s: Double, b: Double) {
+        #if canImport(UIKit)
+        typealias NativeColor = UIColor
+        #elseif canImport(AppKit)
+        typealias NativeColor = NSColor
+        #endif
+        
+        var h: CGFloat = 0
+        var s: CGFloat = 0
+        var b: CGFloat = 0
+        
+        guard NativeColor(self).getHue(&h, saturation: &s, brightness: &b, alpha: nil) else {
+            return (-1, -1, -1)
+        }
+        
+        return (Double(h), Double(s), Double(b))
     }
     
     // Credit to Darel Rex Finley: http://alienryderflex.com/hsp.html
@@ -49,5 +68,12 @@ extension Color {
     
     var uiColor: UIColor {
         return UIColor(self)
+    }
+    
+    func average(to color: Color) -> Color {
+        let c1 = hsb
+        let c2 = color.hsb
+        
+        return Color(hue: (c1.h + c2.h) / 2, saturation: (c1.s + c2.s) / 2, brightness: (c1.b + c2.b) / 2)
     }
 }

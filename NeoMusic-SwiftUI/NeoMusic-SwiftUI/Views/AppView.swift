@@ -16,11 +16,6 @@ struct AppView: View {
     
     @EnvironmentObject var settingsController: SettingsController
     @ObservedObject var musicController = MusicController()
-    @State var selectedIndex: Int = 0 {
-        didSet {
-            impact.impactOccurred()
-        }
-    }
     
     // MARK: - Variables
     

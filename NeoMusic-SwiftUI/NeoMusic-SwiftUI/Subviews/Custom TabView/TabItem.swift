@@ -16,7 +16,7 @@ struct TabItem: View {
     init<Content>(title: String, imageName: String, impact: UIImpactFeedbackGenerator? = nil, @ViewBuilder _ content: () -> Content) where Content: View {
         self.title = Text(title)
         self.image = Image(systemName: imageName)
-        self.content = AnyView(content())
+        self.content = content().asAny()
         self.impact = impact
     }
     
