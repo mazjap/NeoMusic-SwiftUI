@@ -21,6 +21,7 @@ extension Color {
     static let playGradientBottom = Color("PlayGradientLight")
     
     static let falseWhite = Color(red: 0.92, green: 0.92, blue: 0.98)
+    static let falseBlack = Color(red: 0.12, green: 0.12, blue: 0.08)
     
     var rgb: (r: Double, g: Double, b: Double) {
         #if canImport(UIKit)

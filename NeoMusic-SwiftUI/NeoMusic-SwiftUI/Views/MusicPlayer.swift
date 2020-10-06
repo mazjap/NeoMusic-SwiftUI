@@ -48,7 +48,6 @@ struct MusicPlayer: View {
                 Spacer()
                 
                 MusicArtwork(colorScheme: settingsController.colorScheme, image: musicController.currentSong.artwork, impact: impact)
-                    .neumorph()
                    
                 HStack {
                     Text(musicController.currentSong.title)
@@ -95,8 +94,7 @@ struct NavBar: View { // Navigation
     
     var body: some View {
         HStack {
-            DefaultButton(imageName: "arrow.left", gradient: colorScheme.backgroundGradient.colors, buttonColor: colorScheme.secondaryButtonColor.color, action: back)
-                .neumorph()
+            DefaultButton(imageName: "arrow.left", imageColor: colorScheme.mainButtonColor.color, buttonColor: colorScheme.backgroundGradient.color1.color, action: back)
             
             Spacer()
             
@@ -105,8 +103,7 @@ struct NavBar: View { // Navigation
             
             Spacer()
             
-            DefaultButton(imageName: "line.horizontal.3", gradient: colorScheme.backgroundGradient.colors, buttonColor: colorScheme.secondaryButtonColor.color, action: list)
-                .neumorph()
+            DefaultButton(imageName: "line.horizontal.3", imageColor: colorScheme.mainButtonColor.color, buttonColor: colorScheme.backgroundGradient.color1.color, action: list)
         }
     }
 }
@@ -122,18 +119,15 @@ struct MusicControlButtons: View { // Control music
         HStack {
             Spacer()
             
-            DefaultButton(imageName: "backward.fill", gradient: colorScheme.backgroundGradient.colors, buttonColor: colorScheme.mainButtonColor.color, mult: 1.1, action: back)
-                .neumorph()
+            DefaultButton(imageName: "backward.fill", imageColor: colorScheme.mainButtonColor.color, buttonColor: colorScheme.backgroundGradient.color2.color, mult: 1.1, action: back)
             
             Spacer()
             
-            DefaultButton(imageName: isPlaying ? "pause.fill" : "play.fill", gradient: isPlaying ? colorScheme.playGradient.colors : colorScheme.pauseGradient.colors, buttonColor: colorScheme.mainButtonColor.color, mult: 1.25, action: play)
-                .neumorph()
+            DefaultButton(imageName: isPlaying ? "pause.fill" : "play.fill", imageColor: (isPlaying ? colorScheme.mainButtonColor : colorScheme.secondaryButtonColor).color, buttonColor: colorScheme.backgroundGradient.color2.color, mult: 1.25, action: play)
             
             Spacer()
             
-            DefaultButton(imageName: "forward.fill", gradient: colorScheme.backgroundGradient.colors, buttonColor: colorScheme.mainButtonColor.color, mult: 1.1, action: forward)
-                .neumorph()
+            DefaultButton(imageName: "forward.fill", imageColor: colorScheme.mainButtonColor.color, buttonColor: colorScheme.backgroundGradient.color2.color, mult: 1.1, action: forward)
             
             Spacer()
         }

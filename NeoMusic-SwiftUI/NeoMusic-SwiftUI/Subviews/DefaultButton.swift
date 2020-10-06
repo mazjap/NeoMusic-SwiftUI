@@ -14,40 +14,49 @@ struct DefaultButton: View {
     
     // MARK: - Variables
     
-    let image: String
-    let mult: CGFloat
-    let gradientColors: [Color]
+    let image: Image
+    let imageColor: Color
     let buttonColor: Color
+    let size: CGFloat
+    let type: ButtonType
     let action: () -> Void
+    
+    var cornerRadius: CGFloat {
+        type.cornerRadius(size: size)
+    }
     
     // MARK: - Initializer
     
-    init(imageName: String, gradient: [Color], buttonColor: Color, mult: CGFloat = 1, action: @escaping () -> Void) {
-        self.image = imageName
-        self.mult = mult
-        self.gradientColors = gradient
+    init(image: Image, imageColor: Color, buttonColor: Color, type: ButtonType = .circle, mult: CGFloat = 1, action: @escaping () -> Void) {
+        self.image = image
+        self.imageColor = imageColor
         self.buttonColor = buttonColor
+        self.size = (UIScreen.main.bounds.width < UIScreen.main.bounds.height ? UIScreen.main.bounds.width : UIScreen.main.bounds.height) / 5.5 * mult
+        self.type = type
         self.action = action
     }
     
-    // MARK: - Body
+    init(imageName: String, imageColor: Color, buttonColor: Color, type: ButtonType = .circle, mult: CGFloat = 1, action: @escaping () -> Void) {
+        self.image = Image(systemName: imageName)
+        self.imageColor = imageColor
+        self.buttonColor = buttonColor
+        self.size = (UIScreen.main.bounds.width < UIScreen.main.bounds.height ? UIScreen.main.bounds.width : UIScreen.main.bounds.height) / 5.5 * mult
+        self.type = type
+        self.action = action
+    }
     
     var body: some View {
         Button(action: action) {
-            let size = UIScreen.main.bounds.width / 5.5 * mult
-            
             ZStack {
-                Circle()
-                    .fill(LinearGradient(gradient: Gradient(colors: gradientColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .fill(buttonColor)
+                    .neumorph(color: buttonColor, size: .button)
+                    
                 
-                Circle()
-                    .fill(LinearGradient(gradient: Gradient(colors: gradientColors), startPoint: .topLeading, endPoint: .bottomTrailing))
-                    .frame(width: size * 0.95, height: size * 0.95)
-                
-                Image(systemName: image)
+                image
                     .resizable()
                     .scaledToFit()
-                    .foregroundColor(buttonColor)
+                    .foregroundColor(imageColor)
                     .frame(width: size * 0.35, height: size * 0.35)
             }
             .frame(width: size, height: size)
@@ -59,9 +68,52 @@ struct DefaultButton: View {
 
 struct DefaultButton_Previews: PreviewProvider {
     static var previews: some View {
-        DefaultButton(imageName: "play.fill", gradient: Constants.defaultColorScheme.backgroundGradient.colors, buttonColor: .white) {
+        ZStack {
+            Color.falseWhite
+                .ignoresSafeArea()
             
+            VStack {
+                HStack {
+                    Spacer()
+                    
+                    DefaultButton(imageName: "backward.fill", imageColor: .blue, buttonColor: .falseWhite, action: {})
+                    
+                    Spacer()
+                    
+                    DefaultButton(imageName: "play.fill", imageColor: .blue, buttonColor: .falseWhite, action: {})
+                    
+                    Spacer()
+                    
+                    DefaultButton(imageName: "forward.fill", imageColor: .blue, buttonColor: .falseWhite, action: {})
+                    
+                    Spacer()
+                }
+            }
         }
-        .previewLayout(.fixed(width: 100, height: 100))
+    }
+}
+
+extension DefaultButton {
+    enum ButtonType {
+        case square
+        case circle
+        case roundedSquare(rawValue: CGFloat)
+        
+        func cornerRadius(size: CGFloat) -> CGFloat {
+            switch self {
+            case .square:
+                return 0
+            case .circle:
+                return size / 2
+            case .roundedSquare(rawValue: let val):
+                if val > size / 2 {
+                    return size / 2
+                } else if val < 0 {
+                    return 0
+                }
+                
+                return val
+            }
+        }
     }
 }

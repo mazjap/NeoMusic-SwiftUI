@@ -39,6 +39,7 @@ struct MusicArtwork: View {
             ZStack {
                 Circle()
                     .fill(LinearGradient(gradient: Gradient(colors: colorScheme.backgroundGradient.colors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
+                    .neumorph(color: colorScheme.backgroundGradient.color1.color.average(to: colorScheme.backgroundGradient.color2.color), size: .artwork)
                 
                 image
                     .resizable()
