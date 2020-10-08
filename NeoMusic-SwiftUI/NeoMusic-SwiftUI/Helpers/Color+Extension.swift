@@ -71,10 +71,16 @@ extension Color {
         return UIColor(self)
     }
     
-    func average(to color: Color) -> Color {
+    func average(to color: Color, at percent: Double = 0.5) -> Color {
         let c1 = hsb
         let c2 = color.hsb
         
-        return Color(hue: (c1.h + c2.h) / 2, saturation: (c1.s + c2.s) / 2, brightness: (c1.b + c2.b) / 2)
+        return Color(hue: percent * c1.h + (1 - percent) * c2.h, saturation: percent * c1.s + (1 - percent) * c2.s, brightness: percent * c1.b + (1 - percent) * c2.b)
+    }
+    
+    var offsetColors: [Color] {
+        let vals = hsb
+        
+        return [Color(hue: vals.h, saturation: vals.s, brightness: max(0, vals.b - 0.1)), Color(hue: vals.h, saturation: vals.s, brightness: min(1, vals.b + 0.1))]
     }
 }
