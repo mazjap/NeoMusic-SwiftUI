@@ -15,7 +15,7 @@ struct AppView: View {
     // MARK: - State
     
     @EnvironmentObject var settingsController: SettingsController
-    @ObservedObject var musicController = MusicController()
+    @ObservedObject var musicController = MusicPlayerController()
     
     // MARK: - Variables
     
@@ -24,30 +24,33 @@ struct AppView: View {
     // MARK: - Body
     
     var body: some View {
-        
-        ZStack {
-            TabBar {
-                TabItem(title: "Search", imageName: "magnifyingglass", impact: impact) {
-                    Text("Content here")
-                }
+        GeometryReader { geometry in
+            ZStack {
                 
-                TabItem(title: "Music", imageName: "play.fill", impact: impact) {
-                    Text("Content here")
-                }
                 
-                TabItem(title: "History", imageName: "clock.fill", impact: impact) {
-                    Text("Content here")
+                TabBar {
+                    TabItem(title: "Search", imageName: "magnifyingglass", impact: impact) {
+                        SearchView(musicController: musicController)
+                    }
+                    
+                    TabItem(title: "Music", imageName: musicController.isPlaying ? "pause.fill" : "play.fill", impact: impact) {
+                        Text("Content here")
+                    }
+                    
+                    TabItem(title: "History", imageName: "clock.fill", impact: impact) {
+                        Text("Content here")
+                    }
+                    
+                    TabItem(title: "Profile", imageName: "person.fill", impact: impact) {
+                        Text("Content here")
+                    }
                 }
+                .accentColor(settingsController.colorScheme.textColor.color)
                 
-                TabItem(title: "Profile", imageName: "person.fill", impact: impact) {
-                    Text("Content here")
-                }
+//                MusicPlayer(musicController: musicController, impact: impact)
+//                    .frame(height: geometry.size.height - TabBar.height, alignment: .bottom)
+//                    .offset(y: -TabBar.height / 2)
             }
-            .accentColor(settingsController.colorScheme.textColor.color)
-            
-            MusicPlayer(musicController: musicController, impact: impact)
-//                .frame(height: 500)
-//                .offset(y: -40)
         }
     }
 }

@@ -21,12 +21,12 @@ struct MusicArtwork: View {
     // MARK: - Variables
     
     private let impact: UIImpactFeedbackGenerator?
-    private let colorScheme: ColorScheme
+    private let colorScheme: JCColorScheme
     private let image: Image
     
     // MARK: - Initializer
     
-    init(colorScheme: ColorScheme, image: Image, impact: UIImpactFeedbackGenerator? = nil) {
+    init(colorScheme: JCColorScheme, image: Image, impact: UIImpactFeedbackGenerator? = nil) {
         self.impact = impact
         self.colorScheme = colorScheme
         self.image = image
@@ -39,7 +39,7 @@ struct MusicArtwork: View {
             ZStack {
                 Circle()
                     .fill(LinearGradient(gradient: Gradient(colors: colorScheme.backgroundGradient.colors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
-                    .neumorph(color: colorScheme.backgroundGradient.color1.color.average(to: colorScheme.backgroundGradient.color2.color), size: .artwork)
+                    .neumorph(color: colorScheme.backgroundGradient.first.average(to: colorScheme.backgroundGradient.last), size: .artwork)
                 
                 image
                     .resizable()
@@ -79,19 +79,23 @@ struct MusicArtwork: View {
     // MARK: - Functions
     
     private func angle(from center: CGPoint, to location: CGPoint) -> Double {
-        let deltaY = location.y - center.y
-        let deltaX = location.x - center.x
-        var angle = atan2(deltaY, deltaX)
+        return Double(atan2(location.y - center.y, location.x - center.x))
+    }
+    
+    private func formattedRadian<T: BinaryFloatingPoint>(_ val: T) -> Double {
+        var radians = val
         
-        while angle > 2 * .pi {
-            angle -= 2 * .pi
+        let mult = radians / 2 * .pi
+        
+        if mult > 1 {
+            radians -= mult * 2 * .pi
         }
         
-        while angle < 0 {
-            angle += 2 * .pi
+        while radians < 0 {
+            radians += 2 * .pi
         }
         
-        return Double(angle)
+        return Double(radians)
     }
 }
 
@@ -99,7 +103,7 @@ struct MusicArtwork: View {
 
 struct Artwork_Previews: PreviewProvider {
     static var previews: some View {
-        MusicArtwork(colorScheme: Constants.defaultColorScheme, image: .placeholder)
+        MusicArtwork(colorScheme: .default, image: .placeholder)
             .previewLayout(.fixed(width: 400, height: 400))
     }
 }

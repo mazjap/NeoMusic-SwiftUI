@@ -14,23 +14,21 @@ struct MusicSlider: View {
     
     // MARK: - State
     
-    @ObservedObject var musicController: MusicController
+    @ObservedObject var musicController: MusicPlayerController
     @State var currentTime: Double = 0
     @State var totalTime: Double = 0
     @State var isDragging = false
     @State var dragOffset: CGFloat = 0
     
     // MARK: - Variables
-    
+    let lineHeight = 7
     let impact: UIImpactFeedbackGenerator
-    let colorScheme: ColorScheme
+    let colorScheme: JCColorScheme
     let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
     
     // MARK: - Body
     
     var body: some View {
-        let lineHeight: CGFloat = 6
-        
         VStack {
             HStack {
                 Text(format(currentTime))

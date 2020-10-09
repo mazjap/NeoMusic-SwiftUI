@@ -13,7 +13,7 @@ import SwiftUI
 struct DefaultButton: View {
     
     // MARK: - Variables
-    
+    let isSelected: Bool
     let image: Image
     let imageColor: Color
     let buttonColor: Color
@@ -27,30 +27,31 @@ struct DefaultButton: View {
     
     // MARK: - Initializer
     
-    init(image: Image, imageColor: Color, buttonColor: Color, type: ButtonType = .circle, mult: CGFloat = 1, action: @escaping () -> Void) {
+    init(image: Image, imageColor: Color, buttonColor: Color, type: ButtonType = .circle, mult: CGFloat = 1, isSelected: Bool = false, action: @escaping () -> Void) {
         self.image = image
         self.imageColor = imageColor
         self.buttonColor = buttonColor
         self.size = (UIScreen.main.bounds.width < UIScreen.main.bounds.height ? UIScreen.main.bounds.width : UIScreen.main.bounds.height) / 5.5 * mult
         self.type = type
+        self.isSelected = isSelected
         self.action = action
     }
     
-    init(imageName: String, imageColor: Color, buttonColor: Color, type: ButtonType = .circle, mult: CGFloat = 1, action: @escaping () -> Void) {
-        self.image = Image(systemName: imageName)
-        self.imageColor = imageColor
-        self.buttonColor = buttonColor
-        self.size = (UIScreen.main.bounds.width < UIScreen.main.bounds.height ? UIScreen.main.bounds.width : UIScreen.main.bounds.height) / 5.5 * mult
-        self.type = type
-        self.action = action
+    init(imageName: String, imageColor: Color, buttonColor: Color, type: ButtonType = .circle, mult: CGFloat = 1, isSelected: Bool = false, action: @escaping () -> Void) {
+        self.init(image: Image(systemName: imageName), imageColor: imageColor, buttonColor: buttonColor, type: type, mult: mult, isSelected: isSelected, action: action)
     }
     
     var body: some View {
         Button(action: action) {
             ZStack {
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .fill(buttonColor)
-                    .neumorph(color: buttonColor, size: .button)
+                if isSelected {
+                    LinearGradient(gradient: Gradient(colors: buttonColor.offsetColors), startPoint: .topLeading, endPoint: .bottomTrailing)
+                        .clipShape(Circle())
+                } else {
+                    RoundedRectangle(cornerRadius: cornerRadius)
+                        .fill(buttonColor)
+                        .neumorph(color: buttonColor, size: .button)
+                }
                     
                 
                 image
@@ -80,7 +81,7 @@ struct DefaultButton_Previews: PreviewProvider {
                     
                     Spacer()
                     
-                    DefaultButton(imageName: "play.fill", imageColor: .blue, buttonColor: .falseWhite, action: {})
+                    DefaultButton(imageName: "pause.fill", imageColor: .blue, buttonColor: .falseWhite, isSelected: true, action: {})
                     
                     Spacer()
                     

@@ -11,6 +11,8 @@
 import SwiftUI
 
 struct TabBar: View {
+    static var height = UIScreen.main.bounds.height / 10
+    
     @EnvironmentObject private var settingsController: SettingsController
     @State private var selectedIndex: Int = 0 {
         didSet {
@@ -45,7 +47,8 @@ struct TabBar: View {
                 self.indicator($0)
             }
             .padding()
-            .background(settingsController.colorScheme.backgroundGradient.color2.color)
+            .frame(height: Self.height)
+            .background(settingsController.colorScheme.backgroundGradient.last)
         }
         .ignoresSafeArea(edges: .bottom)
     }

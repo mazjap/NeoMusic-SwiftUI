@@ -14,7 +14,7 @@ struct MusicPlayer: View {
     
     // MARK: - State
     
-    @ObservedObject var musicController: MusicController
+    @ObservedObject var musicController: MusicPlayerController
     @EnvironmentObject var settingsController: SettingsController
     
     // MARK: - Variables
@@ -23,7 +23,7 @@ struct MusicPlayer: View {
     
     // MARK: Initializers
     
-    init(musicController: MusicController, impact: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator()) {
+    init(musicController: MusicPlayerController, impact: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator()) {
         self.musicController = musicController
         self.impact = impact
     }
@@ -37,13 +37,7 @@ struct MusicPlayer: View {
                 .edgesIgnoringSafeArea(.top)
             
             VStack {
-                NavBar(colorScheme: settingsController.colorScheme, isPlaying: musicController.isPlaying, back: {
-                    // TODO: - Dismiss view
-                    impact.impactOccurred()
-                }, list: {
-                    // TODO: - Toggle up next
-                    impact.impactOccurred()
-                })
+                navBar
                 
                 Spacer()
                 
@@ -68,66 +62,57 @@ struct MusicPlayer: View {
                 MusicSlider(musicController: musicController, impact: impact, colorScheme: settingsController.colorScheme)
                     .padding(.bottom)
                 
-                MusicControlButtons(isPlaying: musicController.isPlaying, colorScheme: settingsController.colorScheme, back: {
-                    musicController.skipToPreviousItem()
-                    impact.impactOccurred()
-                }, play: {
-                    musicController.toggle()
-                    impact.impactOccurred()
-                }, forward: {
-                    musicController.skipToNextItem()
-                    impact.impactOccurred()
-                })
+                musicControlButtons
             }
             .padding(Constants.spacing)
         }
     }
-}
-
-// MARK: - Components
-
-struct NavBar: View { // Navigation
-    let colorScheme: ColorScheme
-    let isPlaying: Bool
-    let back: () -> Void
-    let list: () -> Void
     
-    var body: some View {
+    // MARK: - Components
+    
+    var navBar: some View {
         HStack {
-            DefaultButton(imageName: "arrow.left", imageColor: colorScheme.mainButtonColor.color, buttonColor: colorScheme.backgroundGradient.color1.color, action: back)
+            DefaultButton(imageName: "arrow.left", imageColor: settingsController.colorScheme.mainButtonColor.color, buttonColor: settingsController.colorScheme.backgroundGradient.first) {
+                // TODO: - Dismiss view
+                impact.impactOccurred()
+            }
             
             Spacer()
             
-            Text(isPlaying ? "Now Playing" : "Paused")
-                .foregroundColor(colorScheme.textColor.color)
+            Text(musicController.isPlaying ? "Now Playing" : "Paused")
+                .foregroundColor(settingsController.colorScheme.textColor.color)
             
             Spacer()
             
-            DefaultButton(imageName: "line.horizontal.3", imageColor: colorScheme.mainButtonColor.color, buttonColor: colorScheme.backgroundGradient.color1.color, action: list)
+            DefaultButton(imageName: "line.horizontal.3", imageColor: settingsController.colorScheme.mainButtonColor.color, buttonColor: settingsController.colorScheme.backgroundGradient.first) {
+                // TODO: - Toggle up next
+                impact.impactOccurred()
+            }
         }
     }
-}
-
-struct MusicControlButtons: View { // Control music
-    let isPlaying: Bool
-    let colorScheme: ColorScheme
-    let back: () -> Void
-    let play: () -> Void
-    let forward: () -> Void
     
-    var body: some View {
+    var musicControlButtons: some View {
         HStack {
             Spacer()
             
-            DefaultButton(imageName: "backward.fill", imageColor: colorScheme.mainButtonColor.color, buttonColor: colorScheme.backgroundGradient.color2.color, mult: 1.1, action: back)
+            DefaultButton(imageName: "backward.fill", imageColor: settingsController.colorScheme.mainButtonColor.color, buttonColor: settingsController.colorScheme.backgroundGradient.last, mult: 1.1) {
+                musicController.skipToPreviousItem()
+                impact.impactOccurred()
+            }
             
             Spacer()
             
-            DefaultButton(imageName: isPlaying ? "pause.fill" : "play.fill", imageColor: (isPlaying ? colorScheme.mainButtonColor : colorScheme.secondaryButtonColor).color, buttonColor: colorScheme.backgroundGradient.color2.color, mult: 1.25, action: play)
+            DefaultButton(imageName: musicController.isPlaying ? "pause.fill" : "play.fill", imageColor: (musicController.isPlaying ? settingsController.colorScheme.mainButtonColor : settingsController.colorScheme.secondaryButtonColor).color, buttonColor: settingsController.colorScheme.backgroundGradient.last, mult: 1.25, isSelected: musicController.isPlaying) {
+                musicController.toggle()
+                impact.impactOccurred()
+            }
             
             Spacer()
             
-            DefaultButton(imageName: "forward.fill", imageColor: colorScheme.mainButtonColor.color, buttonColor: colorScheme.backgroundGradient.color2.color, mult: 1.1, action: forward)
+            DefaultButton(imageName: "forward.fill", imageColor: settingsController.colorScheme.mainButtonColor.color, buttonColor: settingsController.colorScheme.backgroundGradient.last, mult: 1.1) {
+                musicController.skipToNextItem()
+                impact.impactOccurred()
+            }
             
             Spacer()
         }
@@ -138,6 +123,6 @@ struct MusicControlButtons: View { // Control music
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        MusicPlayer(musicController: MusicController()).environmentObject(SettingsController())
+        MusicPlayer(musicController: MusicPlayerController()).environmentObject(SettingsController())
     }
 }

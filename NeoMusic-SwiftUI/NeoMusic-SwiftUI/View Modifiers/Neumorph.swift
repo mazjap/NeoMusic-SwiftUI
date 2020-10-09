@@ -13,50 +13,105 @@ import SwiftUI
 struct Neumorph: ViewModifier {
     let opacities: (black: Double, white: Double)
     let distance: CGFloat
+    let radius: CGFloat
     
     init(color: Color, size: Size) {
         let brightness = color.perceivedBrightness
         
         self.opacities = (1 - brightness, brightness)
         self.distance = size.distance
+        self.radius = size.rawValue
     }
     
     func body(content: Content) -> some View {
         ZStack {
         content
-            .shadow(color: Color.black.opacity(opacities.black), radius: 3, x: distance - 1, y: distance - 1)
-            .shadow(color: Color.white.opacity(opacities.white), radius: 4, x: -distance, y: -distance)
+            .shadow(color: Color.black.opacity(opacities.black), radius: radius, x: distance, y: distance)
+            .shadow(color: Color.white.opacity(opacities.white), radius: radius, x: -distance, y: -distance)
         }
     }
 }
 
 struct Neumorph_Previews: PreviewProvider {
     static var previews: some View {
-        VStack {
+        VStack(spacing: 0) {
             ZStack {
-                Color.falseWhite
+                Color.blue
                     .ignoresSafeArea()
-            
-                DefaultButton(imageName: "play.fill", imageColor: .gray, buttonColor: .falseWhite, type: .circle) {
-                    print("Button pressed")
+                HStack {
+                    Spacer()
+                    
+                    DefaultButton(imageName: "location.north.fill", imageColor: .white, buttonColor: .blue, type: .circle) {}
+                    
+                    Spacer()
+                    
+                    DefaultButton(imageName: "bolt.slash.circle.fill", imageColor: .white, buttonColor: .blue, type: .roundedSquare(rawValue: 20)) {}
+                    
+                    Spacer()
+                    
+                    DefaultButton(imageName: "bubble.right.fill", imageColor: .white, buttonColor: .blue, type: .square) {}
+                    
+                    Spacer()
                 }
             }
             
             ZStack {
                 Color.falseBlack
                     .ignoresSafeArea()
-                
-                DefaultButton(imageName: "pause.fill", imageColor: .gray, buttonColor: .falseBlack, type: .square) {
-                    print("Button pressed")
+                HStack {
+                    Spacer()
+                    
+                    DefaultButton(imageName: "paperplane.circle.fill", imageColor: .gray, buttonColor: .falseBlack, type: .circle) {}
+                    
+                    Spacer()
+                    
+                    DefaultButton(imageName: "externaldrive.fill.badge.checkmark", imageColor: .gray, buttonColor: .falseBlack, type: .roundedSquare(rawValue: 20)) {}
+                    
+                    Spacer()
+                    
+                    DefaultButton(imageName: "terminal.fill", imageColor: .gray, buttonColor: .falseBlack, type: .square) {}
+                    
+                    Spacer()
                 }
             }
             
             ZStack {
-                Color.blue
+                Color.falseWhite
                     .ignoresSafeArea()
-                
-                DefaultButton(imageName: "magnifyingglass", imageColor: .gray, buttonColor: .blue, type: .roundedSquare(rawValue: 20)) {
-                    print("Button pressed")
+                HStack {
+                    Spacer()
+                    
+                    DefaultButton(imageName: "magnifyingglass", imageColor: .gray, buttonColor: .falseWhite, type: .circle) {}
+                    
+                    Spacer()
+                    
+                    DefaultButton(imageName: "newspaper.fill", imageColor: .gray, buttonColor: .falseWhite, type: .roundedSquare(rawValue: 20)) {}
+                    
+                    Spacer()
+                    
+                    DefaultButton(imageName: "circle.fill.square.fill", imageColor: .gray, buttonColor: .falseWhite, type: .square) {}
+                    
+                    Spacer()
+                }
+            }
+            
+            ZStack {
+                Color.red
+                    .ignoresSafeArea()
+                HStack {
+                    Spacer()
+                    
+                    DefaultButton(imageName: "phone.down.circle.fill", imageColor: .white, buttonColor: .red, type: .circle) {}
+                    
+                    Spacer()
+                    
+                    DefaultButton(imageName: "opticaldisc", imageColor: .white, buttonColor: .red, type: .roundedSquare(rawValue: 20)) {}
+                    
+                    Spacer()
+                    
+                    DefaultButton(imageName: "tv.fill", imageColor: .white, buttonColor: .red, type: .square) {}
+                    
+                    Spacer()
                 }
             }
         }
@@ -65,12 +120,15 @@ struct Neumorph_Previews: PreviewProvider {
 
 extension Neumorph {
     enum Size: CGFloat {
-        case artwork = 20
-        case button = 12
-        case other = 10
+        case list = 10
+        case artwork = 8
+        case button = 5
+        case other = 6
         
         var distance: CGFloat {
             switch self {
+            case .list:
+                return 10
             case .artwork:
                 return 8
             case .button:

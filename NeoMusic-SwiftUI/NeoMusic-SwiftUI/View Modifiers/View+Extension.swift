@@ -16,6 +16,7 @@ extension View {
     }
     
     func neumorph(color: Color, size: Neumorph.Size) -> some View {
-        self.modifier(Neumorph(color: color, size: size))
+        self
+            .modifier(Neumorph(color: color, size: size))
     }
 }
