@@ -24,11 +24,11 @@ class SettingsController: ObservableObject {
     // MARK: - Variables
     
     let userDefaults = UserDefaults.standard
-    @Published var colorScheme: ColorScheme = Constants.defaultColorScheme
+    @Published var colorScheme: JCColorScheme = JCColorScheme.default
     
     // MARK: - Functions
     
-    func setColorScheme(_ scheme: ColorScheme) {
+    func setColorScheme(_ scheme: JCColorScheme) {
         let data = try? JSONEncoder().encode(scheme)
         
         userDefaults.set(data, forKey: SettingsController.colorSchemeKey)
@@ -36,23 +36,8 @@ class SettingsController: ObservableObject {
         colorScheme = scheme
     }
     
-    func setGradient(_ gradient: EasyGradient, for option: ColorScheme.GradientOption) {
-        var scheme = fetchColorScheme()
-        
-        switch option {
-        case .background:
-            scheme.backgroundGradient = gradient
-        case .play:
-            scheme.playGradient = gradient
-        case .pause:
-            scheme.pauseGradient = gradient
-        }
-        
-        setColorScheme(scheme)
-    }
-    
-    private func fetchColorScheme() -> ColorScheme {
-        if let data = userDefaults.object(forKey: SettingsController.colorSchemeKey) as? Data, let scheme = try? JSONDecoder().decode(ColorScheme.self, from: data) {
+    private func fetchColorScheme() -> JCColorScheme {
+        if let data = userDefaults.object(forKey: SettingsController.colorSchemeKey) as? Data, let scheme = try? JSONDecoder().decode(JCColorScheme.self, from: data) {
             return scheme
         }
         
