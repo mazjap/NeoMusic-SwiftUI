@@ -5,7 +5,7 @@
 //  Created by Jordan Christensen on 8/25/20.
 //
 //  Purpose:
-//  Contain all colors for updating ui
+//  Contain all colors for updating ui as well as default colorSchemes
 //
 
 import SwiftUI

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WidgetArtwork: View {
-    let colorScheme: ColorScheme
+    let colorScheme: JCColorScheme
     let image: Image
     
     var body: some View {

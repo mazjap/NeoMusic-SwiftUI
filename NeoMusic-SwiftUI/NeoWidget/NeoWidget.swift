@@ -46,6 +46,7 @@ struct NeoWidgetEntryView : View {
                         Image(systemName: "e.square.fill")
                     }
                 }
+                .padding(.horizontal, 5)
                 
                 // Artwork
                 WidgetArtwork(colorScheme: controller.colorScheme, image: controller.song.artwork)

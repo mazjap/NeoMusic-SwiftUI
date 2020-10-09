@@ -11,7 +11,7 @@ import MediaPlayer
 class Controller: TimelineEntry {
     private let player: MPMusicPlayerController
     
-    let colorScheme: ColorScheme
+    let colorScheme: JCColorScheme
     var date: Date
     var song: Song {
         player.nowPlayingItem != nil ? Song(player.nowPlayingItem) : .noSong
