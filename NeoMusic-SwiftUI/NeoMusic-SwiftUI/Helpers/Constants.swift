@@ -15,18 +15,20 @@ struct Constants {
     
     static let defaultColorScheme =
         JCColorScheme(
-            backgroundGradient: EasyGradient([Color.defaultGradientTop, Color.defaultGradientBottom]),
+            backgroundGradient: EasyGradient([.defaultGradientTop, .defaultGradientBottom]),
+            sliderGradient: EasyGradient([.pauseGradientTop, .pauseGradientBottom]),
             textColor: .white,
             mainButtonColor: .white,
             secondaryButtonColor: .white)
     
     static let lightColorScheme = JCColorScheme(
         backgroundGradient: EasyGradient([.falseWhite]),
+        sliderGradient: EasyGradient([.gray]),
         textColor: .gray,
         mainButtonColor: .falseBlack,
         secondaryButtonColor: .black)
     
-    static let darkColorScheme = JCColorScheme(backgroundGradient: EasyGradient([.falseBlack]), textColor: .gray, mainButtonColor: .falseWhite, secondaryButtonColor: .white)
+    static let darkColorScheme = JCColorScheme(backgroundGradient: EasyGradient([.falseBlack]), sliderGradient: EasyGradient([.gray]), textColor: .gray, mainButtonColor: .falseWhite, secondaryButtonColor: .white)
     
     static let codeLineLocation = "@f\(#file)l\(#line)"
 }

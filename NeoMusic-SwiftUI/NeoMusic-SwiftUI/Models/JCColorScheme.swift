@@ -12,16 +12,19 @@ import SwiftUI
 
 struct JCColorScheme: Codable, Equatable {
     var backgroundGradient: EasyGradient
+    var sliderGradient: EasyGradient
     
     var textColor: EasyColor
     var mainButtonColor: EasyColor
     var secondaryButtonColor: EasyColor
     
     init(backgroundGradient: EasyGradient,
+         sliderGradient: EasyGradient,
          textColor: Color,
          mainButtonColor: Color,
          secondaryButtonColor: Color) {
         self.backgroundGradient = backgroundGradient
+        self.sliderGradient = sliderGradient
         
         self.textColor = EasyColor(textColor)
         self.mainButtonColor = EasyColor(mainButtonColor)

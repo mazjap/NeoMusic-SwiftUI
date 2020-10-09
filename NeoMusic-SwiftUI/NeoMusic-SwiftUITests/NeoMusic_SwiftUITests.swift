@@ -33,7 +33,7 @@ class NeoMusic_SwiftUITests: XCTestCase {
         XCTAssertEqual(originalColorScheme, settingsController.colorScheme)
         
         for _ in 1...10 {
-            let tempColorScheme = JCColorScheme(backgroundGradient: EasyGradient([randomColor(), randomColor()]), textColor: randomColor(), mainButtonColor: randomColor(), secondaryButtonColor: randomColor())
+            let tempColorScheme = JCColorScheme(backgroundGradient: EasyGradient([randomColor(), randomColor()]), sliderGradient: EasyGradient([randomColor(), randomColor()]), textColor: randomColor(), mainButtonColor: randomColor(), secondaryButtonColor: randomColor())
             
             XCTAssertNotEqual(originalColorScheme, tempColorScheme)
             XCTAssertNotEqual(settingsController.colorScheme, tempColorScheme)
@@ -89,9 +89,13 @@ class NeoMusic_SwiftUITests: XCTestCase {
         for _ in 1...10 {
             let randInts = randomInts()
             
-            XCTAssertFalse(queue.arr.contains(randInts))
+            if queue.arr.count > randInts.count {
+                XCTAssertNotEqual(Array(queue.arr[queue.arr.count - randInts.count..<queue.arr.count]), randInts)
+            } else {
+                XCTAssertNotEqual(Array(randInts[(randInts.count - queue.arr.count)..<randInts.count]), randInts)
+            }
             queue.push(randInts)
-            XCTAssertTrue(queue.arr.contains(randInts))
+            XCTAssertEqual(Array(queue.arr[queue.arr.count - randInts.count..<queue.arr.count]), randInts)
             
         }
     }
@@ -127,21 +131,5 @@ class NeoMusic_SwiftUITests: XCTestCase {
     
     func testMultiQueuePop() {
         XCTAssertEqual(Array(queue.arr[0..<3]), queue.pop(3))
-    }
-}
-
-// Credit to Daniel on Stack Overflow: https://stackoverflow.com/questions/37410649/array-contains-a-complete-subarray
-extension Array where Element: Equatable {
-    func contains(_ subarray: [Element]) -> Bool {
-        var found = 0
-        for element in self where found < subarray.count {
-            if element == subarray[found] {
-                found += 1
-            } else {
-                found = element == subarray[0] ? 1 : 0
-            }
-        }
-
-        return found == subarray.count
     }
 }

@@ -59,7 +59,7 @@ struct MusicPlayer: View {
                     .font(.subheadline)
                     .foregroundColor(settingsController.colorScheme.textColor.color)
                 
-                MusicSlider(musicController: musicController, impact: impact, colorScheme: settingsController.colorScheme)
+                MusicSlider(musicController: musicController, colorScheme: settingsController.colorScheme, impact: impact)
                     .padding(.bottom)
                 
                 musicControlButtons
