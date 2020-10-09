@@ -15,6 +15,7 @@ struct Song: Identifiable, Equatable {
     let artist: String
     let artwork: Image
     let title: String
+    let albumTitle: String
     let duration: TimeInterval
     let media: MPMediaItem?
     var isFavorite: Bool?
@@ -28,11 +29,13 @@ struct Song: Identifiable, Equatable {
         let defaultArtist = "No Artist"
         let defaultImage = Image.placeholder
         let defaultTitle = "No Song Selected"
+        let defaultAlbum = "No Album"
         let defaultDuration = 0.01
         
         if let song = song {
             artist = song.artist ?? defaultArtist
             title = song.title ?? defaultTitle
+            albumTitle = song.albumTitle ?? defaultAlbum
             duration = song.playbackDuration
             media = song
             isExplicit = song.isExplicitItem
@@ -45,6 +48,7 @@ struct Song: Identifiable, Equatable {
         } else {
             artist = defaultArtist
             artwork = defaultImage
+            albumTitle = defaultAlbum
             title = defaultTitle
             duration = defaultDuration
             media = MPMediaItem()
