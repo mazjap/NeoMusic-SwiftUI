@@ -53,6 +53,9 @@ struct SearchView: View {
                                 .customHeader(backgroundColor: background, textColor: text)) {
                         ForEach(searchController.songs.byTitle) { song in
                             NeoSongRow(selectedSong: selectedSong, backgroundColor: settingsController.colorScheme.backgroundGradient.first, textColor: settingsController.colorScheme.textColor.color, song: song)
+                                .listRowBackground(LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.backgroundGradient.first.average(to: settingsController.colorScheme.backgroundGradient.last).offsetColors), startPoint: .top, endPoint: .bottom)
+                                                    .clipped()
+                                                    .cornerRadius(20))
                         }
                     }
                     

@@ -5,11 +5,10 @@
 NeoMusic is an iOS music player app designed to connect many music streaming services into one single app. Taking design queues from neomorphism, buttons and other views have the appearance of popping off the screen.
 
 
-[![Build Status][build-image]][no-link]
 [![GitHub Issues][issues-image]][issues-url]
+
 [![Dependencies][dependency-image]][wiki-url]
 [![Swift Version][swift-image]][swift-url]
-[![Coverage][coverage-image]][no-link]
 [![License][license-image]][license-url]
 [![GitHub Pull Requests][pr-image]][pr-url]
 
@@ -56,8 +55,8 @@ Connect device or select simulator from drop down and run project
 - [x] Apple Music support
 - [x] Spinnable artwork
 - [x] iOS 14 Widget
+- [x] Music searching/filtering (Partial support)
 - [ ] Toggleable music player view
-- [ ] Music searching/filtering
 - [ ] Spotify support
 
 ---
@@ -106,10 +105,8 @@ This project is licensed under the MIT License
 - **[MIT license][license-url]**
 
 <!-- Badge Images -->
-[build-image]: http://img.shields.io/travis/mazjap/NeoMusic-SwiftUI?style=flat-square/ "Unit Tests Passing"
 [issues-image]: https://img.shields.io/github/issues/mazjap/NeoMusic-SwiftUI "Issues"
 [dependency-image]: https://img.shields.io/badge/Dependancies-0-black "Dependencies"
-[coverage-image]: https://img.shields.io/travis/mazjap/NeoMusic-SwiftUI/master "Coverage"
 [license-image]: https://img.shields.io/badge/License-MIT-blue "License"
 [appstore-image]: https://img.shields.io/badge/-Download%20on%20the%20App%20Store-gray?logo=apple&color=cfdfef "Download on the App Store"
 [pr-image]: https://img.shields.io/github/issues-pr/mazjap/NeoMusic-SwiftUI "Pull Requests"

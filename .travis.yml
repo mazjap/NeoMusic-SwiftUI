@@ -1,5 +1,0 @@
-language: swift
-
-xcode_project: NeoMusic-SwiftUI/NeoMusic-SwiftUI.xcodeproj
-xcode_scheme: NeoMusic-SwiftUITests
-xcode_destination: platform=iOS Simulator,OS=11.4,name=iPhone X
