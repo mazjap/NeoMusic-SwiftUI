@@ -20,6 +20,7 @@ struct AppView: View {
     // MARK: - Variables
     
     let impact = UIImpactFeedbackGenerator(style: .rigid)
+    var searchController = SongSearchController()
     
     // MARK: - Body
     
@@ -28,7 +29,7 @@ struct AppView: View {
             ZStack {
                 TabBar {
                     TabItem(title: "Search", imageName: "magnifyingglass", impact: impact) {
-                        SearchView()
+                        SearchView(searchController: searchController)
                     }
                     
                     TabItem(title: "Music", imageName: musicController.isPlaying ? "pause.fill" : "play.fill", impact: impact) {

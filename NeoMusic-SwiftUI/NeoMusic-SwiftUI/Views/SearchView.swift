@@ -13,9 +13,11 @@ struct SearchView: View {
     
     @EnvironmentObject var settingsController: SettingsController
     @EnvironmentObject var musicController: MusicPlayerController
-    @ObservedObject var searchController = SongSearchController(search: "no")
+    @ObservedObject var searchController: SongSearchController
     
-    init() {
+    init(searchController: SongSearchController) {
+        self.searchController = searchController
+        
         UITableView.appearance().backgroundColor = .clear
         UITableView.appearance().tableFooterView = UIView()
     }
@@ -87,7 +89,7 @@ struct SearchView: View {
 
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchView()
+        SearchView(searchController: SongSearchController())
             .environmentObject(SettingsController())
             .environmentObject(MusicPlayerController())
     }
