@@ -14,9 +14,10 @@ struct MusicSlider: View {
     
     // MARK: - State
     
-    @ObservedObject var musicController: MusicPlayerController
+    @EnvironmentObject var musicController: MusicPlayerController
     @State var currentTime: Double = 0
     @State var totalTime: Double = 0
+    
     @State var isDragging: Bool = false
     @GestureState var dragOffset: CGSize = .zero
     @State var position: CGSize = .zero
@@ -28,8 +29,7 @@ struct MusicSlider: View {
     let colorScheme: JCColorScheme
     let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
     
-    init(musicController: MusicPlayerController, colorScheme: JCColorScheme, impact: UIImpactFeedbackGenerator = .init()) {
-        self.musicController = musicController
+    init(colorScheme: JCColorScheme, impact: UIImpactFeedbackGenerator = .init()) {
         self.colorScheme = colorScheme
         self.impact = impact
     }
@@ -211,6 +211,7 @@ struct MusicSlider: View {
 
 struct MusicSlider_Previews: PreviewProvider {
     static var previews: some View {
-        MusicSlider(musicController: MusicPlayerController(), colorScheme: Constants.defaultColorScheme)
+        MusicSlider(colorScheme: Constants.defaultColorScheme)
+            .environmentObject(MusicPlayerController())
     }
 }

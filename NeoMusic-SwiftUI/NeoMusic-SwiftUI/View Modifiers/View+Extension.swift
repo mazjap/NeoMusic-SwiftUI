@@ -19,4 +19,9 @@ extension View {
         self
             .modifier(Neumorph(color: color, size: size))
     }
+    
+    func customHeader(backgroundColor: Color, textColor: Color) -> some View {
+        self
+            .modifier(CustomListHeader(backgroundColor: backgroundColor, textColor: textColor))
+    }
 }

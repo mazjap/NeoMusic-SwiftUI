@@ -14,7 +14,7 @@ struct MusicPlayer: View {
     
     // MARK: - State
     
-    @ObservedObject var musicController: MusicPlayerController
+    @EnvironmentObject var musicController: MusicPlayerController
     @EnvironmentObject var settingsController: SettingsController
     
     // MARK: - Variables
@@ -23,8 +23,7 @@ struct MusicPlayer: View {
     
     // MARK: Initializers
     
-    init(musicController: MusicPlayerController, impact: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator()) {
-        self.musicController = musicController
+    init(impact: UIImpactFeedbackGenerator = .init()) {
         self.impact = impact
     }
     
@@ -59,7 +58,7 @@ struct MusicPlayer: View {
                     .font(.subheadline)
                     .foregroundColor(settingsController.colorScheme.textColor.color)
                 
-                MusicSlider(musicController: musicController, colorScheme: settingsController.colorScheme, impact: impact)
+                MusicSlider(colorScheme: settingsController.colorScheme, impact: impact)
                     .padding(.bottom)
                 
                 musicControlButtons
@@ -123,6 +122,7 @@ struct MusicPlayer: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        MusicPlayer(musicController: MusicPlayerController()).environmentObject(SettingsController())
+        MusicPlayer().environmentObject(SettingsController())
+            .environmentObject(MusicPlayerController())
     }
 }

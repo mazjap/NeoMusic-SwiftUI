@@ -11,6 +11,7 @@
 import SwiftUI
 
 struct DefaultButton: View {
+    var impact: UIImpactFeedbackGenerator?
     
     // MARK: - Variables
     let isSelected: Bool

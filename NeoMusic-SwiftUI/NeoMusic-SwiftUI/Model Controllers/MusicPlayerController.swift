@@ -10,9 +10,9 @@
 
 import MediaPlayer
 
-extension Queue where Type: MPMediaItem {
+extension Queue where Type == Song {
     var collection: MPMediaItemCollection {
-        MPMediaItemCollection(items: arr)
+        MPMediaItemCollection(items: arr.compactMap { $0.media })
     }
 }
 
@@ -25,7 +25,11 @@ class MusicPlayerController: ObservableObject {
         }
     }
     let player = MPMusicPlayerController.systemMusicPlayer
-    var queue = Queue<Song>()
+    var queue = Queue<Song>() {
+        didSet {
+            updateQueue()
+        }
+    }
 
     @Published var currentSong: Song = Song.noSong {
         willSet {
@@ -115,7 +119,6 @@ class MusicPlayerController: ObservableObject {
         if !isAuthorized { checkAuthorized(); return }
         
         queue = Queue(songs)
-        updateQueue()
     }
 
     func set(time: TimeInterval) {
@@ -154,11 +157,10 @@ class MusicPlayerController: ObservableObject {
         if !isAuthorized { checkAuthorized(); return }
         
         queue.push(songs)
-        updateQueue()
     }
     
     private func updateQueue() {
-        player.setQueue(with: MPMediaItemCollection(items: queue.arr.compactMap { $0.media! } ))
+        player.setQueue(with: queue.collection )
     }
 
     @objc

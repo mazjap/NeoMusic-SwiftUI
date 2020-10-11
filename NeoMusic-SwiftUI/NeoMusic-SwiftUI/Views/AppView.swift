@@ -15,7 +15,7 @@ struct AppView: View {
     // MARK: - State
     
     @EnvironmentObject var settingsController: SettingsController
-    @ObservedObject var musicController = MusicPlayerController()
+    @EnvironmentObject var musicController: MusicPlayerController
     
     // MARK: - Variables
     
@@ -26,11 +26,9 @@ struct AppView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                
-                
                 TabBar {
                     TabItem(title: "Search", imageName: "magnifyingglass", impact: impact) {
-                        SearchView(musicController: musicController)
+                        SearchView()
                     }
                     
                     TabItem(title: "Music", imageName: musicController.isPlaying ? "pause.fill" : "play.fill", impact: impact) {
@@ -61,5 +59,6 @@ struct AppView_Previews: PreviewProvider {
     static var previews: some View {
         AppView()
             .environmentObject(SettingsController())
+            .environmentObject(MusicPlayerController())
     }
 }

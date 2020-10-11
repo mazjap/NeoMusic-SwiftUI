@@ -70,6 +70,11 @@ struct EasyGradient: Codable, Equatable {
     mutating func addColor(_ color: Color, at: Int? = nil) {
         let ezclr = EasyColor(color)
         
+        if colors.count == 1 && colors[0] == .clear {
+            easyColors[0] = EasyColor(color)
+            return
+        }
+        
         if at == nil {
             easyColors.append(ezclr)
         } else if let index = at, index <= count, index >= 0 {

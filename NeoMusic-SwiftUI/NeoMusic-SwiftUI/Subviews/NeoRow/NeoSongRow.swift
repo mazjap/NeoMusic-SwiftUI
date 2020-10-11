@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct NeoSongRow: View {
+    @Binding var selectedSong: Song?
+    
     let backgroundColor: Color
     let textColor: Color
     let song: Song
@@ -48,18 +50,20 @@ struct NeoSongRow: View {
         }
         .listRowBackground(LinearGradient(gradient: Gradient(colors: backgroundColor.offsetColors), startPoint: .top, endPoint: .bottom))
         .frame(height: height)
-        .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+        .onTapGesture(count: 1) {
+            selectedSong = song
+        }
     }
 }
 
 struct NeoListItem_Previews: PreviewProvider {
     static var previews: some View {
         List {
-            NeoSongRow(backgroundColor: JCColorScheme.default.backgroundGradient.first, textColor: JCColorScheme.default.textColor.color, song: .noSong)
+            NeoSongRow(selectedSong: Binding<Optional<Song>>(get: { .noSong }, set: { _ in }), backgroundColor: JCColorScheme.default.backgroundGradient.first, textColor: JCColorScheme.default.textColor.color, song: .noSong)
             
-            NeoSongRow(backgroundColor: .falseBlack, textColor: .gray, song: .noSong)
+            NeoSongRow(selectedSong: Binding<Optional<Song>>(get: { .noSong }, set: { _ in }), backgroundColor: .falseBlack, textColor: .gray, song: .noSong)
             
-            NeoSongRow(backgroundColor: .falseWhite, textColor: .gray, song: .noSong)
+            NeoSongRow(selectedSong: Binding<Optional<Song>>(get: { .noSong }, set: { _ in }), backgroundColor: .falseWhite, textColor: .gray, song: .noSong)
         }
     }
 }

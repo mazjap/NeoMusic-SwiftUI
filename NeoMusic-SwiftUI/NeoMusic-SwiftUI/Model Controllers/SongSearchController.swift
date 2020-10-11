@@ -11,19 +11,27 @@
 import MediaPlayer
 
 class SongSearchController: ObservableObject {
-    @Published var songsByTitle = [Song]()
-    @Published var songsByArtist = [Song]()
-    @Published var songsByAlbum = [Song]()
+    @Published var songs: (byTitle: [Song], byArtist: [Song], byAlbum: [Song])
     
-    var searchType: SearchType = .library
-    
-    var searchTerm: String = "" {
+    var searchTerm: String! {
         didSet {
+            guard let searchTerm = searchTerm, !searchTerm.isEmpty else {
+                songs = ([], [], [])
+                return
+            }
             // TODO: - Use timer to wait until user has stopped typing before searching
-            songsByTitle = search(for: searchTerm, by: .title)
-            songsByArtist = search(for: searchTerm, by: .artist)
-            songsByAlbum = search(for: searchTerm, by: .album)
+            songs = search(for: searchTerm)
         }
+    }
+    
+    var searchType: SearchType
+    
+    init(search term: String = "", searchType: SearchType = .library) {
+        self.searchType = searchType
+        self.songs = ([], [], [])
+        
+        // Implicitly unwrapped optional so that didSet is called in init
+        self.searchTerm = term
     }
     
     func getAllSongs() -> [Song] {
@@ -42,21 +50,30 @@ class SongSearchController: ObservableObject {
         return songs
     }
     
-    func search(for term: String, by category: SearchCategory) -> [Song] {
+    func search(for term: String) -> ([Song], [Song], [Song]) {
+        
+        let search = term.lowercased()
         let allSongs = getAllSongs()
         
-        let filteredSongs: [Song]
+        var byTitle = [Song]()
+        var byArtist = [Song]()
+        var byAlbum = [Song]()
         
-        switch category {
-        case .title:
-            filteredSongs = allSongs.filter { $0.title.contains(term) }
-        case .artist:
-            filteredSongs = allSongs.filter { $0.artist.contains(term) }
-        case .album:
-            filteredSongs = allSongs.filter { $0.albumTitle.contains(term) }
+        for song in allSongs {
+            if song.title.lowercased().contains(search) {
+                byTitle.append(song)
+            }
+            
+            if song.artist.lowercased().contains(search) {
+                byArtist.append(song)
+            }
+            
+            if song.albumTitle.lowercased().contains(search) {
+                byAlbum.append(song)
+            }
         }
         
-        return filteredSongs
+        return (byTitle, byArtist, byAlbum)
     }
     
     func getLastPlayed(_ count: Int = 50) -> [Song] {

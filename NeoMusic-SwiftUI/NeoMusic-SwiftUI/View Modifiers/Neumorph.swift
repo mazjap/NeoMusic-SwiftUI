@@ -120,7 +120,7 @@ struct Neumorph_Previews: PreviewProvider {
 
 extension Neumorph {
     enum Size: CGFloat {
-        case list = 10
+        case list = 7
         case artwork = 8
         case button = 5
         case other = 6
@@ -128,7 +128,7 @@ extension Neumorph {
         var distance: CGFloat {
             switch self {
             case .list:
-                return 10
+                return 4
             case .artwork:
                 return 8
             case .button:
