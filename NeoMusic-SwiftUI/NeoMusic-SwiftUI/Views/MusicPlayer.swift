@@ -59,7 +59,6 @@ struct MusicPlayer: View {
                     .foregroundColor(settingsController.colorScheme.textColor.color)
                 
                 MusicSlider(colorScheme: settingsController.colorScheme, impact: impact)
-                    .padding(.bottom)
                 
                 musicControlButtons
             }
@@ -122,7 +121,8 @@ struct MusicPlayer: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        MusicPlayer().environmentObject(SettingsController())
+        MusicPlayer()
+            .environmentObject(SettingsController())
             .environmentObject(MusicPlayerController())
     }
 }

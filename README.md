@@ -6,7 +6,6 @@ NeoMusic is an iOS music player app designed to connect many music streaming ser
 
 
 [![GitHub Issues][issues-image]][issues-url]
-
 [![Dependencies][dependency-image]][wiki-url]
 [![Swift Version][swift-image]][swift-url]
 [![License][license-image]][license-url]

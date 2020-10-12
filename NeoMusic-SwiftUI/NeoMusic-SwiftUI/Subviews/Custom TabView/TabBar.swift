@@ -11,7 +11,7 @@
 import SwiftUI
 
 struct TabBar: View {
-    static var height = UIScreen.main.bounds.height / 10
+    static var height = UIScreen.main.bounds.height / 12
     
     @EnvironmentObject private var settingsController: SettingsController
     @State private var selectedIndex: Int = 0 {
@@ -35,22 +35,25 @@ struct TabBar: View {
             items[selectedIndex].content
 
             Spacer()
-            
-            HStack {
-                Spacer()
-                ForEach(0..<items.count) { i in
-                    item(at: i)
+            ZStack {
+                Rectangle()
+                    .foregroundColor(settingsController.colorScheme.backgroundGradient.last)
+                    .ignoresSafeArea(edges: .bottom)
+                
+                HStack {
                     Spacer()
+                    ForEach(0..<items.count) { i in
+                        item(at: i)
+                        Spacer()
+                    }
                 }
+                .overlayPreferenceValue(TabBarPreferenceKey.self) {
+                    self.indicator($0)
+                }
+                .padding()
             }
-            .overlayPreferenceValue(TabBarPreferenceKey.self) {
-                self.indicator($0)
-            }
-            .padding()
             .frame(height: Self.height)
-            .background(settingsController.colorScheme.backgroundGradient.last)
         }
-        .ignoresSafeArea(edges: .bottom)
     }
     
     private func item(at index: Int) -> some View {
@@ -72,14 +75,14 @@ struct TabBar: View {
     }
     
     private func indicator(_ bounds: Anchor<CGRect>?) -> some View {
-        GeometryReader { proxy in
+        GeometryReader { geometry in
             if bounds != nil {
                 Rectangle()
                     .fill(settingsController.colorScheme.mainButtonColor.color)
-                    .frame(width: proxy[bounds!].width, height: 3)
+                    .frame(width: geometry[bounds!].width, height: 3)
                     .clipShape(RoundedRectangle(cornerRadius: 3))
-                    .offset(x: proxy[bounds!].minX, y: 6)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
+                    .offset(x: geometry[bounds!].minX, y: 6)
+                    .frame(maxHeight: .infinity, alignment: .bottomLeading)
             }
         }
     }
@@ -107,22 +110,28 @@ struct TabBuilder {
 
 struct TabBar_Previews: PreviewProvider {
     static var previews: some View {
-        TabBar {
-            TabItem(title: "Circle", imageName: "circle.fill") {
-                VStack {
-                    Text("Content goes here:")
-                    
-                    Circle()
-                        .foregroundColor(.blue)
-                }
-            }
+        ZStack {
+            Rectangle()
+                .foregroundColor(.gray)
+                .ignoresSafeArea(edges: .top)
             
-            TabItem(title: "Rectangle", imageName: "square.fill") {
-                VStack {
-                    Text("Content goes here:")
-                    
-                    Rectangle()
-                        .foregroundColor(.red)
+            TabBar {
+                TabItem(title: "Circle", imageName: "circle.fill") {
+                    VStack {
+                        Text("Content goes here:")
+                        
+                        Circle()
+                            .foregroundColor(.blue)
+                    }
+                }
+                
+                TabItem(title: "Rectangle", imageName: "square.fill") {
+                    VStack {
+                        Text("Content goes here:")
+                        
+                        Rectangle()
+                            .foregroundColor(.red)
+                    }
                 }
             }
         }

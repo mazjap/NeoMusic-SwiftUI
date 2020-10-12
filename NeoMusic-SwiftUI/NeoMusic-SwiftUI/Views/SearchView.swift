@@ -17,72 +17,69 @@ struct SearchView: View {
     
     init(searchController: SongSearchController) {
         self.searchController = searchController
+        self.text = searchController.searchTerm
         
         UITableView.appearance().backgroundColor = .clear
         UITableView.appearance().tableFooterView = UIView()
     }
     
     var body: some View {
-        ZStack {
-            LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.backgroundGradient.colors), startPoint: .top, endPoint: .bottom)
+        VStack {
+            SearchBar(searchText: $text, font: nil, colorScheme: settingsController.colorScheme, onEditingChanged: { isEditing in
+            }, onCommit: {
+                searchController.searchTerm = text
+            })
+                .resignsFirstResponderOnDrag()
+                .frame(height: 50)
+                .padding(16)
             
-            VStack {
-                SearchBar(searchText: $text, font: nil, colorScheme: settingsController.colorScheme, onEditingChanged: { isEditing in
-                }, onCommit: {
-                    searchController.searchTerm = text
+            let rect = Rectangle()
+                .foregroundColor(settingsController.colorScheme.backgroundGradient.first)
+                
+            
+            let list = List {
+                let background = settingsController.colorScheme.backgroundGradient.first
+                let text = settingsController.colorScheme.textColor.color
+                
+                let selectedSong = Binding<Optional<Song>>(get: { return nil }, set: { song in
+                    guard let song = song else { return }
+                    
+                    musicController.addToUpNext(song)
+                    musicController.skipToNextItem()
                 })
-                    .resignsFirstResponderOnDrag()
-                    .frame(height: 50)
-                    .padding(16)
                 
-                let rect = Rectangle()
-                    .foregroundColor(settingsController.colorScheme.backgroundGradient.first)
-                    
-                
-                let list = List {
-                    let background = settingsController.colorScheme.backgroundGradient.first
-                    let text = settingsController.colorScheme.textColor.color
-                    
-                    let selectedSong = Binding<Optional<Song>>(get: { return nil }, set: { song in
-                        guard let song = song else { return }
-                        
-                        musicController.addToUpNext(song)
-                        musicController.skipToNextItem()
-                    })
-                    
-                    Section(header:
-                                Text("Songs")
-                                .customHeader(backgroundColor: background, textColor: text)) {
-                        ForEach(searchController.songs.byTitle) { song in
-                            NeoSongRow(selectedSong: selectedSong, backgroundColor: settingsController.colorScheme.backgroundGradient.first, textColor: settingsController.colorScheme.textColor.color, song: song)
-                                .listRowBackground(LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.backgroundGradient.first.average(to: settingsController.colorScheme.backgroundGradient.last).offsetColors), startPoint: .top, endPoint: .bottom)
-                                                    .clipped()
-                                                    .cornerRadius(20))
-                        }
-                    }
-                    
-                    Section(header: Text("Artists")
-                                .customHeader(backgroundColor: background, textColor: text)) {
-                        ForEach(searchController.songs.byArtist) { song in
-                            NeoSongRow(selectedSong: selectedSong, backgroundColor: settingsController.colorScheme.backgroundGradient.first, textColor: settingsController.colorScheme.textColor.color, song: song)
-                        }
-                    }
-                    
-                    Section(header: Text("Albums")
-                                .customHeader(backgroundColor: background, textColor: text)) {
-                        ForEach(searchController.songs.byAlbum) { song in
-                            NeoSongRow(selectedSong: selectedSong, backgroundColor: settingsController.colorScheme.backgroundGradient.first, textColor: settingsController.colorScheme.textColor.color, song: song)
-                        }
+                Section(header:
+                            Text("Songs")
+                            .customHeader(backgroundColor: background, textColor: text)) {
+                    ForEach(searchController.songs.byTitle) { song in
+                        NeoSongRow(selectedSong: selectedSong, backgroundColor: settingsController.colorScheme.backgroundGradient.first, textColor: settingsController.colorScheme.textColor.color, song: song)
+                            .listRowBackground(LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.backgroundGradient.first.average(to: settingsController.colorScheme.backgroundGradient.last).offsetColors), startPoint: .top, endPoint: .bottom)
+                                                .clipped()
+                                                .cornerRadius(20))
                     }
                 }
                 
-                ZStack {
-                    searchController.songs.byTitle.isEmpty && searchController.songs.byArtist.isEmpty && searchController.songs.byAlbum.isEmpty ? TupleView((list.asAny(), rect.asAny())) : TupleView((rect.asAny(), list.asAny()))
+                Section(header: Text("Artists")
+                            .customHeader(backgroundColor: background, textColor: text)) {
+                    ForEach(searchController.songs.byArtist) { song in
+                        NeoSongRow(selectedSong: selectedSong, backgroundColor: settingsController.colorScheme.backgroundGradient.first, textColor: settingsController.colorScheme.textColor.color, song: song)
+                    }
                 }
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-                .padding([.top, .leading, .trailing], 16)
-                .neumorph(color: settingsController.colorScheme.backgroundGradient.first.average(to: settingsController.colorScheme.backgroundGradient.last), size: .list)
+                
+                Section(header: Text("Albums")
+                            .customHeader(backgroundColor: background, textColor: text)) {
+                    ForEach(searchController.songs.byAlbum) { song in
+                        NeoSongRow(selectedSong: selectedSong, backgroundColor: settingsController.colorScheme.backgroundGradient.first, textColor: settingsController.colorScheme.textColor.color, song: song)
+                    }
+                }
             }
+            
+            ZStack {
+                searchController.songs.byTitle.isEmpty && searchController.songs.byArtist.isEmpty && searchController.songs.byAlbum.isEmpty ? TupleView((list.asAny(), rect.asAny())) : TupleView((rect.asAny(), list.asAny()))
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 20))
+            .padding([.top, .leading, .trailing], 16)
+            .neumorph(color: settingsController.colorScheme.backgroundGradient.first.average(to: settingsController.colorScheme.backgroundGradient.last), size: .list)
         }
     }
 }

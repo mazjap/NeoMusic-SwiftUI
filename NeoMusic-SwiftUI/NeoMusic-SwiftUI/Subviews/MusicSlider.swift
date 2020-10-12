@@ -19,7 +19,7 @@ struct MusicSlider: View {
     @State var totalTime: Double = 0
     
     @State var isDragging: Bool = false
-    @GestureState var dragOffset: CGSize = .zero
+    @GestureState var dragOffset: CGFloat = 0
     @State var position: CGSize = .zero
     
     // MARK: - Variables
@@ -37,18 +37,18 @@ struct MusicSlider: View {
     var sliderDragGesture: some Gesture {
         DragGesture()
             .updating($dragOffset, body: { (value, state, transaction) in
-                state = value.translation
+                state = value.translation.width
             })
             .onChanged({ value in
                 if !isDragging {
                     impact.impactOccurred(intensity: 0.35)
                     isDragging = true
                 }
+                
+                
             })
             .onEnded { value in
                 self.position.width = value.translation.width
-                
-                
                 isDragging = false
             }
     }
@@ -83,22 +83,25 @@ struct MusicSlider: View {
                         .frame(height: lineHeight)
                         .padding(.horizontal, sliderSize / 2)
                     
+                    let distance = dragOffset + position.width
+                    let verifiedDistance = max(min(geometry.size.width, distance), 0)
+                    
                     RoundedRectangle(cornerRadius: lineHeight / 2)
                         .fill(LinearGradient(gradient: Gradient(colors: [.orange, .red]), startPoint: .top, endPoint: .bottom))
-                        .frame(width: position.width + dragOffset.width, height: lineHeight)
+                        .animation(.easeOut)
+                        .frame(width: verifiedDistance, height: lineHeight)
                         .padding(.horizontal, sliderSize / 2)
-                    
-                    let distance = dragOffset.width + position.width
-                    let verifiedDistance = max(min(geometry.size.width, distance), 0)
                     
                     Circle()
                         .offset(x: verifiedDistance, y: 0)
                         .fill(LinearGradient(gradient: colorScheme.backgroundGradient.gradient, startPoint: .bottomTrailing, endPoint: .topLeading))
+                        .animation(.easeOut)
                         .frame(width: sliderSize, height: sliderSize)
                         .gesture(sliderDragGesture)
                 }
             }
         }
+        .frame(height: 100)
     }
     
 //    var body: some View {

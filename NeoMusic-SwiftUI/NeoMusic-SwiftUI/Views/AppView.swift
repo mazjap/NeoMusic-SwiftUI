@@ -27,6 +27,11 @@ struct AppView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
+                LinearGradient(gradient: settingsController.colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
+                    .ignoresSafeArea(edges: .top)
+                    .frame(height: geometry.size.height - TabBar.height)
+                    .offset(y: -TabBar.height / 2)
+                
                 TabBar {
                     TabItem(title: "Search", imageName: "magnifyingglass", impact: impact) {
                         SearchView(searchController: searchController)
@@ -46,8 +51,8 @@ struct AppView: View {
                 }
                 .accentColor(settingsController.colorScheme.textColor.color)
                 
-//                MusicPlayer(musicController: musicController, impact: impact)
-//                    .frame(height: geometry.size.height - TabBar.height, alignment: .bottom)
+//                MusicPlayer(impact: impact)
+//                    .frame(height: geometry.size.height - TabBar.height)
 //                    .offset(y: -TabBar.height / 2)
             }
         }
