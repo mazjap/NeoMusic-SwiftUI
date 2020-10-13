@@ -1,4 +1,4 @@
-<a href="#"><img src="https://cplfoundation.org/wp-content/uploads/2019/07/Play-button-450x450.png" alt="Project-icon" width="200"></a>
+<a href="#"><img src="src/project-icon.png" alt="Project-icon" width="200"></a>
 
 # NeoMusic - SwiftUI
 
