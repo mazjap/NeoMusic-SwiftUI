@@ -13,6 +13,8 @@ import SwiftUI
 struct TabBar: View {
     static var height = UIScreen.main.bounds.height / 12
     
+    @GestureState var dragOffset: CGFloat = 0
+    
     @EnvironmentObject private var settingsController: SettingsController
     @State private var selectedIndex: Int = 0 {
         didSet {
@@ -31,8 +33,30 @@ struct TabBar: View {
     var body: some View {
         VStack {
             Spacer()
-            
-            items[selectedIndex].content
+            ZStack {
+                items[selectedIndex - 1 < 0 ? items.count - 1 : selectedIndex - 1]
+                    .offset(x: -UIScreen.main.bounds.width + dragOffset)
+                let offset = dragOffset
+                items[selectedIndex].content
+                    .offset(x: dragOffset)
+                    .gesture(
+                        DragGesture()
+                            .updating($dragOffset) { value, state, _ in
+                                state = value.translation.width
+                            }
+                            .onEnded { value in
+                                if offset > 50 {
+                                    changeIndex(to: selectedIndex == 0 ? items.count - 1 : selectedIndex - 1)
+                                } else if dragOffset < -50 {
+                                    changeIndex(to: selectedIndex == items.count - 1 ? 0 : selectedIndex + 1)
+                                }
+                            }
+                    )
+                
+                items[selectedIndex + 1 >= items.count ? 0 : selectedIndex + 1]
+                    .offset(x: UIScreen.main.bounds.width + dragOffset)
+            }
+            .animation(.easeInOut)
 
             Spacer()
             ZStack {
@@ -56,11 +80,16 @@ struct TabBar: View {
         }
     }
     
+    private func changeIndex(to index: Int) {
+        guard index >= 0, index < items.count else { return }
+        withAnimation(.spring(response: 0.35, dampingFraction: 0.7, blendDuration: 1)) {
+            self.selectedIndex = index
+        }
+    }
+    
     private func item(at index: Int) -> some View {
         Button(action: {
-            withAnimation(.spring(response: 0.35, dampingFraction: 0.7, blendDuration: 1)) {
-                self.selectedIndex = index
-            }
+            changeIndex(to: index)
         }) {
             VStack {
                 items[index].image

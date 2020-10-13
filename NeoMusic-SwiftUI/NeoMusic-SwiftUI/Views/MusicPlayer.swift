@@ -14,18 +14,11 @@ struct MusicPlayer: View {
     
     // MARK: - State
     
-    @EnvironmentObject var musicController: MusicPlayerController
-    @EnvironmentObject var settingsController: SettingsController
+    @EnvironmentObject private var musicController: MusicPlayerController
+    @EnvironmentObject private var settingsController: SettingsController
+    @EnvironmentObject private var feedback: FeedbackGenerator
     
-    // MARK: - Variables
-    
-    let impact: UIImpactFeedbackGenerator
-    
-    // MARK: Initializers
-    
-    init(impact: UIImpactFeedbackGenerator = .init()) {
-        self.impact = impact
-    }
+    @Binding var isOpen: Bool
     
     // MARK: - Body
     
@@ -40,7 +33,7 @@ struct MusicPlayer: View {
                 
                 Spacer()
                 
-                MusicArtwork(colorScheme: settingsController.colorScheme, image: musicController.currentSong.artwork, impact: impact)
+                MusicArtwork(colorScheme: settingsController.colorScheme, image: musicController.currentSong.artwork)
                    
                 HStack {
                     Text(musicController.currentSong.title)
@@ -58,7 +51,7 @@ struct MusicPlayer: View {
                     .font(.subheadline)
                     .foregroundColor(settingsController.colorScheme.textColor.color)
                 
-                MusicSlider(colorScheme: settingsController.colorScheme, impact: impact)
+                MusicSlider(colorScheme: settingsController.colorScheme)
                 
                 musicControlButtons
             }
@@ -72,7 +65,7 @@ struct MusicPlayer: View {
         HStack {
             DefaultButton(imageName: "arrow.left", imageColor: settingsController.colorScheme.mainButtonColor.color, buttonColor: settingsController.colorScheme.backgroundGradient.first) {
                 // TODO: - Dismiss view
-                impact.impactOccurred()
+                feedback.impactOccurred()
             }
             
             Spacer()
@@ -84,7 +77,7 @@ struct MusicPlayer: View {
             
             DefaultButton(imageName: "line.horizontal.3", imageColor: settingsController.colorScheme.mainButtonColor.color, buttonColor: settingsController.colorScheme.backgroundGradient.first) {
                 // TODO: - Toggle up next
-                impact.impactOccurred()
+                feedback.impactOccurred()
             }
         }
     }
@@ -95,21 +88,21 @@ struct MusicPlayer: View {
             
             DefaultButton(imageName: "backward.fill", imageColor: settingsController.colorScheme.mainButtonColor.color, buttonColor: settingsController.colorScheme.backgroundGradient.last, mult: 1.1) {
                 musicController.skipToPreviousItem()
-                impact.impactOccurred()
+                feedback.warningFeedback()
             }
             
             Spacer()
             
             DefaultButton(imageName: musicController.isPlaying ? "pause.fill" : "play.fill", imageColor: (musicController.isPlaying ? settingsController.colorScheme.mainButtonColor : settingsController.colorScheme.secondaryButtonColor).color, buttonColor: settingsController.colorScheme.backgroundGradient.last, mult: 1.25, isSelected: musicController.isPlaying) {
                 musicController.toggle()
-                impact.impactOccurred()
+                feedback.warningFeedback()
             }
             
             Spacer()
             
             DefaultButton(imageName: "forward.fill", imageColor: settingsController.colorScheme.mainButtonColor.color, buttonColor: settingsController.colorScheme.backgroundGradient.last, mult: 1.1) {
                 musicController.skipToNextItem()
-                impact.impactOccurred()
+                feedback.warningFeedback()
             }
             
             Spacer()
@@ -121,7 +114,7 @@ struct MusicPlayer: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        MusicPlayer()
+        MusicPlayer(isOpen: Binding<Bool>(get: { return true }, set: { _ in }))
             .environmentObject(SettingsController())
             .environmentObject(MusicPlayerController())
     }

@@ -10,6 +10,10 @@
 
 import MediaPlayer
 
+protocol MusicPlayerControllerDelegate: AnyObject {
+    func songChanged(previousSong: Song)
+}
+
 extension Queue where Type == Song {
     var collection: MPMediaItemCollection {
         MPMediaItemCollection(items: arr.compactMap { $0.media })
@@ -24,15 +28,23 @@ class MusicPlayerController: ObservableObject {
             }
         }
     }
-    let player = MPMusicPlayerController.systemMusicPlayer
+    
+    private lazy var player: MPMusicPlayerController = { MPMusicPlayerController.applicationQueuePlayer }()
+    
     var queue = Queue<Song>() {
         didSet {
             updateQueue()
         }
     }
+    
+    weak var delegate: MusicPlayerControllerDelegate?
 
     @Published var currentSong: Song = Song.noSong {
         willSet {
+            if currentSong.persistentID != -1 {
+                delegate?.songChanged(previousSong: currentSong)
+            }
+            
             if UIApplication.shared.applicationState == .active {
                 objectWillChange.send()
             }
@@ -160,7 +172,14 @@ class MusicPlayerController: ObservableObject {
     }
     
     private func updateQueue() {
-        player.setQueue(with: queue.collection )
+        guard queue.arr.count > 0 else { return }
+        
+        let filterPredicates = Set<MPMediaPropertyPredicate>(queue.arr.filter { $0.persistentID != 0 }.map { MPMediaPropertyPredicate(value: $0.persistentID, forProperty: MPMediaItemPropertyPersistentID) })
+        
+        let descriptor = MPMusicPlayerMediaItemQueueDescriptor(query: MPMediaQuery(filterPredicates: filterPredicates))
+        player.setQueue(with: descriptor)
+        player.prepareToPlay()
+        player.play()
     }
 
     @objc

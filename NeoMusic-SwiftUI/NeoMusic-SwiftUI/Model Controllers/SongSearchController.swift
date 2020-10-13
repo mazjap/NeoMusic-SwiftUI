@@ -12,25 +12,35 @@ import MediaPlayer
 
 class SongSearchController: ObservableObject {
     @Published var songs: (byTitle: [Song], byArtist: [Song], byAlbum: [Song])
-    
-    var searchTerm: String! {
+    @Published var lastPlayed: [Song]
+    @Published var searchType: SearchType
+    @Published var isSearching: Bool = false {
         didSet {
-            guard let searchTerm = searchTerm, !searchTerm.isEmpty else {
-                songs = ([], [], [])
-                return
-            }
-            // TODO: - Use timer to wait until user has stopped typing before searching
-            songs = search(for: searchTerm)
+            NSLog(isSearching ? "Searching for songs with search term, \"\(searchTerm)\"" : "Done searching.")
         }
     }
     
-    var searchType: SearchType
+    var task: DispatchWorkItem? = nil
     
-    init(search term: String = "", searchType: SearchType = .library) {
-        self.searchType = searchType
+    var searchTerm: String {
+        didSet {
+            task?.cancel()
+            
+            task = DispatchWorkItem { [weak self] in
+                guard let self = self else { return }
+                self.search(for: self.searchTerm)
+            }
+
+            if let task = task {
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: task)
+            }
+        }
+    }
+    
+    init(search term: String = "", searchType: SearchType = .library, lastPlayed: [Song] = []) {
         self.songs = ([], [], [])
-        
-        // Implicitly unwrapped optional so that didSet is called in init
+        self.lastPlayed = lastPlayed
+        self.searchType = searchType
         self.searchTerm = term
     }
     
@@ -50,35 +60,43 @@ class SongSearchController: ObservableObject {
         return songs
     }
     
-    func search(for term: String) -> ([Song], [Song], [Song]) {
+    func search(for term: String) {
+        isSearching = true
         
-        let search = term.lowercased()
-        let allSongs = getAllSongs()
-        
-        var byTitle = [Song]()
-        var byArtist = [Song]()
-        var byAlbum = [Song]()
-        
-        for song in allSongs {
-            if song.title.lowercased().contains(search) {
-                byTitle.append(song)
+        DispatchQueue.global(qos: .userInitiated).async {
+            guard !term.isEmpty else {
+                DispatchQueue.main.async {
+                    self.isSearching = false
+                }
+                return
             }
             
-            if song.artist.lowercased().contains(search) {
-                byArtist.append(song)
+            let search = term.lowercased()
+            let allSongs = self.getAllSongs()
+            
+            var byTitle = [Song]()
+            var byArtist = [Song]()
+            var byAlbum = [Song]()
+            
+            for song in allSongs {
+                if song.title.lowercased().contains(search) {
+                    byTitle.append(song)
+                }
+                
+                if song.artist.lowercased().contains(search) {
+                    byArtist.append(song)
+                }
+                
+                if song.albumTitle.lowercased().contains(search) {
+                    byAlbum.append(song)
+                }
             }
             
-            if song.albumTitle.lowercased().contains(search) {
-                byAlbum.append(song)
+            DispatchQueue.main.async {
+                self.songs = (byTitle, byArtist, byAlbum)
+                self.isSearching = false
             }
         }
-        
-        return (byTitle, byArtist, byAlbum)
-    }
-    
-    func getLastPlayed(_ count: Int = 50) -> [Song] {
-        // TODO: - Use MPMediaItem's lastPlayedDate to get last played songs
-        return []
     }
 }
 
@@ -99,5 +117,11 @@ extension SongSearchController {
         case noAuth
         case invalidInput
         case otherError(String)
+    }
+}
+
+extension SongSearchController: MusicPlayerControllerDelegate {
+    func songChanged(previousSong: Song) {
+        lastPlayed.append(previousSong)
     }
 }

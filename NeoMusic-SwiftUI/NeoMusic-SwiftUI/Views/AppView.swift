@@ -14,12 +14,17 @@ struct AppView: View {
     
     // MARK: - State
     
-    @EnvironmentObject var settingsController: SettingsController
-    @EnvironmentObject var musicController: MusicPlayerController
+    @EnvironmentObject private var settingsController: SettingsController
+    @EnvironmentObject private var musicController: MusicPlayerController {
+        didSet {
+            musicController.delegate = searchController
+        }
+    }
+    @EnvironmentObject private var feedback: FeedbackGenerator
+    
+    @State private var musicPlayerIsOpen: Bool = true
     
     // MARK: - Variables
-    
-    let impact = UIImpactFeedbackGenerator(style: .rigid)
     var searchController = SongSearchController()
     
     // MARK: - Body
@@ -33,25 +38,21 @@ struct AppView: View {
                     .offset(y: -TabBar.height / 2)
                 
                 TabBar {
-                    TabItem(title: "Search", imageName: "magnifyingglass", impact: impact) {
+                    TabItem(title: "Search", imageName: "magnifyingglass") {
                         SearchView(searchController: searchController)
                     }
                     
-                    TabItem(title: "Music", imageName: musicController.isPlaying ? "pause.fill" : "play.fill", impact: impact) {
+                    TabItem(title: "Music", imageName: musicController.isPlaying ? "pause.fill" : "play.fill") {
                         Text("Content here")
                     }
                     
-                    TabItem(title: "History", imageName: "clock.fill", impact: impact) {
-                        Text("Content here")
-                    }
-                    
-                    TabItem(title: "Profile", imageName: "person.fill", impact: impact) {
+                    TabItem(title: "Profile", imageName: "person.fill") {
                         Text("Content here")
                     }
                 }
                 .accentColor(settingsController.colorScheme.textColor.color)
                 
-//                MusicPlayer(impact: impact)
+//                MusicPlayer(isOpen: $musicPlayerIsOpen)
 //                    .frame(height: geometry.size.height - TabBar.height)
 //                    .offset(y: -TabBar.height / 2)
             }

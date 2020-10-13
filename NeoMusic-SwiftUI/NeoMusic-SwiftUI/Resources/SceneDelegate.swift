@@ -22,6 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let contentView = AppView()
             .environmentObject(setCon)
             .environmentObject(MusicPlayerController())
+            .environmentObject(FeedbackGenerator(feedbackEnabled: setCon.feedbackEnabled))
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {

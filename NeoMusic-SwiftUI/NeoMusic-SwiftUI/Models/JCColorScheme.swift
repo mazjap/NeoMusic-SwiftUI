@@ -149,3 +149,9 @@ struct EasyColor: Codable, Equatable {
     
     static var none = EasyColor(.clear)
 }
+
+extension Gradient {
+    var reversed: Gradient {
+        Gradient(colors: stops.map { $0.color }.reversed())
+    }
+}

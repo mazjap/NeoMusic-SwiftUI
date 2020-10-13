@@ -32,7 +32,7 @@ struct DefaultButton: View {
         self.image = image
         self.imageColor = imageColor
         self.buttonColor = buttonColor
-        self.size = (UIScreen.main.bounds.width < UIScreen.main.bounds.height ? UIScreen.main.bounds.width : UIScreen.main.bounds.height) / 5.5 * mult
+        self.size = (UIScreen.main.bounds.width < UIScreen.main.bounds.height ? UIScreen.main.bounds.width : UIScreen.main.bounds.height) / 6 * mult
         self.type = type
         self.isSelected = isSelected
         self.action = action

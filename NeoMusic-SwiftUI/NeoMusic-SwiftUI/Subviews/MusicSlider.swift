@@ -14,7 +14,7 @@ struct MusicSlider: View {
     
     // MARK: - State
     
-    @EnvironmentObject var musicController: MusicPlayerController
+    @EnvironmentObject private var musicController: MusicPlayerController
     @State var currentTime: Double = 0
     @State var totalTime: Double = 0
     
@@ -23,8 +23,8 @@ struct MusicSlider: View {
     @State var position: CGSize = .zero
     
     // MARK: - Variables
-    let lineHeight: CGFloat = 7
-    let sliderSize = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height) / 12
+    let lineHeight: CGFloat = 5
+    let sliderSize = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height) / 14
     let impact: UIImpactFeedbackGenerator
     let colorScheme: JCColorScheme
     let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
@@ -36,20 +36,14 @@ struct MusicSlider: View {
     
     var sliderDragGesture: some Gesture {
         DragGesture()
-            .updating($dragOffset, body: { (value, state, transaction) in
+            .updating($dragOffset) { value, state, _ in
                 state = value.translation.width
-            })
-            .onChanged({ value in
+            }
+            .onChanged { value in
                 if !isDragging {
                     impact.impactOccurred(intensity: 0.35)
                     isDragging = true
                 }
-                
-                
-            })
-            .onEnded { value in
-                self.position.width = value.translation.width
-                isDragging = false
             }
     }
     
@@ -59,11 +53,13 @@ struct MusicSlider: View {
         VStack {
             HStack {
                 Text(format(currentTime))
+                    .font(.subheadline)
                     .padding(.leading, sliderSize / 2)
                 
                 Spacer()
                 
                 Text(format(totalTime))
+                    .font(.subheadline)
                     .padding(.trailing, sliderSize / 2)
             }
             .onReceive(timer) { _ in
@@ -77,113 +73,55 @@ struct MusicSlider: View {
             }
             
             GeometryReader { geometry in
+                let totalDistance = geometry.size.width - sliderSize
+                let songCompletion = CGFloat(musicController.currentPlaybackTime / musicController.totalPlaybackTime)
+                
+                let songOffset = songCompletion * totalDistance
+                
+                let x = dragOffset + songOffset
+                let verifiedDistance = max(min(totalDistance, x), 0)
+                
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: lineHeight / 2)
-                        .fill(LinearGradient(gradient: colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom))
+                        .fill(LinearGradient(gradient: colorScheme.backgroundGradient.gradient.reversed, startPoint: .top, endPoint: .bottom))
                         .frame(height: lineHeight)
                         .padding(.horizontal, sliderSize / 2)
                     
-                    let distance = dragOffset + position.width
-                    let verifiedDistance = max(min(geometry.size.width, distance), 0)
-                    
                     RoundedRectangle(cornerRadius: lineHeight / 2)
-                        .fill(LinearGradient(gradient: Gradient(colors: [.orange, .red]), startPoint: .top, endPoint: .bottom))
-                        .animation(.easeOut)
-                        .frame(width: verifiedDistance, height: lineHeight)
+                        .fill(LinearGradient(gradient: colorScheme.sliderGradient.gradient, startPoint: .top, endPoint: .bottom))
+                        .animation(.linear)
+                        .frame(width: verifiedDistance, height: lineHeight - 2)
                         .padding(.horizontal, sliderSize / 2)
                     
-                    Circle()
-                        .offset(x: verifiedDistance, y: 0)
-                        .fill(LinearGradient(gradient: colorScheme.backgroundGradient.gradient, startPoint: .bottomTrailing, endPoint: .topLeading))
-                        .animation(.easeOut)
-                        .frame(width: sliderSize, height: sliderSize)
-                        .gesture(sliderDragGesture)
+                    ZStack {
+                        Circle()
+                            .fill(LinearGradient(gradient: colorScheme.backgroundGradient.gradient.reversed, startPoint: .bottomTrailing, endPoint: .topLeading))
+                        
+                        Circle()
+                            .fill(LinearGradient(gradient: colorScheme.backgroundGradient.gradient, startPoint: .bottomTrailing, endPoint: .topLeading))
+                            .frame(width: sliderSize * 0.95, height: sliderSize * 0.95)
+                            
+                    }
+                    .animation(.linear)
+                    .offset(x: verifiedDistance, y: 0)
+                    .frame(width: sliderSize, height: sliderSize)
+                    .gesture(
+                        sliderDragGesture
+                            .onEnded { value in
+                                let selectedPercentage = Double(verifiedDistance / totalDistance)
+                                
+                                let songDuration = selectedPercentage * musicController.totalPlaybackTime
+                                
+                                musicController.set(time: songDuration)
+                                
+                                isDragging = false
+                            }
+                    )
                 }
             }
         }
-        .frame(height: 100)
+        .frame(height: 75)
     }
-    
-//    var body: some View {
-//        let lineHeight: CGFloat = 6
-//
-//        VStack {
-//            HStack {
-//                Text(format(currentTime))
-//                    .onReceive(timer) { _ in
-//                        if musicController.currentPlaybackTime == musicController.totalPlaybackTime {
-//                            currentTime = 0
-//                        } else {
-//                            currentTime = musicController.currentPlaybackTime
-//                        }
-//                    }
-//
-//                Spacer()
-//
-//                Text(format(totalTime))
-//                    .onReceive(timer) { _ in
-//                        totalTime = musicController.totalPlaybackTime
-//                    }
-//            }
-//            .foregroundColor(.gray)
-//            .font(Font.system(.caption))
-//
-//            GeometryReader { geometry in
-//                let progress: CGFloat = musicController.currentPlaybackTime / musicController.totalPlaybackTime > 0 && musicController.currentPlaybackTime != musicController.totalPlaybackTime ? CGFloat(musicController.currentPlaybackTime / musicController.totalPlaybackTime) : 0
-//
-//                let completedWidth = progress * geometry.size.width
-//
-//                ZStack(alignment: .leading) {
-//                    RoundedRectangle(cornerRadius: lineHeight / 2)
-//                        .fill(LinearGradient(gradient: Gradient(colors: [colorScheme.backgroundGradient.color1.color, .black]), startPoint: .bottom, endPoint: .top))
-//                        .frame(height: lineHeight)
-//
-//                    RoundedRectangle(cornerRadius: (lineHeight - 2) / 2)
-//                        .fill(LinearGradient(gradient: Gradient(colors: colorScheme.pauseGradient.colors), startPoint: .bottom, endPoint: .top))
-//                        .frame(width: Double(completedWidth + dragOffset).isFinite ? completedWidth + dragOffset : 0, height: lineHeight - 2)
-//
-//                    let sliderSize = geometry.size.width / 12
-//
-//                    ZStack {
-//                        Circle()
-//                            .fill(LinearGradient(gradient: Gradient(colors: colorScheme.backgroundGradient.colors), startPoint: .topLeading, endPoint: .bottomTrailing))
-//
-//                        Circle()
-//                            .fill(LinearGradient(gradient: Gradient(colors: colorScheme.backgroundGradient.colors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
-//                            .frame(width: sliderSize * 0.95, height: sliderSize * 0.95)
-//                    }
-//                    .frame(width: sliderSize, height: sliderSize)
-//                    .offset(x: CGFloat(progress) * (geometry.size.width - geometry.size.width / 24) - geometry.size.width / 48 + dragOffset, y: 0)
-//                    .gesture(DragGesture()
-//                        .onChanged { value in
-//                            if !isDragging {
-//                                impact.impactOccurred(intensity: 0.35)
-//                                isDragging = true
-//                            }
-//
-//                            let sliderPosition = completedWidth + value.translation.width
-//
-//                            if sliderPosition >= 0 && sliderPosition <= geometry.size.width {
-//                                print(sliderPosition)
-//                                dragOffset = value.translation.width
-//                            }
-//                        }
-//                        .onEnded { value in
-//                            isDragging = false
-//                            let val = dragOffset / geometry.size.width
-//                            let time = musicController.currentPlaybackTime + Double(val) * musicController.totalPlaybackTime
-//
-//                            impact.impactOccurred(intensity: abs(val))
-//
-//                            musicController.set(time: time)
-//                            dragOffset = 0
-//                        }
-//                    )
-//                }
-//            }
-//        }
-//        .frame(height: 40)
-//    }
     
     // MARK: - Functions
     

@@ -11,9 +11,12 @@ struct SearchView: View {
     @State var text: String = ""
     @State var isLoading = false
     
-    @EnvironmentObject var settingsController: SettingsController
-    @EnvironmentObject var musicController: MusicPlayerController
+    @EnvironmentObject private var settingsController: SettingsController
+    @EnvironmentObject private var musicController: MusicPlayerController
+    @EnvironmentObject private var feedback: FeedbackGenerator
     @ObservedObject var searchController: SongSearchController
+    
+    let offsetHeight: CGFloat = 20
     
     init(searchController: SongSearchController) {
         self.searchController = searchController
@@ -21,21 +24,24 @@ struct SearchView: View {
         
         UITableView.appearance().backgroundColor = .clear
         UITableView.appearance().tableFooterView = UIView()
+        UITableView.appearance().showsVerticalScrollIndicator = false
     }
     
     var body: some View {
         VStack {
-            SearchBar(searchText: $text, font: nil, colorScheme: settingsController.colorScheme, onEditingChanged: { isEditing in
-            }, onCommit: {
+            SearchBar(searchText: Binding<String>(get: {
+                return text
+            }, set: { newVal in
+                text = newVal
                 searchController.searchTerm = text
-            })
+            }), font: nil, colorScheme: settingsController.colorScheme, onEditingChanged: { isEditing in
+            }, onCommit: {})
                 .resignsFirstResponderOnDrag()
                 .frame(height: 50)
                 .padding(16)
-            
+                
             let rect = Rectangle()
                 .foregroundColor(settingsController.colorScheme.backgroundGradient.first)
-                
             
             let list = List {
                 let background = settingsController.colorScheme.backgroundGradient.first
@@ -44,7 +50,7 @@ struct SearchView: View {
                 let selectedSong = Binding<Optional<Song>>(get: { return nil }, set: { song in
                     guard let song = song else { return }
                     
-                    musicController.addToUpNext(song)
+                    musicController.setQueue(songs: [song])
                     musicController.skipToNextItem()
                 })
                 
@@ -71,15 +77,24 @@ struct SearchView: View {
                     ForEach(searchController.songs.byAlbum) { song in
                         NeoSongRow(selectedSong: selectedSong, backgroundColor: settingsController.colorScheme.backgroundGradient.first, textColor: settingsController.colorScheme.textColor.color, song: song)
                     }
+                    
+                    Rectangle()
+                        .foregroundColor(settingsController.colorScheme.backgroundGradient.first)
+                        .frame(height: offsetHeight / 2)
                 }
-            }
+            }.asAny()
+                
             
-            ZStack {
-                searchController.songs.byTitle.isEmpty && searchController.songs.byArtist.isEmpty && searchController.songs.byAlbum.isEmpty ? TupleView((list.asAny(), rect.asAny())) : TupleView((rect.asAny(), list.asAny()))
+            GeometryReader { geometry in
+                ZStack {
+                    searchController.songs.byTitle.isEmpty && searchController.songs.byArtist.isEmpty && searchController.songs.byAlbum.isEmpty ? TupleView((list.asAny(), rect.asAny())) : TupleView((rect.asAny(), list.asAny()))
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 20))
+                .padding([.top, .leading, .trailing], 16)
+                .frame(height: geometry.size.height + offsetHeight)
+                .offset(y: offsetHeight / 2)
+                .neumorph(color: settingsController.colorScheme.backgroundGradient.first.average(to: settingsController.colorScheme.backgroundGradient.last), size: .list)
             }
-            .clipShape(RoundedRectangle(cornerRadius: 20))
-            .padding([.top, .leading, .trailing], 16)
-            .neumorph(color: settingsController.colorScheme.backgroundGradient.first.average(to: settingsController.colorScheme.backgroundGradient.last), size: .list)
         }
     }
 }

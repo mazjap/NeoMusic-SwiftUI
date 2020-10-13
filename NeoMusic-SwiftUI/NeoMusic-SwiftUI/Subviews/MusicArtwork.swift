@@ -14,20 +14,18 @@ struct MusicArtwork: View {
     
     // MARK: - State
     
+    @EnvironmentObject private var feedback: FeedbackGenerator
     @State private var rotation: Double = 0
     @State private var isDragging: Bool = false
     @State private var startRotationAngle: Double = 0
     
     // MARK: - Variables
-    
-    private let impact: UIImpactFeedbackGenerator?
     private let colorScheme: JCColorScheme
     private let image: Image
     
     // MARK: - Initializer
     
-    init(colorScheme: JCColorScheme, image: Image, impact: UIImpactFeedbackGenerator? = nil) {
-        self.impact = impact
+    init(colorScheme: JCColorScheme, image: Image) {
         self.colorScheme = colorScheme
         self.image = image
     }
@@ -44,34 +42,35 @@ struct MusicArtwork: View {
                 image
                     .resizable()
                     .scaledToFill()
-                    .frame(width: geometry.size.width * 0.95, height: geometry.size.height * 0.95)
+                    .frame(width: geometry.size.width * 0.975, height: geometry.size.height * 0.975)
                     .clipShape(Circle())
                     .rotationEffect(.radians(rotation))
-                    .gesture(DragGesture()
-                        .onChanged { value in
-                            let location = value.location
-                            let circleCenter = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
-                            let gestureRotation = angle(from: circleCenter, to: location) - startRotationAngle
-                            
-                            if !isDragging {
-                                impact?.impactOccurred()
-                                isDragging = true
-                                startRotationAngle = angle(from: circleCenter, to: location)
+                    .gesture(
+                        DragGesture()
+                            .onChanged { value in
+                                let location = value.location
+                                let circleCenter = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                                let gestureRotation = angle(from: circleCenter, to: location) - startRotationAngle
+                                
+                                if !isDragging {
+                                    feedback.impactOccurred()
+                                    isDragging = true
+                                    startRotationAngle = angle(from: circleCenter, to: location)
+                                }
+                                
+                                rotation = gestureRotation
                             }
-                            
-                            rotation = gestureRotation
-                        }
-                        .onEnded { value in
-                            impact?.impactOccurred()
-                            
-                            let circleCenter = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
-                            
-                            let gestureRotation = angle(from: circleCenter, to: value.location) - startRotationAngle
-                            
-                            isDragging = false
-                            rotation = gestureRotation
-                        }
-                )
+                            .onEnded { value in
+                                feedback.impactOccurred()
+                                
+                                let circleCenter = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                                
+                                let gestureRotation = angle(from: circleCenter, to: value.location) - startRotationAngle
+                                
+                                isDragging = false
+                                rotation = gestureRotation
+                            }
+                    )
             }
         }
     }
@@ -82,7 +81,7 @@ struct MusicArtwork: View {
         return Double(atan2(location.y - center.y, location.x - center.x))
     }
     
-    private func formattedRadian<T: BinaryFloatingPoint>(_ val: T) -> Double {
+    private func reducedRadian<T: BinaryFloatingPoint>(_ val: T) -> Double {
         var radians = val
         
         let mult = radians / 2 * .pi
