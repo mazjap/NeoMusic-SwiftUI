@@ -52,9 +52,9 @@ struct AppView: View {
                 }
                 .accentColor(settingsController.colorScheme.textColor.color)
                 
-//                MusicPlayer(isOpen: $musicPlayerIsOpen)
-//                    .frame(height: geometry.size.height - TabBar.height)
-//                    .offset(y: -TabBar.height / 2)
+                MusicPlayer(isOpen: $musicPlayerIsOpen)
+                    .frame(height: geometry.size.height - TabBar.height)
+                    .offset(y: -TabBar.height / 2)
             }
         }
     }

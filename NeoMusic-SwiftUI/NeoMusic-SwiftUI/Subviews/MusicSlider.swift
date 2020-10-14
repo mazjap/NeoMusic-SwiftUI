@@ -54,12 +54,14 @@ struct MusicSlider: View {
             HStack {
                 Text(format(currentTime))
                     .font(.subheadline)
+                    .foregroundColor(colorScheme.textColor.color)
                     .padding(.leading, sliderSize / 2)
                 
                 Spacer()
                 
                 Text(format(totalTime))
                     .font(.subheadline)
+                    .foregroundColor(colorScheme.textColor.color)
                     .padding(.trailing, sliderSize / 2)
             }
             .onReceive(timer) { _ in
