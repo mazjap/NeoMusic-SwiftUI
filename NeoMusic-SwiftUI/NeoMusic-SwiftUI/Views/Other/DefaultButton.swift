@@ -20,6 +20,7 @@ struct DefaultButton: View {
     let buttonColor: Color
     let size: CGFloat
     let type: ButtonType
+    let neoSize: Neumorph.Size
     let action: () -> Void
     
     var cornerRadius: CGFloat {
@@ -28,17 +29,18 @@ struct DefaultButton: View {
     
     // MARK: - Initializer
     
-    init(image: Image, imageColor: Color, buttonColor: Color, type: ButtonType = .circle, mult: CGFloat = 1, isSelected: Bool = false, action: @escaping () -> Void) {
+    init(image: Image, imageColor: Color, buttonColor: Color, type: ButtonType = .circle, neoSize: Neumorph.Size = .button, mult: CGFloat = 1, isSelected: Bool = false, action: @escaping () -> Void) {
         self.image = image
         self.imageColor = imageColor
         self.buttonColor = buttonColor
         self.size = (UIScreen.main.bounds.width < UIScreen.main.bounds.height ? UIScreen.main.bounds.width : UIScreen.main.bounds.height) / 6 * mult
         self.type = type
+        self.neoSize = neoSize
         self.isSelected = isSelected
         self.action = action
     }
     
-    init(imageName: String, imageColor: Color, buttonColor: Color, type: ButtonType = .circle, mult: CGFloat = 1, isSelected: Bool = false, action: @escaping () -> Void) {
+    init(imageName: String, imageColor: Color, buttonColor: Color, type: ButtonType = .circle, neoSize: Neumorph.Size = .button, mult: CGFloat = 1, isSelected: Bool = false, action: @escaping () -> Void) {
         self.init(image: Image(systemName: imageName), imageColor: imageColor, buttonColor: buttonColor, type: type, mult: mult, isSelected: isSelected, action: action)
     }
     
@@ -51,7 +53,7 @@ struct DefaultButton: View {
                 } else {
                     RoundedRectangle(cornerRadius: cornerRadius)
                         .fill(buttonColor)
-                        .neumorph(color: buttonColor, size: .button)
+                        .neumorph(color: buttonColor, size: neoSize)
                 }
                     
                 

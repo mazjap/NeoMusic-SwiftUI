@@ -15,6 +15,7 @@ struct MusicArtwork: View {
     // MARK: - State
     
     @EnvironmentObject private var feedback: FeedbackGenerator
+    
     @State private var rotation: Double = 0
     @State private var isDragging: Bool = false
     @State private var startRotationAngle: Double = 0
@@ -22,12 +23,14 @@ struct MusicArtwork: View {
     // MARK: - Variables
     private let colorScheme: JCColorScheme
     private let image: Image
+    private let size: Neumorph.Size
     
     // MARK: - Initializer
     
-    init(colorScheme: JCColorScheme, image: Image) {
+    init(colorScheme: JCColorScheme, image: Image, size: Neumorph.Size = .artwork) {
         self.colorScheme = colorScheme
         self.image = image
+        self.size = size
     }
     
     // MARK: - Body
@@ -37,7 +40,7 @@ struct MusicArtwork: View {
             ZStack {
                 Circle()
                     .fill(LinearGradient(gradient: Gradient(colors: colorScheme.backgroundGradient.colors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
-                    .neumorph(color: colorScheme.backgroundGradient.first.average(to: colorScheme.backgroundGradient.last), size: .artwork)
+                    .neumorph(color: colorScheme.backgroundGradient.first.average(to: colorScheme.backgroundGradient.last), size: size)
                 
                 image
                     .resizable()

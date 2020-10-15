@@ -29,7 +29,9 @@ class MusicPlayerController: ObservableObject {
         }
     }
     
-    private lazy var player: MPMusicPlayerController = { MPMusicPlayerController.applicationQueuePlayer }()
+    private lazy var player: MPMusicPlayerController = {
+        .systemMusicPlayer
+    }()
     
     var queue = Queue<Song>() {
         didSet {

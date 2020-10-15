@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Create the SwiftUI view that provides the window contents.
         let setCon = SettingsController()
         
-        let contentView = AppView()
+        let root = RootView()
             .environmentObject(setCon)
             .environmentObject(MusicPlayerController())
             .environmentObject(FeedbackGenerator(feedbackEnabled: setCon.feedbackEnabled))
@@ -27,7 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = HostingController(textColor: setCon.colorScheme.textColor.color, rootView: contentView)
+            window.rootViewController = HostingController(textColor: setCon.colorScheme.textColor.color, rootView: root)
             self.window = window
             window.makeKeyAndVisible()
         }

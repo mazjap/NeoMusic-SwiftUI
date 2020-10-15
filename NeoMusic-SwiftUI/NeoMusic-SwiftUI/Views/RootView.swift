@@ -22,7 +22,7 @@ struct RootView: View {
     }
     @EnvironmentObject private var feedback: FeedbackGenerator
     
-    @State private var musicPlayerIsOpen: Bool = true
+    @State private var musicPlayerIsOpen: Bool = false
     
     // MARK: - Variables
     var searchController = SongSearchController()
@@ -55,7 +55,6 @@ struct RootView: View {
                 MusicPlayer(isOpen: $musicPlayerIsOpen)
                     .frame(height: geometry.size.height - TabBar.height)
                     .offset(y: musicPlayerIsOpen ? -TabBar.height / 2 : geometry.size.height / 2 - TabBar.height - 50)
-                
             }
         }
     }
@@ -63,7 +62,7 @@ struct RootView: View {
 
 // MARK: - Preview
 
-struct AppView_Previews: PreviewProvider {
+struct RootView_Previews: PreviewProvider {
     static var previews: some View {
         RootView()
             .environmentObject(SettingsController())

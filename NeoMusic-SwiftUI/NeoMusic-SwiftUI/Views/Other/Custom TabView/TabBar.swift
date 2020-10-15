@@ -47,7 +47,7 @@ struct TabBar: View {
                             .onEnded { value in
                                 if offset > 50 {
                                     changeIndex(to: selectedIndex == 0 ? items.count - 1 : selectedIndex - 1)
-                                } else if dragOffset < -50 {
+                                } else if offset < -50 {
                                     changeIndex(to: selectedIndex == items.count - 1 ? 0 : selectedIndex + 1)
                                 }
                             }

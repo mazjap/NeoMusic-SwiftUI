@@ -123,6 +123,7 @@ extension Neumorph {
         case list = 7
         case artwork = 8
         case button = 5
+        case tinyButton = 2
         case other = 6
         
         var distance: CGFloat {
@@ -133,6 +134,8 @@ extension Neumorph {
                 return 8
             case .button:
                 return 3
+            case .tinyButton:
+                return 2
             default:
                 return 2
             }
