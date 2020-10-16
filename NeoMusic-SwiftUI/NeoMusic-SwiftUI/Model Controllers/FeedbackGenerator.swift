@@ -13,7 +13,7 @@ class FeedbackGenerator: ObservableObject {
     let nfg: UINotificationFeedbackGenerator
     let ifg: UIImpactFeedbackGenerator
     
-    init(feedbackEnabled: Bool) {
+    init(feedbackEnabled: Bool = true) {
         self.feedbackEnabled = feedbackEnabled
         self.nfg = .init()
         self.ifg = .init()

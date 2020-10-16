@@ -16,196 +16,227 @@ struct MusicPlayer: View {
     
     @EnvironmentObject private var musicController: MusicPlayerController
     @EnvironmentObject private var settingsController: SettingsController
-    @EnvironmentObject private var feedback: FeedbackGenerator
+    @EnvironmentObject private var feedbackGenerator: FeedbackGenerator
     
     @Binding var isOpen: Bool
+    @Namespace var nspace
     
     // MARK: - Body
+    
+    var body: some View {
+        ZStack { () -> AnyView in
+            if isOpen {
+                return OpenMusicPlayer(isOpen: $isOpen, nspace: nspace).asAny()
+            } else {
+                return ClosedMusicPlayer(isOpen: $isOpen, nspace: nspace).asAny()
+            }
+        }
+        .onTapGesture(count: 1) {
+            withAnimation(.easeInOut) {
+                isOpen.toggle()
+            }
+        }
+    }
+    
+    static let base = Bundle.applicationName.isEmpty ? "MusicPlayer." : Bundle.applicationName + ".MusicPlayer."
+    
+    static let  backgroundKey = base + "Background"
+    static let     artworkKey = base + "Artwork"
+    static let   songTitleKey = base + "SongTitle"
+    static let  songArtistKey = base + "SongArtist"
+    static let  backButtonKey = base + "BackButton"
+    static let pauseButtonKey = base + "PauseButton"
+    static let  skipButtonKey = base + "SkipButton"
+}
+
+struct OpenMusicPlayer: View {
+    @EnvironmentObject var settingsController: SettingsController
+    @EnvironmentObject var musicController: MusicPlayerController
+    @EnvironmentObject var feedbackGenerator: FeedbackGenerator
+    @Binding var isOpen: Bool
+    
+    var nspace: Namespace.ID
     
     var body: some View {
         ZStack(alignment: .bottom) {
             // Background
             LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.backgroundGradient.colors), startPoint: .top, endPoint: .bottom)
                 .edgesIgnoringSafeArea(.top)
+                .matchedGeometryEffect(id: MusicPlayer.backgroundKey, in: nspace, properties: .frame, isSource: !isOpen)
             
-            let back = {
-                musicController.skipToPreviousItem()
-                feedback.warningFeedback()
-            }
-            
-            let pause = {
-                musicController.toggle()
-                feedback.warningFeedback()
-            }
-            
-            let forward = {
-                musicController.skipToNextItem()
-                feedback.warningFeedback()
-            }
-            
-            if isOpen {
-                VStack {
-                    navBar
+            VStack {
+                // Navigation Bar
+                HStack {
+                    DefaultButton(imageName: "arrow.left", imageColor: settingsController.colorScheme.mainButtonColor.color, buttonColor: settingsController.colorScheme.backgroundGradient.first) {
+                        isOpen = false
+                        feedbackGenerator.impactOccurred()
+                    }
                     
                     Spacer()
                     
-                    MusicArtwork(colorScheme: settingsController.colorScheme, image: musicController.currentSong.artwork)
-                        .padding(.horizontal)
+                    Text(musicController.isPlaying ? "Now Playing" : "Paused")
+                        .foregroundColor(settingsController.colorScheme.textColor.color)
                     
+                    Spacer()
+                    
+                    DefaultButton(imageName: "line.horizontal.3", imageColor: settingsController.colorScheme.mainButtonColor.color, buttonColor: settingsController.colorScheme.backgroundGradient.first) {
+                        // TODO: - Toggle up next
+                        feedbackGenerator.impactOccurred()
+                    }
+                }
+                
+                Spacer()
+                
+                MusicArtwork(colorScheme: settingsController.colorScheme, image: musicController.currentSong.artwork)
+                    .padding(.horizontal)
+                    .matchedGeometryEffect(id: MusicPlayer.artworkKey, in: nspace, isSource: !isOpen)
+                
+                HStack {
+                    Text(musicController.currentSong.title)
+                        .lineLimit(1)
+                        .font(.title)
+                        .foregroundColor(settingsController.colorScheme.textColor.color)
+                    if musicController.currentSong.isExplicit {
+                        Image(systemName: "e.square.fill")
+                            .foregroundColor(settingsController.colorScheme.textColor.color)
+                    }
+                }
+                .matchedGeometryEffect(id: MusicPlayer.songTitleKey, in: nspace, properties: .frame, isSource: !isOpen)
+                
+                Text(musicController.currentSong.artist)
+                    .lineLimit(1)
+                    .font(.subheadline)
+                    .foregroundColor(settingsController.colorScheme.textColor.color)
+                    .matchedGeometryEffect(id: MusicPlayer.songArtistKey, in: nspace, properties: .frame, isSource: !isOpen)
+                
+                MusicSlider(colorScheme: settingsController.colorScheme)
+                
+                HStack {
+                    Spacer()
+                    
+                    DefaultButton(imageName: "backward.fill", imageColor: settingsController.colorScheme.textColor.color, buttonColor: settingsController.colorScheme.backgroundGradient.last, neoSize: .tinyButton, mult: 1.1) {
+                        musicController.skipToPreviousItem()
+                        feedbackGenerator.warningFeedback()
+                    }
+                    .matchedGeometryEffect(id: MusicPlayer.backButtonKey, in: nspace, properties: .frame, isSource: !isOpen)
+                        
+                    Spacer()
+                    
+                    DefaultButton(imageName: musicController.isPlaying ? "pause.fill" : "play.fill", imageColor: settingsController.colorScheme.textColor.color, buttonColor: settingsController.colorScheme.backgroundGradient.last, neoSize: .tinyButton, mult: 1.25, isSelected: musicController.isPlaying) {
+                        musicController.toggle()
+                        feedbackGenerator.warningFeedback()
+                    }
+                    .matchedGeometryEffect(id: MusicPlayer.pauseButtonKey, in: nspace, properties: .frame, isSource: !isOpen)
+                    
+                    Spacer()
+                    
+                    DefaultButton(imageName: "forward.fill", imageColor: settingsController.colorScheme.textColor.color, buttonColor: settingsController.colorScheme.backgroundGradient.last, neoSize: .tinyButton, mult: 1.1) {
+                        musicController.skipToNextItem()
+                        feedbackGenerator.warningFeedback()
+                    }
+                    .matchedGeometryEffect(id: MusicPlayer.skipButtonKey, in: nspace, properties: .frame, isSource: !isOpen)
+                    
+                    Spacer()
+                }
+                
+                Spacer()
+            }
+            .padding(Constants.spacing)
+        }
+    }
+}
+    
+struct ClosedMusicPlayer: View {
+    @EnvironmentObject var settingsController: SettingsController
+    @EnvironmentObject var musicController: MusicPlayerController
+    @EnvironmentObject var feedbackGenerator: FeedbackGenerator
+    @Binding var isOpen: Bool
+    
+    var nspace: Namespace.ID
+    
+    var body: some View {
+        ZStack(alignment: .bottom) {
+            // Background
+            LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.backgroundGradient.colors), startPoint: .top, endPoint: .bottom)
+                .edgesIgnoringSafeArea(.top)
+                .matchedGeometryEffect(id: MusicPlayer.backgroundKey, in: nspace, properties: .frame, isSource: isOpen)
+            
+            HStack {
+                MusicArtwork(colorScheme: settingsController.colorScheme, image: musicController.currentSong.artwork, size: .button)
+                    .matchedGeometryEffect(id: "MusicPlayer.Artwork", in: nspace)
+                    .frame(width: 80, height: 80)
+                    .padding(.all, 10)
+                    .matchedGeometryEffect(id: MusicPlayer.artworkKey, in: nspace)
+                
+                VStack(alignment: .leading) {
                     HStack {
                         Text(musicController.currentSong.title)
                             .lineLimit(1)
-                            .font(.title)
+                            .font(.footnote)
                             .foregroundColor(settingsController.colorScheme.textColor.color)
                         if musicController.currentSong.isExplicit {
                             Image(systemName: "e.square.fill")
                                 .foregroundColor(settingsController.colorScheme.textColor.color)
                         }
                     }
-                    
+                    .matchedGeometryEffect(id: MusicPlayer.songTitleKey, in: nspace, properties: .frame, isSource: isOpen)
+                
                     Text(musicController.currentSong.artist)
                         .lineLimit(1)
-                        .font(.subheadline)
+                        .font(.caption)
                         .foregroundColor(settingsController.colorScheme.textColor.color)
-                    
-                    MusicSlider(colorScheme: settingsController.colorScheme)
-                    
-                    MusicControlButtons(isPlaying: musicController.isPlaying, isOpen: isOpen, background: settingsController.colorScheme.backgroundGradient.last, text: settingsController.colorScheme.textColor.color, back: back, pause: pause, forward: forward)
-                    
-                    Spacer()
+                        .matchedGeometryEffect(id: MusicPlayer.songArtistKey, in: nspace, properties: .frame, isSource: isOpen)
                 }
-                .padding(Constants.spacing)
-            } else {
+                
+                Spacer()
+                
+                let background = settingsController.colorScheme.backgroundGradient.first.average(to: settingsController.colorScheme.backgroundGradient.last)
+                
                 HStack {
-                    MusicArtwork(colorScheme: settingsController.colorScheme, image: musicController.currentSong.artwork, size: .button)
-                        .frame(width: 80, height: 80)
-                        .padding(.all, 10)
-                    
-                    VStack(alignment: .leading) {
-                        HStack {
-                            Text(musicController.currentSong.title)
-                                .lineLimit(1)
-                                .font(.footnote)
-                                .foregroundColor(settingsController.colorScheme.textColor.color)
-                            if musicController.currentSong.isExplicit {
-                                Image(systemName: "e.square.fill")
-                                    .foregroundColor(settingsController.colorScheme.textColor.color)
-                            }
-                        }
-                    
-                        Text(musicController.currentSong.artist)
-                            .lineLimit(1)
-                            .font(.caption)
-                            .foregroundColor(settingsController.colorScheme.textColor.color)
+                    DefaultButton(imageName: "backward.fill", imageColor: settingsController.colorScheme.textColor.color, buttonColor: background, neoSize: .tinyButton, mult: 0.44) {
+                        musicController.skipToPreviousItem()
+                        feedbackGenerator.warningFeedback()
                     }
+                    .matchedGeometryEffect(id: MusicPlayer.backButtonKey, in: nspace, properties: .frame, isSource: isOpen)
                     
-                    Spacer()
+                    DefaultButton(imageName: musicController.isPlaying ? "pause.fill" : "play.fill", imageColor: settingsController.colorScheme.textColor.color, buttonColor: background, neoSize: .tinyButton, mult: 0.5, isSelected: musicController.isPlaying) {
+                        musicController.toggle()
+                        feedbackGenerator.warningFeedback()
+                    }
+                    .matchedGeometryEffect(id: MusicPlayer.pauseButtonKey, in: nspace, properties: .frame, isSource: isOpen)
                     
-                    let background = settingsController.colorScheme.backgroundGradient.first.average(to: settingsController.colorScheme.backgroundGradient.last)
-                    
-                    MusicControlButtons(isPlaying: musicController.isPlaying, isOpen: isOpen, background: background, text: settingsController.colorScheme.textColor.color, back: back, pause: pause, forward: forward)
-                        .padding(.horizontal, 10)
+                    DefaultButton(imageName: "forward.fill", imageColor: settingsController.colorScheme.textColor.color, buttonColor: background, neoSize: .tinyButton, mult: 0.44) {
+                        musicController.skipToNextItem()
+                        feedbackGenerator.warningFeedback()
+                    }
+                    .matchedGeometryEffect(id: MusicPlayer.skipButtonKey, in: nspace, properties: .frame, isSource: isOpen)
                 }
+                .padding(.horizontal, 10)
             }
         }
-        .modifier(IsSmall(isOpen: isOpen))
-    }
-    
-    // MARK: - Components
-    
-    var navBar: some View {
-        HStack {
-            DefaultButton(imageName: "arrow.left", imageColor: settingsController.colorScheme.mainButtonColor.color, buttonColor: settingsController.colorScheme.backgroundGradient.first) {
-                // TODO: - Dismiss view
-                feedback.impactOccurred()
-            }
-            
-            Spacer()
-            
-            Text(musicController.isPlaying ? "Now Playing" : "Paused")
-                .foregroundColor(settingsController.colorScheme.textColor.color)
-            
-            Spacer()
-            
-            DefaultButton(imageName: "line.horizontal.3", imageColor: settingsController.colorScheme.mainButtonColor.color, buttonColor: settingsController.colorScheme.backgroundGradient.first) {
-                // TODO: - Toggle up next
-                feedback.impactOccurred()
-            }
-        }
-    }
-}
-
-struct MusicControlButtons: View {
-    var backAction: () -> Void
-    var pauseAction: () -> Void
-    var forwardAction: () -> Void
-    
-    var isPlaying: Bool
-    var isOpen: Bool
-    var backgroundColor: Color
-    var textColor: Color
-    var mult: CGFloat
-    
-    init(isPlaying: Bool, isOpen: Bool, background: Color, text: Color, back: @escaping () -> Void, pause: @escaping () -> Void, forward: @escaping () -> Void) {
-        self.backAction = back
-        self.pauseAction = pause
-        self.forwardAction = forward
-        
-        self.isPlaying = isPlaying
-        self.isOpen = isOpen
-        self.backgroundColor = background
-        self.textColor = text
-        self.mult = isOpen ? 1 : 0.4
-        
-    }
-    
-    var body: some View {
-        HStack {
-            if isOpen {
-                Spacer()
-            }
-            
-            DefaultButton(imageName: "backward.fill", imageColor: textColor, buttonColor: backgroundColor, neoSize: .tinyButton, mult: 1.1 * mult, action: backAction)
-            if isOpen {
-                Spacer()
-            }
-            
-            DefaultButton(imageName: isPlaying ? "pause.fill" : "play.fill", imageColor: textColor, buttonColor: backgroundColor, neoSize: .tinyButton, mult: 1.25 * mult, isSelected: isPlaying, action: pauseAction)
-            
-            if isOpen {
-                Spacer()
-            }
-            
-            DefaultButton(imageName: "forward.fill", imageColor: textColor, buttonColor: backgroundColor, neoSize: .tinyButton, mult: 1.1 * mult, action: forwardAction)
-            
-            if isOpen {
-                Spacer()
-            }
-        }
-    }
-}
-
-private struct IsSmall: ViewModifier {
-    let isOpen: Bool
-    
-    func body(content: Content) -> some View {
-        if isOpen {
-            return content.asAny()
-        } else {
-            return
-                content
-                .frame(height: 100)
-                .asAny()
-        }
+        .frame(height: 100)
     }
 }
 
 // MARK: - Preview
 
 struct ContentView_Previews: PreviewProvider {
+    @State static var isOpen = false
+    
     static var previews: some View {
-        MusicPlayer(isOpen: Binding<Bool>(get: { return false }, set: { _ in }))
+        MusicPlayer(isOpen: $isOpen)
             .environmentObject(SettingsController())
             .environmentObject(MusicPlayerController())
+            .environmentObject(FeedbackGenerator())
+    }
+}
+
+
+extension Bundle {
+    static var applicationName: String {
+        guard let dictionary = Bundle.main.infoDictionary,
+              let appName = dictionary[kCFBundleNameKey as String] as? String else { return "" }
+        
+        return appName
     }
 }

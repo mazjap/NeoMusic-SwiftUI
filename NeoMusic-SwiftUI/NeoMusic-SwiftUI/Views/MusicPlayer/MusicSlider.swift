@@ -18,9 +18,10 @@ struct MusicSlider: View {
     @State var currentTime: Double = 0
     @State var totalTime: Double = 0
     
-    @State var isDragging: Bool = false
+    @State var isSeeking: Bool = false
     @GestureState var dragOffset: CGFloat = 0
     @State var position: CGSize = .zero
+    @State var sideToPop: Side = .none
     
     // MARK: - Variables
     let lineHeight: CGFloat = 5
@@ -40,9 +41,9 @@ struct MusicSlider: View {
                 state = value.translation.width
             }
             .onChanged { value in
-                if !isDragging {
+                if !isSeeking {
                     impact.impactOccurred(intensity: 0.35)
-                    isDragging = true
+                    isSeeking = true
                 }
             }
     }
@@ -56,6 +57,7 @@ struct MusicSlider: View {
                     .font(.subheadline)
                     .foregroundColor(colorScheme.textColor.color)
                     .padding(.leading, sliderSize / 2)
+                    .offset(y: sideToPop == .left ? -20 : 0)
                 
                 Spacer()
                 
@@ -63,6 +65,7 @@ struct MusicSlider: View {
                     .font(.subheadline)
                     .foregroundColor(colorScheme.textColor.color)
                     .padding(.trailing, sliderSize / 2)
+                    .offset(y: sideToPop == .right ? -20 : 0)
             }
             .onReceive(timer) { _ in
                 if musicController.currentPlaybackTime == musicController.totalPlaybackTime {
@@ -82,6 +85,7 @@ struct MusicSlider: View {
                 
                 let x = dragOffset + songOffset
                 let verifiedDistance = max(min(totalDistance, x), 0)
+                let songDuration = Double(verifiedDistance / totalDistance) * musicController.totalPlaybackTime
                 
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: lineHeight / 2)
@@ -102,23 +106,35 @@ struct MusicSlider: View {
                         Circle()
                             .fill(LinearGradient(gradient: colorScheme.backgroundGradient.gradient, startPoint: .bottomTrailing, endPoint: .topLeading))
                             .frame(width: sliderSize * 0.95, height: sliderSize * 0.95)
-                            
                     }
                     .animation(.linear)
                     .offset(x: verifiedDistance, y: 0)
                     .frame(width: sliderSize, height: sliderSize)
                     .gesture(
                         sliderDragGesture
+                            .onChanged { value in
+                                if verifiedDistance > totalDistance - 30 {
+                                    sideToPop = .right
+                                } else if verifiedDistance < 30 {
+                                    sideToPop = .left
+                                } else {
+                                    sideToPop = .none
+                                }
+                            }
                             .onEnded { value in
-                                let selectedPercentage = Double(verifiedDistance / totalDistance)
-                                
-                                let songDuration = selectedPercentage * musicController.totalPlaybackTime
-                                
                                 musicController.set(time: songDuration)
                                 
-                                isDragging = false
+                                isSeeking = false
                             }
                     )
+                    
+                    if isSeeking {
+                        Text(format(songDuration))
+                            .foregroundColor(colorScheme.textColor.color)
+                            .font(.caption)
+                            .offset(x: verifiedDistance, y: -sliderSize / 2 - 10)
+                            .animation(.linear)
+                    }
                 }
             }
         }
@@ -147,6 +163,12 @@ struct MusicSlider: View {
         } else {
             return "0:\(s)"
         }
+    }
+}
+
+extension MusicSlider {
+    enum Side {
+        case left, right, none
     }
 }
 
