@@ -35,19 +35,6 @@ struct MusicSlider: View {
         self.impact = impact
     }
     
-    var sliderDragGesture: some Gesture {
-        DragGesture()
-            .updating($dragOffset) { value, state, _ in
-                state = value.translation.width
-            }
-            .onChanged { value in
-                if !isSeeking {
-                    impact.impactOccurred(intensity: 0.35)
-                    isSeeking = true
-                }
-            }
-    }
-    
     // MARK: - Body
     
     var body: some View {
@@ -57,7 +44,7 @@ struct MusicSlider: View {
                     .font(.subheadline)
                     .foregroundColor(colorScheme.textColor.color)
                     .padding(.leading, sliderSize / 2)
-                    .offset(y: sideToPop == .left ? -20 : 0)
+                    .offset(y: sideToPop == .left ? -10 : 0)
                 
                 Spacer()
                 
@@ -65,7 +52,7 @@ struct MusicSlider: View {
                     .font(.subheadline)
                     .foregroundColor(colorScheme.textColor.color)
                     .padding(.trailing, sliderSize / 2)
-                    .offset(y: sideToPop == .right ? -20 : 0)
+                    .offset(y: sideToPop == .right ? -10 : 0)
             }
             .onReceive(timer) { _ in
                 if musicController.currentPlaybackTime == musicController.totalPlaybackTime {
@@ -93,7 +80,7 @@ struct MusicSlider: View {
                         .frame(height: lineHeight)
                         .padding(.horizontal, sliderSize / 2)
                     
-                    RoundedRectangle(cornerRadius: lineHeight / 2)
+                    RoundedRectangle(cornerRadius: (lineHeight - 2) / 2)
                         .fill(LinearGradient(gradient: colorScheme.sliderGradient.gradient, startPoint: .top, endPoint: .bottom))
                         .animation(.linear)
                         .frame(width: verifiedDistance, height: lineHeight - 2)
@@ -111,14 +98,24 @@ struct MusicSlider: View {
                     .offset(x: verifiedDistance, y: 0)
                     .frame(width: sliderSize, height: sliderSize)
                     .gesture(
-                        sliderDragGesture
-                            .onChanged { value in
-                                if verifiedDistance > totalDistance - 30 {
-                                    sideToPop = .right
-                                } else if verifiedDistance < 30 {
-                                    sideToPop = .left
-                                } else {
-                                    sideToPop = .none
+                        DragGesture()
+                            .updating($dragOffset) { value, state, _ in
+                                state = value.translation.width
+                            }
+                            .onChanged { _ in
+                                if !isSeeking {
+                                    impact.impactOccurred(intensity: 0.35)
+                                    isSeeking = true
+                                }
+                                
+                                withAnimation {
+                                    if verifiedDistance > totalDistance - 45 {
+                                        sideToPop = .right
+                                    } else if verifiedDistance < 45 {
+                                        sideToPop = .left
+                                    } else {
+                                        sideToPop = .none
+                                    }
                                 }
                             }
                             .onEnded { value in
@@ -128,15 +125,15 @@ struct MusicSlider: View {
                             }
                     )
                     
-                    if isSeeking {
-                        Text(format(songDuration))
-                            .foregroundColor(colorScheme.textColor.color)
-                            .font(.caption)
-                            .offset(x: verifiedDistance, y: -sliderSize / 2 - 10)
-                            .animation(.linear)
-                    }
+                    Text(format(songDuration))
+                        .foregroundColor(colorScheme.textColor.color)
+                        .font(.caption)
+                        .offset(x: verifiedDistance, y: -sliderSize / 2 - 10)
+                        .animation(.linear)
+                        .opacity(isSeeking ? 1 : 0)
                 }
             }
+            
         }
         .frame(height: 75)
     }
