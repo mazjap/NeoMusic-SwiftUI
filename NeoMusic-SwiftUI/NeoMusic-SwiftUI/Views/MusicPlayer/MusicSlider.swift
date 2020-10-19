@@ -105,7 +105,10 @@ struct MusicSlider: View {
                             .onChanged { _ in
                                 if !isSeeking {
                                     impact.impactOccurred(intensity: 0.35)
-                                    isSeeking = true
+                                    
+                                    withAnimation {
+                                        isSeeking = true
+                                    }
                                 }
                                 
                                 withAnimation {
@@ -121,7 +124,10 @@ struct MusicSlider: View {
                             .onEnded { value in
                                 musicController.set(time: songDuration)
                                 
-                                isSeeking = false
+                                withAnimation {
+                                    sideToPop = .none
+                                    isSeeking = false
+                                }
                             }
                     )
                     
@@ -173,7 +179,12 @@ extension MusicSlider {
 
 struct MusicSlider_Previews: PreviewProvider {
     static var previews: some View {
-        MusicSlider(colorScheme: Constants.defaultColorScheme)
-            .environmentObject(MusicPlayerController())
+        ZStack {
+            LinearGradient(gradient: JCColorScheme.default.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
+                .ignoresSafeArea()
+            
+            MusicSlider(colorScheme: Constants.defaultColorScheme)
+                .environmentObject(MusicPlayerController())
+        }
     }
 }

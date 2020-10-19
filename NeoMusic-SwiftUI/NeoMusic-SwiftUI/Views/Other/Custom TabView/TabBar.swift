@@ -36,18 +36,23 @@ struct TabBar: View {
             ZStack {
                 items[selectedIndex - 1 < 0 ? items.count - 1 : selectedIndex - 1]
                     .offset(x: -UIScreen.main.bounds.width + dragOffset)
-                let offset = dragOffset
+                
                 items[selectedIndex].content
                     .offset(x: dragOffset)
                     .gesture(
                         DragGesture()
                             .updating($dragOffset) { value, state, _ in
-                                state = value.translation.width
+                                if value.startLocation.x > UIScreen.main.bounds.width - 50 || value.startLocation.x < 50 {
+                                    state = value.translation.width
+                                }
                             }
                             .onEnded { value in
-                                if offset > 50 {
+                                guard value.startLocation.x > UIScreen.main.bounds.width - 50 ||
+                                        value.startLocation.x < 50 else { return }
+                                
+                                if value.translation.width > 50 {
                                     changeIndex(to: selectedIndex == 0 ? items.count - 1 : selectedIndex - 1)
-                                } else if offset < -50 {
+                                } else if value.translation.width < -50 {
                                     changeIndex(to: selectedIndex == items.count - 1 ? 0 : selectedIndex + 1)
                                 }
                             }

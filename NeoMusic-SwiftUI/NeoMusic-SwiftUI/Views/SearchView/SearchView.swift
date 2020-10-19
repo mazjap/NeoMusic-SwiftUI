@@ -34,8 +34,8 @@ struct SearchView: View {
             }, set: { newVal in
                 text = newVal
                 searchController.searchTerm = text
-            }), font: nil, colorScheme: settingsController.colorScheme, onEditingChanged: { isEditing in
-            }, onCommit: {})
+            }), font: nil, colorScheme: settingsController.colorScheme,
+            onEditingChanged: { isEditing in }, onCommit: {})
                 .resignsFirstResponderOnDrag()
                 .frame(height: 50)
                 .padding(16)
