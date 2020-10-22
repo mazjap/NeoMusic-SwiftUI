@@ -24,6 +24,7 @@ struct MusicSlider: View {
     @State var sideToPop: Side = .none
     
     // MARK: - Variables
+    
     let lineHeight: CGFloat = 5
     let sliderSize = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height) / 14
     let impact: UIImpactFeedbackGenerator
@@ -168,6 +169,8 @@ struct MusicSlider: View {
         }
     }
 }
+
+// MARK: - Extension: MusicSlider.Side
 
 extension MusicSlider {
     enum Side {

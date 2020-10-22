@@ -10,6 +10,8 @@
 
 import MediaPlayer
 
+// MARK: - Helpers
+
 protocol MusicPlayerControllerDelegate: AnyObject {
     func songChanged(previousSong: Song)
 }
@@ -20,26 +22,35 @@ extension Queue where Type == Song {
     }
 }
 
+// MARK: - MusicPlayerController
+
 class MusicPlayerController: ObservableObject {
-    var isAuthorized = false {
+    
+    // MARK: - Variables
+    
+    private var isAuthorized = false {
         didSet {
-            if isAuthorized {
-                setup()
-            }
+            if isAuthorized && oldValue != isAuthorized { setup() }
         }
     }
     
-    private lazy var player: MPMusicPlayerController = {
-        .systemMusicPlayer
-    }()
+    private var player: MPMusicPlayerController = .systemMusicPlayer
     
-    var queue = Queue<Song>() {
-        didSet {
-            updateQueue()
-        }
+    private var queue = Queue<Song>()
+    
+    var currentPlaybackTime: TimeInterval {
+        player.currentPlaybackTime
     }
+
+    var totalPlaybackTime: TimeInterval {
+        return currentSong.duration
+    }
+    
+    // MARK: - MusicPlayerControllerDelegate
     
     weak var delegate: MusicPlayerControllerDelegate?
+    
+    // MARK: - Published Variables
 
     @Published var currentSong: Song = Song.noSong {
         willSet {
@@ -51,20 +62,27 @@ class MusicPlayerController: ObservableObject {
                 objectWillChange.send()
             }
         }
+        
+        didSet {
+            queue.pop()
+            
+            if queue.arr.count == 0 {
+                queue.push(getAllSongs())
+            }
+        }
     }
+    
     @Published var isPlaying: Bool = false
-
-    var currentPlaybackTime: TimeInterval {
-        player.currentPlaybackTime
-    }
-
-    var totalPlaybackTime: TimeInterval {
-        return currentSong.duration
-    }
+    
+    // MARK: - Initializer
 
     init() {
         checkAuthorized()
+        
+        queue.delegate = self
     }
+    
+    // MARK: - Private Functions
     
     private func setup() {
         player.beginGeneratingPlaybackNotifications()
@@ -80,7 +98,7 @@ class MusicPlayerController: ObservableObject {
         songChanged()
     }
     
-    func checkAuthorized() {
+    private func checkAuthorized() {
         switch MPMediaLibrary.authorizationStatus() {
         case .authorized, .restricted:
             isAuthorized = true
@@ -117,38 +135,48 @@ class MusicPlayerController: ObservableObject {
         }
     }
     
-    func pause() {
-        if !isAuthorized { checkAuthorized(); return }
+    private func getAllSongs(shuffled: Bool = true) -> [Song] {
+        var songs = [Song]()
+        
+        for collection in MPMediaQuery.songs().collections ?? [] {
+            for item in collection.items {
+                songs.append(Song(item))
+            }
+        }
+        
+        return shuffled ? songs.shuffled() : songs
+    }
+    
+    private func pause() {
+        guard isAuthorized else { checkAuthorized(); return }
         
         player.pause()
     }
 
-    func play() {
-        if !isAuthorized { checkAuthorized(); return }
+    private func play() {
+        guard isAuthorized else { checkAuthorized(); return }
         
         player.play()
     }
-
-    func setQueue(songs: [Song]) {
-        if !isAuthorized { checkAuthorized(); return }
-        
-        queue = Queue(songs)
-    }
+    
+    // MARK: - Public Functions
+    
+    // MARK: - Music Control Functions
 
     func set(time: TimeInterval) {
-        if !isAuthorized { checkAuthorized(); return }
+        guard isAuthorized else { checkAuthorized(); return }
         
         player.currentPlaybackTime = time
     }
 
     func toggle() {
-        if !isAuthorized { checkAuthorized(); return }
+        guard isAuthorized else { checkAuthorized(); return }
         
         isPlaying ? pause() : play()
     }
 
     func skipToPreviousItem() {
-        if !isAuthorized { checkAuthorized(); return }
+        guard isAuthorized else { checkAuthorized(); return }
         
         if currentPlaybackTime <= 5 {
             player.skipToPreviousItem()
@@ -158,31 +186,35 @@ class MusicPlayerController: ObservableObject {
     }
 
     func skipToNextItem() {
-        if !isAuthorized { checkAuthorized(); return }
+        guard isAuthorized else { checkAuthorized(); return }
         
         player.skipToNextItem()
     }
     
-    func addToUpNext(_ song: Song) {
-        addToUpNext([song])
-    }
+    // MARK: - Queue Functions
     
-    func addToUpNext(_ songs: [Song]) {
-        if !isAuthorized { checkAuthorized(); return }
-        
+    func setQueue(with songs: [Song]) {
+        queue.clear()
         queue.push(songs)
     }
     
-    private func updateQueue() {
-        guard queue.arr.count > 0 else { return }
-        
-        let filterPredicates = Set<MPMediaPropertyPredicate>(queue.arr.filter { $0.persistentID != 0 }.map { MPMediaPropertyPredicate(value: $0.persistentID, forProperty: MPMediaItemPropertyPersistentID) })
-        
-        let descriptor = MPMusicPlayerMediaItemQueueDescriptor(query: MPMediaQuery(filterPredicates: filterPredicates))
-        player.setQueue(with: descriptor)
-        player.prepareToPlay()
-        player.play()
+    func addToUpNext(_ song: Song) {
+        queue.pushToFront(song)
     }
+    
+    func addToUpNext(_ songs: [Song]) {
+        queue.pushToFront(songs)
+    }
+    
+    func addToUpLater(_ song: Song) {
+        queue.push(song)
+    }
+    
+    func addToUpLater(_ songs: [Song]) {
+        queue.push(songs)
+    }
+    
+    // MARK: - Objective-C Functions
 
     @objc
     private func playbackStatusChanged() {
@@ -195,6 +227,35 @@ class MusicPlayerController: ObservableObject {
         guard let media = player.nowPlayingItem else { return }
         DispatchQueue.main.async {
             self.currentSong = Song(media)
+        }
+    }
+}
+
+extension MusicPlayerController: QueueDelegate {
+//    internal func queueWillChange() {
+//        DispatchQueue.main.async {
+//            print(self.queue.arr.map { $0.title })
+//        }
+//    }
+    
+    internal func queueDidPush() {
+        updateQueue()
+    }
+    
+    internal func queueDidPushToFront() {
+        updateQueue()
+    }
+    
+    private func updateQueue() {
+        guard isAuthorized else { checkAuthorized(); return }
+        
+        DispatchQueue.main.async {
+            let arr = self.queue.arr
+            let ids = arr.compactMap { $0.media?.playbackStoreID }
+            
+            self.player.setQueue(with: ids)
+            self.player.prepareToPlay()
+            self.player.play()
         }
     }
 }

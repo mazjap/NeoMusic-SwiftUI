@@ -50,7 +50,7 @@ struct SearchView: View {
                 let selectedSong = Binding<Optional<Song>>(get: { return nil }, set: { song in
                     guard let song = song else { return }
                     
-                    musicController.setQueue(songs: [song])
+                    musicController.setQueue(with: [song])
                     musicController.skipToNextItem()
                 })
                 
@@ -82,7 +82,8 @@ struct SearchView: View {
                         .foregroundColor(settingsController.colorScheme.backgroundGradient.first)
                         .frame(height: offsetHeight / 2)
                 }
-            }.asAny()
+            }
+            .asAny()
                 
             
             GeometryReader { geometry in

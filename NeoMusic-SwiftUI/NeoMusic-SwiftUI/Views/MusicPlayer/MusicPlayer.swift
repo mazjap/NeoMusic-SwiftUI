@@ -158,7 +158,6 @@ struct ClosedMusicPlayer: View {
         ZStack(alignment: .bottom) {
             // Background
             LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.backgroundGradient.colors), startPoint: .top, endPoint: .bottom)
-                .edgesIgnoringSafeArea(.top)
                 .matchedGeometryEffect(id: MusicPlayer.backgroundKey, in: nspace, properties: .frame, isSource: isOpen)
             
             HStack {

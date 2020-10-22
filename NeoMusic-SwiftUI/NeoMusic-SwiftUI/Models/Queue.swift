@@ -10,6 +10,24 @@
 
 import Foundation
 
+protocol QueueDelegate: AnyObject {
+    func queueWillChange()
+    func queueDidPush()
+    func queueDidPushToFront()
+    func queueDidPop()
+    func queueWasRead()
+    func queueDidClear()
+}
+
+extension QueueDelegate {
+    func queueWillChange() {}
+    func queueDidPush() {}
+    func queueDidPushToFront() {}
+    func queueDidPop() {}
+    func queueWasRead() {}
+    func queueDidClear() {}
+}
+
 struct Queue<Type>: CustomStringConvertible {
     
     // MARK: - Variables
@@ -18,7 +36,9 @@ struct Queue<Type>: CustomStringConvertible {
         "\(arr)"
     }
     
-    // Computed var of type Array<Type> for convinience
+    weak var delegate: QueueDelegate?
+    
+    // Computed variable of type Array<Type> for convenience
     var arr: [Type] {
         var tmp = [Type]()
         var node = head
@@ -53,6 +73,8 @@ struct Queue<Type>: CustomStringConvertible {
     // MARK: - Functions
     
     func read() -> Type? {
+        delegate?.queueWasRead()
+        
         return head?.value
     }
     
@@ -62,6 +84,8 @@ struct Queue<Type>: CustomStringConvertible {
         while node?.next != nil {
             node = node?.next
         }
+        
+        delegate?.queueWasRead()
         
         return node?.value
     }
@@ -75,6 +99,8 @@ struct Queue<Type>: CustomStringConvertible {
     mutating func pushToFront(_ vals: [Type]) {
         guard !vals.isEmpty else { return }
         
+        delegate?.queueWillChange()
+        
         let oldHead = head
         let newHead = Node(vals[0])
         var node: Node<Type>? = newHead
@@ -86,6 +112,8 @@ struct Queue<Type>: CustomStringConvertible {
         
         node?.next = oldHead
         head = newHead
+        
+        delegate?.queueDidPushToFront()
     }
     
     mutating func push(_ val: Type) {
@@ -94,6 +122,8 @@ struct Queue<Type>: CustomStringConvertible {
     
     mutating func push(_ vals: [Type]) {
         guard !vals.isEmpty else { return }
+        
+        delegate?.queueWillChange()
         
         var didUseFirst = false
         
@@ -112,17 +142,26 @@ struct Queue<Type>: CustomStringConvertible {
             node?.next = Node(vals[i])
             node = node?.next
         }
+        
+        delegate?.queueDidPush()
     }
     
     @discardableResult
     mutating func pop() -> Type? {
+        delegate?.queueWillChange()
+        
         let value = head?.value
         head = head?.next
+        
+        delegate?.queueDidPop()
+        
         return value
     }
     
     @discardableResult
     mutating func pop(_ count: Int) -> [Type] {
+        delegate?.queueWillChange()
+        
         var node = head
         var tmp = [Type]()
         
@@ -136,7 +175,18 @@ struct Queue<Type>: CustomStringConvertible {
         }
         
         head = node
+        
+        delegate?.queueDidPop()
+        
         return tmp
+    }
+    
+    mutating func clear() {
+        delegate?.queueWillChange()
+        
+        head = nil
+        
+        delegate?.queueDidClear()
     }
 }
 
