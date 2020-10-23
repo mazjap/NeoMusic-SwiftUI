@@ -18,6 +18,7 @@ struct MusicPlayer: View {
     @EnvironmentObject private var settingsController: SettingsController
     @EnvironmentObject private var feedbackGenerator: FeedbackGenerator
     
+    @State var rotation: Double = 0
     @Binding var isOpen: Bool
     @Namespace var nspace
     
@@ -26,9 +27,9 @@ struct MusicPlayer: View {
     var body: some View {
         ZStack { () -> AnyView in
             if isOpen {
-                return OpenMusicPlayer(isOpen: $isOpen, nspace: nspace).asAny()
+                return OpenMusicPlayer(isOpen: $isOpen, rotation: $rotation, nspace: nspace).asAny()
             } else {
-                return ClosedMusicPlayer(isOpen: $isOpen, nspace: nspace).asAny()
+                return ClosedMusicPlayer(isOpen: $isOpen, rotation: $rotation, nspace: nspace).asAny()
             }
         }
         .onTapGesture(count: 1) {
@@ -53,9 +54,12 @@ struct OpenMusicPlayer: View {
     @EnvironmentObject var settingsController: SettingsController
     @EnvironmentObject var musicController: MusicPlayerController
     @EnvironmentObject var feedbackGenerator: FeedbackGenerator
+    
     @Binding var isOpen: Bool
+    @Binding var rotation: Double
     
     var nspace: Namespace.ID
+    
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -87,7 +91,7 @@ struct OpenMusicPlayer: View {
                 
                 Spacer()
                 
-                MusicArtwork(colorScheme: settingsController.colorScheme, image: musicController.currentSong.artwork)
+                MusicArtwork(colorScheme: settingsController.colorScheme, image: musicController.currentSong.artwork, rotation: $rotation)
                     .padding(.horizontal)
                     .matchedGeometryEffect(id: MusicPlayer.artworkKey, in: nspace, isSource: !isOpen)
                 
@@ -150,7 +154,9 @@ struct ClosedMusicPlayer: View {
     @EnvironmentObject var settingsController: SettingsController
     @EnvironmentObject var musicController: MusicPlayerController
     @EnvironmentObject var feedbackGenerator: FeedbackGenerator
+    
     @Binding var isOpen: Bool
+    @Binding var rotation: Double
     
     var nspace: Namespace.ID
     
@@ -161,7 +167,7 @@ struct ClosedMusicPlayer: View {
                 .matchedGeometryEffect(id: MusicPlayer.backgroundKey, in: nspace, properties: .frame, isSource: isOpen)
             
             HStack {
-                MusicArtwork(colorScheme: settingsController.colorScheme, image: musicController.currentSong.artwork, size: .button)
+                MusicArtwork(colorScheme: settingsController.colorScheme, image: musicController.currentSong.artwork, rotation: $rotation, size: .button)
                     .matchedGeometryEffect(id: "MusicPlayer.Artwork", in: nspace)
                     .frame(width: 80, height: 80)
                     .padding(.all, 10)

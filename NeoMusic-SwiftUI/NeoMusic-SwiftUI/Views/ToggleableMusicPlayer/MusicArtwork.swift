@@ -16,7 +16,7 @@ struct MusicArtwork: View {
     
     @EnvironmentObject private var feedback: FeedbackGenerator
     
-    @State private var rotation: Double = 0
+    @Binding private var rotation: Double
     @State private var isDragging: Bool = false
     @State private var startRotationAngle: Double = 0
     
@@ -27,7 +27,8 @@ struct MusicArtwork: View {
     
     // MARK: - Initializer
     
-    init(colorScheme: JCColorScheme, image: Image, size: Neumorph.Size = .artwork) {
+    init(colorScheme: JCColorScheme, image: Image, rotation: Binding<Double>, size: Neumorph.Size = .artwork) {
+        self._rotation = rotation
         self.colorScheme = colorScheme
         self.image = image
         self.size = size
@@ -104,8 +105,10 @@ struct MusicArtwork: View {
 // MARK: - Preview
 
 struct Artwork_Previews: PreviewProvider {
+    @State static var rotation: Double = 0
+    
     static var previews: some View {
-        MusicArtwork(colorScheme: .default, image: .placeholder)
+        MusicArtwork(colorScheme: .default, image: .placeholder, rotation: $rotation)
             .previewLayout(.fixed(width: 400, height: 400))
     }
 }
