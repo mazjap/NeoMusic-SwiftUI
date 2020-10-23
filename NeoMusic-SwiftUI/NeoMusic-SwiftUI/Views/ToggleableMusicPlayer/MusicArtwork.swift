@@ -16,7 +16,8 @@ struct MusicArtwork: View {
     
     @EnvironmentObject private var feedback: FeedbackGenerator
     
-    @Binding private var rotation: Double
+    @State private var rotation: Double = 0
+    @Binding private var previousRotation: Double
     @State private var isDragging: Bool = false
     @State private var startRotationAngle: Double = 0
     
@@ -28,7 +29,7 @@ struct MusicArtwork: View {
     // MARK: - Initializer
     
     init(colorScheme: JCColorScheme, image: Image, rotation: Binding<Double>, size: Neumorph.Size = .artwork) {
-        self._rotation = rotation
+        self._previousRotation = rotation
         self.colorScheme = colorScheme
         self.image = image
         self.size = size
@@ -48,31 +49,29 @@ struct MusicArtwork: View {
                     .scaledToFill()
                     .frame(width: geometry.size.width * 0.975, height: geometry.size.height * 0.975)
                     .clipShape(Circle())
-                    .rotationEffect(.radians(rotation))
+                    .rotationEffect(.radians(isDragging ? rotation : previousRotation))
                     .gesture(
                         DragGesture()
                             .onChanged { value in
-                                let location = value.location
                                 let circleCenter = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
-                                let gestureRotation = angle(from: circleCenter, to: location) - startRotationAngle
+                                
+                                let location = value.location
                                 
                                 if !isDragging {
-                                    feedback.impactOccurred()
                                     isDragging = true
+                                    feedback.impactOccurred()
                                     startRotationAngle = angle(from: circleCenter, to: location)
                                 }
                                 
-                                rotation = gestureRotation
+                                rotation = angle(from: circleCenter, to: location) - startRotationAngle + previousRotation
                             }
                             .onEnded { value in
                                 feedback.impactOccurred()
                                 
-                                let circleCenter = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
-                                
-                                let gestureRotation = angle(from: circleCenter, to: value.location) - startRotationAngle
+                                previousRotation = rotation
+                                rotation = 0
                                 
                                 isDragging = false
-                                rotation = gestureRotation
                             }
                     )
             }
@@ -80,6 +79,10 @@ struct MusicArtwork: View {
     }
     
     // MARK: - Functions
+    
+    private func impact() {
+        feedback.impactOccurred()
+    }
     
     private func angle(from center: CGPoint, to location: CGPoint) -> Double {
         return Double(atan2(location.y - center.y, location.x - center.x))
@@ -109,6 +112,7 @@ struct Artwork_Previews: PreviewProvider {
     
     static var previews: some View {
         MusicArtwork(colorScheme: .default, image: .placeholder, rotation: $rotation)
+            .padding()
             .previewLayout(.fixed(width: 400, height: 400))
     }
 }
