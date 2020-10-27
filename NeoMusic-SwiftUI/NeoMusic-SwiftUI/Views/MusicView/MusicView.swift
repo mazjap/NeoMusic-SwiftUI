@@ -13,6 +13,7 @@ struct MusicView: View {
     
     var body: some View {
         Text("Hello, World!")
+            .foregroundColor(settingsController.colorScheme.textColor.color)
     }
 }
 

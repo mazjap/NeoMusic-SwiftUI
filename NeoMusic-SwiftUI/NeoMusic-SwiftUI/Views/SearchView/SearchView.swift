@@ -14,6 +14,7 @@ struct SearchView: View {
     @EnvironmentObject private var settingsController: SettingsController
     @EnvironmentObject private var musicController: MusicPlayerController
     @EnvironmentObject private var feedback: FeedbackGenerator
+    
     @ObservedObject var searchController: SongSearchController
     
     let offsetHeight: CGFloat = 20
@@ -43,6 +44,7 @@ struct SearchView: View {
             let rect = Rectangle()
                 .foregroundColor(settingsController.colorScheme.backgroundGradient.first)
             
+            
             let list = List {
                 let background = settingsController.colorScheme.backgroundGradient.first
                 let text = settingsController.colorScheme.textColor.color
@@ -50,7 +52,7 @@ struct SearchView: View {
                 let selectedSong = Binding<Optional<Song>>(get: { return nil }, set: { song in
                     guard let song = song else { return }
                     
-                    musicController.setQueue(with: [song])
+                    musicController.addToUpNext(song)
                     musicController.skipToNextItem()
                 })
                 
@@ -69,6 +71,7 @@ struct SearchView: View {
                             .customHeader(backgroundColor: background, textColor: text)) {
                     ForEach(searchController.songs.byArtist) { song in
                         NeoSongRow(selectedSong: selectedSong, backgroundColor: settingsController.colorScheme.backgroundGradient.first, textColor: settingsController.colorScheme.textColor.color, song: song)
+                        Spacer()
                     }
                 }
                 
@@ -79,8 +82,9 @@ struct SearchView: View {
                     }
                     
                     Rectangle()
+                        .frame(height: offsetHeight / 2 + 100)
                         .foregroundColor(settingsController.colorScheme.backgroundGradient.first)
-                        .frame(height: offsetHeight / 2)
+                        .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                 }
             }
             .asAny()

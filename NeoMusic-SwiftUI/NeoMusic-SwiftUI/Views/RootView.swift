@@ -43,11 +43,11 @@ struct RootView: View {
                     }
                     
                     TabItem(title: "Music", imageName: musicController.isPlaying ? "pause.fill" : "play.fill") {
-                        Text("Content here")
+                        MusicView()
                     }
                     
                     TabItem(title: "Profile", imageName: "person.fill") {
-                        Text("Content here")
+                        ProfileView()
                     }
                 }
                 .accentColor(settingsController.colorScheme.textColor.color)

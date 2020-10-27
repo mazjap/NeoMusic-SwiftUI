@@ -66,9 +66,9 @@ class MusicPlayerController: ObservableObject {
         didSet {
             queue.pop()
             
-            if queue.arr.count == 0 {
-                queue.push(getAllSongs())
-            }
+//            if queue.arr.count == 0 {
+//                queue.push(getAllSongs())
+//            }
         }
     }
     
@@ -159,9 +159,7 @@ class MusicPlayerController: ObservableObject {
         player.play()
     }
     
-    // MARK: - Public Functions
-    
-    // MARK: - Music Control Functions
+    // MARK: - Music Control Functions & Public Functions
 
     func set(time: TimeInterval) {
         guard isAuthorized else { checkAuthorized(); return }

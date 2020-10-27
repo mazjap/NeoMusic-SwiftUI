@@ -11,15 +11,39 @@ struct ProfileView: View {
     @EnvironmentObject var settingsController: SettingsController
     @EnvironmentObject var musicController: MusicPlayerController
     
+    @State private var showSettingsView: Bool = false
+    
     var body: some View {
-        Text("Hello, World!")
+        ZStack {
+            VStack {
+                HStack {
+                    Spacer()
+                    NavigationLink(
+                        destination: SettingsView(),
+                        isActive: $showSettingsView) {
+                        BarButton(imageName: "gearshape.fill", buttonColor: settingsController.colorScheme.mainButtonColor.color) {
+                            showSettingsView = true
+                        }
+                    }
+                }
+                .padding()
+                
+                Spacer()
+            }
+        }
     }
 }
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileView()
-            .environmentObject(SettingsController())
-            .environmentObject(MusicPlayerController())
+        let setCon = SettingsController()
+        
+        ZStack {
+            LinearGradient(gradient: setCon.colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
+            
+            ProfileView()
+                .environmentObject(setCon)
+                .environmentObject(MusicPlayerController())
+        }
     }
 }
