@@ -227,14 +227,14 @@
 			path = ToggleableMusicPlayer;
 			sourceTree = "<group>";
 		};
-		0EB28FE92537EED400EBB6F2 /* SearchView */ = {
+		0EB28FE92537EED400EBB6F2 /* SearchTabView */ = {
 			isa = PBXGroup;
 			children = (
 				0E49676F25299E97000D166C /* SearchView.swift */,
 				0E49676E25299E97000D166C /* SearchBar.swift */,
 				0E49677025299E97000D166C /* NeoSongRow.swift */,
 			);
-			path = SearchView;
+			path = SearchTabView;
 			sourceTree = "<group>";
 		};
 		0EBAE2D6251FB20200752EDE /* Custom TabView */ = {
@@ -327,15 +327,15 @@
 			children = (
 				0E8B8B4D24F5C71E0029B27D /* RootView.swift */,
 				0EB28FE52537EEAC00EBB6F2 /* ToggleableMusicPlayer */,
-				0EB28FE92537EED400EBB6F2 /* SearchView */,
-				0EF4DC5C254250910006108F /* MusicView */,
-				0EF4DC53254250750006108F /* ProfileView */,
+				0EB28FE92537EED400EBB6F2 /* SearchTabView */,
+				0EF4DC5C254250910006108F /* MusicTabView */,
+				0EF4DC53254250750006108F /* ProfileTabView */,
 				0E8B8B4F24F5C83D0029B27D /* Other */,
 			);
 			path = Views;
 			sourceTree = "<group>";
 		};
-		0EF4DC53254250750006108F /* ProfileView */ = {
+		0EF4DC53254250750006108F /* ProfileTabView */ = {
 			isa = PBXGroup;
 			children = (
 				0EF4DC4E25424E120006108F /* ProfileView.swift */,
@@ -343,15 +343,15 @@
 				0E7AB59425479F8400CA1B40 /* SettingsView.swift */,
 				0E7AB59E2547AD6F00CA1B40 /* ColorView.swift */,
 			);
-			path = ProfileView;
+			path = ProfileTabView;
 			sourceTree = "<group>";
 		};
-		0EF4DC5C254250910006108F /* MusicView */ = {
+		0EF4DC5C254250910006108F /* MusicTabView */ = {
 			isa = PBXGroup;
 			children = (
 				0EF4DC572542508A0006108F /* MusicView.swift */,
 			);
-			path = MusicView;
+			path = MusicTabView;
 			sourceTree = "<group>";
 		};
 		4960882E25158085003F1089 /* Frameworks */ = {

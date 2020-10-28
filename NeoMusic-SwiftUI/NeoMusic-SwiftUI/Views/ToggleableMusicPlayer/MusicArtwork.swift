@@ -39,42 +39,41 @@ struct MusicArtwork: View {
     
     var body: some View {
         GeometryReader { geometry in
-            ZStack {
-                Circle()
-                    .fill(LinearGradient(gradient: Gradient(colors: colorScheme.backgroundGradient.colors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
-                    .neumorph(color: colorScheme.backgroundGradient.first.average(to: colorScheme.backgroundGradient.last), size: size)
-                
-                image
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: geometry.size.width * 0.975, height: geometry.size.height * 0.975)
-                    .clipShape(Circle())
-                    .rotationEffect(.radians(isDragging ? rotation : previousRotation))
-                    .gesture(
-                        DragGesture()
-                            .onChanged { value in
-                                let circleCenter = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
-                                
-                                let location = value.location
-                                
-                                if !isDragging {
-                                    isDragging = true
-                                    feedback.impactOccurred()
-                                    startRotationAngle = angle(from: circleCenter, to: location)
-                                }
-                                
-                                rotation = angle(from: circleCenter, to: location) - startRotationAngle + previousRotation
-                            }
-                            .onEnded { value in
+            Circle()
+                .fill(LinearGradient(gradient: Gradient(colors: colorScheme.backgroundGradient.colors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
+                .neumorph(color: colorScheme.backgroundGradient.first.average(to: colorScheme.backgroundGradient.last), size: size)
+                .overlay(
+            image
+                .resizable()
+                .scaledToFill()
+                .frame(width: geometry.size.width * 0.975, height: geometry.size.height * 0.975)
+                .clipShape(Circle())
+                .rotationEffect(.radians(isDragging ? rotation : previousRotation))
+                .gesture(
+                    DragGesture()
+                        .onChanged { value in
+                            let circleCenter = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                            
+                            let location = value.location
+                            
+                            if !isDragging {
+                                isDragging = true
                                 feedback.impactOccurred()
-                                
-                                previousRotation = rotation
-                                rotation = 0
-                                
-                                isDragging = false
+                                startRotationAngle = angle(from: circleCenter, to: location)
                             }
-                    )
-            }
+                            
+                            rotation = angle(from: circleCenter, to: location) - startRotationAngle + previousRotation
+                        }
+                        .onEnded { value in
+                            feedback.impactOccurred()
+                            
+                            previousRotation = rotation
+                            rotation = 0
+                            
+                            isDragging = false
+                        }
+                )
+            )
         }
     }
     

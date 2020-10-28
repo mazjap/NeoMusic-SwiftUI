@@ -87,50 +87,49 @@ struct MusicSlider: View {
                         .frame(width: verifiedDistance, height: lineHeight - 2)
                         .padding(.horizontal, sliderSize / 2)
                     
-                    ZStack {
-                        Circle()
-                            .fill(LinearGradient(gradient: colorScheme.backgroundGradient.gradient.reversed, startPoint: .bottomTrailing, endPoint: .topLeading))
-                        
+                    Circle()
+                        .fill(LinearGradient(gradient: colorScheme.backgroundGradient.gradient.reversed, startPoint: .bottomTrailing, endPoint: .topLeading))
+                        .overlay(
                         Circle()
                             .fill(LinearGradient(gradient: colorScheme.backgroundGradient.gradient, startPoint: .bottomTrailing, endPoint: .topLeading))
                             .frame(width: sliderSize * 0.95, height: sliderSize * 0.95)
-                    }
-                    .animation(.linear)
-                    .offset(x: verifiedDistance, y: 0)
-                    .frame(width: sliderSize, height: sliderSize)
-                    .gesture(
-                        DragGesture()
-                            .updating($dragOffset) { value, state, _ in
-                                state = value.translation.width
-                            }
-                            .onChanged { _ in
-                                if !isSeeking {
-                                    impact.impactOccurred(intensity: 0.35)
+                        )
+                        .animation(.linear)
+                        .offset(x: verifiedDistance, y: 0)
+                        .frame(width: sliderSize, height: sliderSize)
+                        .gesture(
+                            DragGesture()
+                                .updating($dragOffset) { value, state, _ in
+                                    state = value.translation.width
+                                }
+                                .onChanged { _ in
+                                    if !isSeeking {
+                                        impact.impactOccurred(intensity: 0.35)
+                                        
+                                        withAnimation {
+                                            isSeeking = true
+                                        }
+                                    }
                                     
                                     withAnimation {
-                                        isSeeking = true
+                                        if verifiedDistance > totalDistance - 45 {
+                                            sideToPop = .right
+                                        } else if verifiedDistance < 45 {
+                                            sideToPop = .left
+                                        } else {
+                                            sideToPop = .none
+                                        }
                                     }
                                 }
-                                
-                                withAnimation {
-                                    if verifiedDistance > totalDistance - 45 {
-                                        sideToPop = .right
-                                    } else if verifiedDistance < 45 {
-                                        sideToPop = .left
-                                    } else {
+                                .onEnded { value in
+                                    musicController.set(time: songDuration)
+                                    
+                                    withAnimation {
                                         sideToPop = .none
+                                        isSeeking = false
                                     }
                                 }
-                            }
-                            .onEnded { value in
-                                musicController.set(time: songDuration)
-                                
-                                withAnimation {
-                                    sideToPop = .none
-                                    isSeeking = false
-                                }
-                            }
-                    )
+                        )
                     
                     Text(format(songDuration))
                         .foregroundColor(colorScheme.textColor.color)

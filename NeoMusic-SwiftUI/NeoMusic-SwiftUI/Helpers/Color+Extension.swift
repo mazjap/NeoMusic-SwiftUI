@@ -81,6 +81,26 @@ extension Color {
     var offsetColors: [Color] {
         let vals = hsb
         
-        return [Color(hue: vals.h, saturation: vals.s, brightness: max(0, vals.b - 0.1)), Color(hue: vals.h, saturation: vals.s, brightness: min(1, vals.b + 0.1))]
+        // If colors brightness is greater than 0.9 or less than 0.1
+        //     Use self as one of the offsets and offset the other color's brightness by 0.2
+        // Else
+        //     offset the color's brightness by 0.1 in both directions
+        
+        if vals.b - 0.1 < 0 {
+            return [
+                self,
+                Color(hue: vals.h, saturation: vals.s, brightness: vals.b + 0.2)
+            ]
+        } else if vals.b + 0.1 > 1 {
+            return [
+                Color(hue: vals.h, saturation: vals.s, brightness: vals.b - 0.2),
+                self
+            ]
+        } else {
+            return [
+                Color(hue: vals.h, saturation: vals.s, brightness: vals.b - 0.1),
+                Color(hue: vals.h, saturation: vals.s, brightness: vals.b + 0.1)
+            ]
+        }
     }
 }
