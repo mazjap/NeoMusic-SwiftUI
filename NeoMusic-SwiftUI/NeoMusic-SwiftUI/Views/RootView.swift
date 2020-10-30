@@ -65,7 +65,7 @@ struct RootView: View {
 struct RootView_Previews: PreviewProvider {
     static var previews: some View {
         RootView()
-            .environmentObject(SettingsController())
+            .environmentObject(SettingsController.shared)
             .environmentObject(MusicPlayerController())
     }
 }

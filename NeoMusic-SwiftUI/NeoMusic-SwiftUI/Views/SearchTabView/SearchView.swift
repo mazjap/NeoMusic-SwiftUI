@@ -107,7 +107,7 @@ struct SearchView: View {
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
         SearchView(searchController: SongSearchController())
-            .environmentObject(SettingsController())
+            .environmentObject(SettingsController.shared)
             .environmentObject(MusicPlayerController())
     }
 }

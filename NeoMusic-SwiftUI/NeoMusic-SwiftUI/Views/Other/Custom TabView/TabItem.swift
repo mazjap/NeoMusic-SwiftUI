@@ -49,6 +49,6 @@ struct TabItem_Previews: PreviewProvider {
                 }
             }
         }
-        .environmentObject(SettingsController())
+        .environmentObject(SettingsController.shared)
     }
 }

@@ -25,7 +25,7 @@ struct SettingsView: View {
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        let setCon = SettingsController()
+        let setCon = SettingsController.shared
         
         return ZStack {
             LinearGradient(gradient: setCon.colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)

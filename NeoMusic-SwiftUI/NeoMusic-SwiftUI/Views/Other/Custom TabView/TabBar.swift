@@ -169,6 +169,6 @@ struct TabBar_Previews: PreviewProvider {
                 }
             }
         }
-        .environmentObject(SettingsController())
+        .environmentObject(SettingsController.shared)
     }
 }

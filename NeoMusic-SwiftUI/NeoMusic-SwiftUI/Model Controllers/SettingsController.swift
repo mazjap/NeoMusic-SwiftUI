@@ -21,7 +21,7 @@ class SettingsController: ObservableObject {
     
     // MARK: - Initializers
     
-    init() {
+    private init() {
         colorScheme = fetchColorScheme()
         feedbackEnabled = fetchFeedbackEnabled()
     }
@@ -56,6 +56,8 @@ class SettingsController: ObservableObject {
     
     // MARK: - Static Variables
     
-    static let keys = (colorSchemeKey: "com.mazjap.NeoMusic-SwiftUI.SettingsController.colorScheme", feedbackEnabledKey: "com.mazjap.NeoMusic-SwiftUI.SettingsController.feedbackEnabled")
+    static let shared = SettingsController()
+    
+    static private let keys = (colorSchemeKey: "com.mazjap.NeoMusic-SwiftUI.SettingsController.colorScheme", feedbackEnabledKey: "com.mazjap.NeoMusic-SwiftUI.SettingsController.feedbackEnabled")
     
 }

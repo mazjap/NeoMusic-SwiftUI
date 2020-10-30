@@ -39,7 +39,7 @@ struct MusicPlayer: View {
         }
     }
     
-    static let base = Bundle.applicationName.isEmpty ? "MusicPlayer." : Bundle.applicationName + ".MusicPlayer."
+    static let base = "MusicPlayer."
     
     static let  backgroundKey = base + "Background"
     static let     artworkKey = base + "Artwork"
@@ -230,18 +230,8 @@ struct ContentView_Previews: PreviewProvider {
     
     static var previews: some View {
         MusicPlayer(isOpen: $isOpen)
-            .environmentObject(SettingsController())
+            .environmentObject(SettingsController.shared)
             .environmentObject(MusicPlayerController())
             .environmentObject(FeedbackGenerator())
-    }
-}
-
-
-extension Bundle {
-    static var applicationName: String {
-        guard let dictionary = Bundle.main.infoDictionary,
-              let appName = dictionary[kCFBundleNameKey as String] as? String else { return "" }
-        
-        return appName
     }
 }

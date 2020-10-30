@@ -20,7 +20,7 @@ struct MusicView: View {
 struct MusicView_Previews: PreviewProvider {
     static var previews: some View {
         MusicView()
-            .environmentObject(SettingsController())
+            .environmentObject(SettingsController.shared)
             .environmentObject(MusicPlayerController())
     }
 }

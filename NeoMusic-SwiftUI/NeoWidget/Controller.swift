@@ -20,7 +20,7 @@ class Controller: TimelineEntry {
     init(date: Date = Date()) {
         self.date = date
         self.player = .systemMusicPlayer
-        self.colorScheme = SettingsController().colorScheme
+        self.colorScheme = SettingsController.shared.colorScheme
         
         player.beginGeneratingPlaybackNotifications()
         

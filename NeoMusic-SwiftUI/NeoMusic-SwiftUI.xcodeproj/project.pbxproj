@@ -35,8 +35,7 @@
 		0EA1848424FB1EBD00111B84 /* Notification.Name+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA1848324FB1EBC00111B84 /* Notification.Name+Extension.swift */; };
 		0EBAE2D2251FB01000752EDE /* Neumorph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE2D1251FB01000752EDE /* Neumorph.swift */; };
 		0EBAE2DF251FB22600752EDE /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE2DE251FB22600752EDE /* View+Extension.swift */; };
-		0EDE700C24F465D300E72D0C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE700B24F465D300E72D0C /* AppDelegate.swift */; };
-		0EDE700E24F465D300E72D0C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE700D24F465D300E72D0C /* SceneDelegate.swift */; };
+		0EDE700E24F465D300E72D0C /* NeoMusic_SwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE700D24F465D300E72D0C /* NeoMusic_SwiftUIApp.swift */; };
 		0EDE701024F465D300E72D0C /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE700F24F465D300E72D0C /* MusicPlayer.swift */; };
 		0EDE701224F465D600E72D0C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0EDE701124F465D600E72D0C /* Assets.xcassets */; };
 		0EDE701524F465D600E72D0C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0EDE701424F465D600E72D0C /* Preview Assets.xcassets */; };
@@ -123,8 +122,7 @@
 		0EBAE2D1251FB01000752EDE /* Neumorph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Neumorph.swift; sourceTree = "<group>"; };
 		0EBAE2DE251FB22600752EDE /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		0EDE700824F465D300E72D0C /* NeoMusic-SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NeoMusic-SwiftUI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		0EDE700B24F465D300E72D0C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		0EDE700D24F465D300E72D0C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		0EDE700D24F465D300E72D0C /* NeoMusic_SwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeoMusic_SwiftUIApp.swift; sourceTree = "<group>"; };
 		0EDE700F24F465D300E72D0C /* MusicPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayer.swift; sourceTree = "<group>"; };
 		0EDE701124F465D600E72D0C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0EDE701424F465D600E72D0C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -313,8 +311,7 @@
 		0EDE703B24F465F200E72D0C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				0EDE700B24F465D300E72D0C /* AppDelegate.swift */,
-				0EDE700D24F465D300E72D0C /* SceneDelegate.swift */,
+				0EDE700D24F465D300E72D0C /* NeoMusic_SwiftUIApp.swift */,
 				0EDE701124F465D600E72D0C /* Assets.xcassets */,
 				0EDE701924F465D600E72D0C /* Info.plist */,
 				0E8294192536783200FB131A /* HostingController.swift */,
@@ -519,7 +516,6 @@
 				0E7AB59F2547AD6F00CA1B40 /* ColorView.swift in Sources */,
 				0E42F9F924F4F63B00901C89 /* MusicArtwork.swift in Sources */,
 				0E8B8B4124F59CB80029B27D /* MusicSlider.swift in Sources */,
-				0EDE700C24F465D300E72D0C /* AppDelegate.swift in Sources */,
 				0E8B8B4B24F5C19A0029B27D /* Song.swift in Sources */,
 				0E49677325299E97000D166C /* SearchBar.swift in Sources */,
 				49E1535C251570A500767842 /* TabItem.swift in Sources */,
@@ -527,7 +523,7 @@
 				0E8EFA22252D367500B78F3E /* SongSearchController.swift in Sources */,
 				0E07DFEB252724F8006DDFF6 /* String+Extension.swift in Sources */,
 				0E49677425299E97000D166C /* SearchView.swift in Sources */,
-				0EDE700E24F465D300E72D0C /* SceneDelegate.swift in Sources */,
+				0EDE700E24F465D300E72D0C /* NeoMusic_SwiftUIApp.swift in Sources */,
 				0EF4DC4F25424E120006108F /* ProfileView.swift in Sources */,
 				0E49677625299E97000D166C /* Queue.swift in Sources */,
 				0E7AB59525479F8400CA1B40 /* SettingsView.swift in Sources */,
