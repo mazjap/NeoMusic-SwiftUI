@@ -24,4 +24,23 @@ extension View {
         self
             .modifier(CustomListHeader(backgroundColor: backgroundColor, textColor: textColor))
     }
+    
+    // Conditionally modify view
+    @ViewBuilder
+    func `if`<Transform: View>(_ condition: Bool, transformation: (Self) -> Transform) -> some View {
+        if condition {
+            transformation(self)
+        } else {
+            self
+        }
+    }
+    
+    @ViewBuilder
+    func `if`<Transform: View>(_ condition: Bool, transformation: (Self) -> Transform, else falseTransformation: (Self) -> Transform) -> some View {
+        if condition {
+            transformation(self)
+        } else {
+            falseTransformation(self)
+        }
+    }
 }
