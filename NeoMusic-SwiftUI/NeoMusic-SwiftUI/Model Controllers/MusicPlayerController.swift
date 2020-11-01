@@ -54,7 +54,7 @@ class MusicPlayerController: ObservableObject {
 
     @Published var currentSong: Song = Song.noSong {
         willSet {
-            if currentSong.persistentID != -1 {
+            if currentSong.persistentID != 0 {
                 delegate?.songChanged(previousSong: currentSong)
             }
             
@@ -228,6 +228,8 @@ class MusicPlayerController: ObservableObject {
         }
     }
 }
+
+// MARK: - MusicPlayerController Extension: QueueDelegate
 
 extension MusicPlayerController: QueueDelegate {
 //    internal func queueWillChange() {

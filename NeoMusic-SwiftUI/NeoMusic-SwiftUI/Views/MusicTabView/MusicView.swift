@@ -8,14 +8,21 @@
 import SwiftUI
 
 struct MusicView: View {
-    @EnvironmentObject var settingsController: SettingsController
-    @EnvironmentObject var musicController: MusicPlayerController
+    
+    // MARK: - State
+    
+    @EnvironmentObject private var settingsController: SettingsController
+    @EnvironmentObject private var musicController: MusicPlayerController
+    
+    // MARK: - Body
     
     var body: some View {
         Text("Hello, World!")
             .foregroundColor(settingsController.colorScheme.textColor.color)
     }
 }
+
+// MARK: - Preview
 
 struct MusicView_Previews: PreviewProvider {
     static var previews: some View {

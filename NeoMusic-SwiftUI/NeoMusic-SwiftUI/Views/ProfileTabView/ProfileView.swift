@@ -8,10 +8,15 @@
 import SwiftUI
 
 struct ProfileView: View {
-    @EnvironmentObject var settingsController: SettingsController
-    @EnvironmentObject var musicController: MusicPlayerController
+    
+    // MARK: - State
+    
+    @EnvironmentObject private var settingsController: SettingsController
+    @EnvironmentObject private var musicController: MusicPlayerController
     
     @State private var showSettingsView: Bool = false
+    
+    // MARK: - Body
     
     var body: some View {
         ZStack {
@@ -33,6 +38,8 @@ struct ProfileView: View {
         }
     }
 }
+
+// MARK: - Preview
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {

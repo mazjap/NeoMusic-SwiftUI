@@ -22,6 +22,7 @@
 		0E7AB59525479F8400CA1B40 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7AB59425479F8400CA1B40 /* SettingsView.swift */; };
 		0E7AB59A2547A0C800CA1B40 /* BarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7AB5992547A0C800CA1B40 /* BarButton.swift */; };
 		0E7AB59F2547AD6F00CA1B40 /* ColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7AB59E2547AD6F00CA1B40 /* ColorView.swift */; };
+		0E7BBE8C254F3D18005E035D /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7BBE8B254F3D18005E035D /* Cache.swift */; };
 		0E82941A2536783200FB131A /* HostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8294192536783200FB131A /* HostingController.swift */; };
 		0E8B8B3F24F587B10029B27D /* Image+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8B8B3E24F587B10029B27D /* Image+Extension.swift */; };
 		0E8B8B4124F59CB80029B27D /* MusicSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8B8B4024F59CB80029B27D /* MusicSlider.swift */; };
@@ -42,6 +43,8 @@
 		0EDE701824F465D600E72D0C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EDE701624F465D600E72D0C /* LaunchScreen.storyboard */; };
 		0EE4136C25278910003890A1 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E07DFEA252724F8006DDFF6 /* String+Extension.swift */; };
 		0EE413852528B56A003890A1 /* NeoMusic_SwiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE702224F465D700E72D0C /* NeoMusic_SwiftUITests.swift */; };
+		0EF3F73B254F49A3002AD607 /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF3F73A254F49A3002AD607 /* Media.swift */; };
+		0EF3F73F254F49BE002AD607 /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF3F73A254F49A3002AD607 /* Media.swift */; };
 		0EF4DC4F25424E120006108F /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF4DC4E25424E120006108F /* ProfileView.swift */; };
 		0EF4DC582542508A0006108F /* MusicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF4DC572542508A0006108F /* MusicView.swift */; };
 		4960887C2515832E003F1089 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4960882F25158085003F1089 /* WidgetKit.framework */; };
@@ -108,6 +111,7 @@
 		0E7AB59425479F8400CA1B40 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		0E7AB5992547A0C800CA1B40 /* BarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButton.swift; sourceTree = "<group>"; };
 		0E7AB59E2547AD6F00CA1B40 /* ColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorView.swift; sourceTree = "<group>"; };
+		0E7BBE8B254F3D18005E035D /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		0E8294192536783200FB131A /* HostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingController.swift; sourceTree = "<group>"; };
 		0E8B8B3E24F587B10029B27D /* Image+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Extension.swift"; sourceTree = "<group>"; };
 		0E8B8B4024F59CB80029B27D /* MusicSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicSlider.swift; sourceTree = "<group>"; };
@@ -131,6 +135,7 @@
 		0EDE701E24F465D700E72D0C /* NeoMusic-SwiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "NeoMusic-SwiftUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EDE702224F465D700E72D0C /* NeoMusic_SwiftUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeoMusic_SwiftUITests.swift; sourceTree = "<group>"; };
 		0EDE702424F465D700E72D0C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0EF3F73A254F49A3002AD607 /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		0EF4DC4E25424E120006108F /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		0EF4DC572542508A0006108F /* MusicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicView.swift; sourceTree = "<group>"; };
 		4960882F25158085003F1089 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -202,6 +207,8 @@
 				0E8B8B4A24F5C1990029B27D /* Song.swift */,
 				0E2C908224F5D5A400AB950D /* JCColorScheme.swift */,
 				0E49677125299E97000D166C /* Queue.swift */,
+				0E7BBE8B254F3D18005E035D /* Cache.swift */,
+				0EF3F73A254F49A3002AD607 /* Media.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -518,6 +525,7 @@
 				0E8B8B4124F59CB80029B27D /* MusicSlider.swift in Sources */,
 				0E8B8B4B24F5C19A0029B27D /* Song.swift in Sources */,
 				0E49677325299E97000D166C /* SearchBar.swift in Sources */,
+				0EF3F73B254F49A3002AD607 /* Media.swift in Sources */,
 				49E1535C251570A500767842 /* TabItem.swift in Sources */,
 				0EBAE2D2251FB01000752EDE /* Neumorph.swift in Sources */,
 				0E8EFA22252D367500B78F3E /* SongSearchController.swift in Sources */,
@@ -525,6 +533,7 @@
 				0E49677425299E97000D166C /* SearchView.swift in Sources */,
 				0EDE700E24F465D300E72D0C /* NeoMusic_SwiftUIApp.swift in Sources */,
 				0EF4DC4F25424E120006108F /* ProfileView.swift in Sources */,
+				0E7BBE8C254F3D18005E035D /* Cache.swift in Sources */,
 				0E49677625299E97000D166C /* Queue.swift in Sources */,
 				0E7AB59525479F8400CA1B40 /* SettingsView.swift in Sources */,
 				0E49677225299E97000D166C /* UIApplication+Extension.swift in Sources */,
@@ -553,6 +562,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EF3F73F254F49BE002AD607 /* Media.swift in Sources */,
 				4960889825158392003F1089 /* Controller.swift in Sources */,
 				4960889725158392003F1089 /* WidgetArtwork.swift in Sources */,
 				496088B0251583E3003F1089 /* Image+Extension.swift in Sources */,

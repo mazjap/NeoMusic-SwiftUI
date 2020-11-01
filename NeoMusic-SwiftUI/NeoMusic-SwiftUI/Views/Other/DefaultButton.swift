@@ -11,23 +11,23 @@
 import SwiftUI
 
 struct DefaultButton: View {
-    var impact: UIImpactFeedbackGenerator?
     
     // MARK: - Variables
-    let isSelected: Bool
-    let image: Image
-    let imageColor: Color
-    let buttonColor: Color
-    let size: CGFloat
-    let type: ButtonType
-    let neoSize: Neumorph.Size
-    let action: () -> Void
+    
+    private let isSelected: Bool
+    private let image: Image
+    private let imageColor: Color
+    private let buttonColor: Color
+    private let size: CGFloat
+    private let type: ButtonType
+    private let neoSize: Neumorph.Size
+    private let action: () -> Void
     
     var cornerRadius: CGFloat {
         type.cornerRadius(size: size)
     }
     
-    // MARK: - Initializer
+    // MARK: - Initializers
     
     init(image: Image, imageColor: Color, buttonColor: Color, type: ButtonType = .circle, neoSize: Neumorph.Size = .button, mult: CGFloat = 1, isSelected: Bool = false, action: @escaping () -> Void) {
         self.image = image
@@ -43,6 +43,8 @@ struct DefaultButton: View {
     init(imageName: String, imageColor: Color, buttonColor: Color, type: ButtonType = .circle, neoSize: Neumorph.Size = .button, mult: CGFloat = 1, isSelected: Bool = false, action: @escaping () -> Void) {
         self.init(image: Image(systemName: imageName), imageColor: imageColor, buttonColor: buttonColor, type: type, mult: mult, isSelected: isSelected, action: action)
     }
+    
+    // MARK: - Body
     
     var body: some View {
         Button(action: action) {
@@ -96,6 +98,8 @@ struct DefaultButton_Previews: PreviewProvider {
         }
     }
 }
+
+// MARK: - DefaultButton Extension: ButtonType
 
 extension DefaultButton {
     enum ButtonType {

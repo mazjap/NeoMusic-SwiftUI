@@ -10,13 +10,20 @@
 
 import SwiftUI
 
+// MARK: - JCColorScheme
+
 struct JCColorScheme: Codable, Equatable {
+    
+    // MARK: - Variables
+    
     var backgroundGradient: EasyGradient
     var sliderGradient: EasyGradient
     
     var textColor: EasyColor
     var mainButtonColor: EasyColor
     var secondaryButtonColor: EasyColor
+    
+    // MARK: - Initializer
     
     init(backgroundGradient: EasyGradient,
          sliderGradient: EasyGradient,
@@ -31,10 +38,17 @@ struct JCColorScheme: Codable, Equatable {
         self.secondaryButtonColor = EasyColor(secondaryButtonColor)
     }
     
+    // MARK: - Static Variables
+    
     static var `default` = Constants.defaultColorScheme
 }
 
+// MARK: - EasyGradient
+
 struct EasyGradient: Codable, Equatable {
+    
+    // MARK: - Variables
+    
     private var easyColors: [EasyColor]
     
     var count: Int {
@@ -57,6 +71,8 @@ struct EasyGradient: Codable, Equatable {
         return easyColors.last?.color ?? .clear
     }
     
+    // MARK: - Initializer
+    
     init(_ colors: [Color]) {
         if colors.count == 0 {
             self.easyColors = [EasyColor.none]
@@ -64,6 +80,8 @@ struct EasyGradient: Codable, Equatable {
             self.easyColors = colors.map { EasyColor($0) }
         }
     }
+    
+    // MARK: - Functions
     
     mutating func addColor(_ color: Color, at i: Int? = nil) {
         let ezclr = EasyColor(color)
@@ -109,7 +127,12 @@ struct EasyGradient: Codable, Equatable {
     }
 }
 
+// MARK: - EasyColor
+
 struct EasyColor: Codable, Equatable {
+    
+    // MARK: - Variables
+    
     var r = 0.0
     var g = 0.0
     var b = 0.0
@@ -118,6 +141,8 @@ struct EasyColor: Codable, Equatable {
     var color: Color {
         Color(red: r, green: g, blue: b)
     }
+    
+    // MARK: - Initializers
 
     init(_ color: Color) {
         let vals = color.rgb
@@ -147,8 +172,12 @@ struct EasyColor: Codable, Equatable {
                   blue: UInt8(hexAsInt & 0xFF))
     }
     
+    // MARK: - Static Variables
+    
     static var none = EasyColor(.clear)
 }
+
+// MARK: Gradient Extension: reversed
 
 extension Gradient {
     var reversed: Gradient {

@@ -11,6 +11,9 @@
 import MediaPlayer
 
 class SongSearchController: ObservableObject {
+    
+    // MARK: - Published Variables
+    
     @Published var songs: (byTitle: [Song], byArtist: [Song], byAlbum: [Song])
     @Published var lastPlayed: [Song]
     @Published var searchType: SearchType
@@ -20,7 +23,9 @@ class SongSearchController: ObservableObject {
         }
     }
     
-    var task: DispatchWorkItem? = nil
+    // MARK: - Variables
+    
+    private var task: DispatchWorkItem? = nil
     
     var searchTerm: String {
         didSet {
@@ -37,12 +42,16 @@ class SongSearchController: ObservableObject {
         }
     }
     
+    // MARK: - Initializer
+    
     init(search term: String = "", searchType: SearchType = .library, lastPlayed: [Song] = []) {
         self.songs = ([], [], [])
         self.lastPlayed = lastPlayed
         self.searchType = searchType
         self.searchTerm = term
     }
+    
+    // MARK: - Functions
     
     func getAllSongs() -> [Song] {
         var songs = [Song]()
@@ -100,6 +109,8 @@ class SongSearchController: ObservableObject {
     }
 }
 
+// MARK: - SongSearchController Extension: SearchCategory, SearchType, NetworkError
+
 extension SongSearchController {
     enum SearchCategory {
         case title, artist, album
@@ -119,6 +130,8 @@ extension SongSearchController {
         case otherError(String)
     }
 }
+
+// MARK: - SongSearchController Extension: MusicPlayerControllerDelegate
 
 extension SongSearchController: MusicPlayerControllerDelegate {
     func songChanged(previousSong: Song) {

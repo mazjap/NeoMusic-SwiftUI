@@ -8,10 +8,15 @@
 import SwiftUI
 
 struct BarButton: View {
+    
+    // MARK: - Variables
+    
     private let action: () -> Void
     private let image: Image
     private let color: Color
     
+    
+    // MARK: - Initializers
     
     init(image: Image, buttonColor: Color, action: @escaping () -> Void) {
         self.image = image
@@ -25,6 +30,8 @@ struct BarButton: View {
         self.color = buttonColor
     }
     
+    // MARK: - Body
+    
     var body: some View {
         Button(action: action) {
             image
@@ -32,6 +39,8 @@ struct BarButton: View {
         .foregroundColor(color)
     }
 }
+
+// MARK: - Preview
 
 struct BarButton_Previews: PreviewProvider {
     static var previews: some View {

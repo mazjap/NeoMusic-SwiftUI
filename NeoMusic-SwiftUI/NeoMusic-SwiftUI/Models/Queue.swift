@@ -10,6 +10,8 @@
 
 import Foundation
 
+// MARK: - QueueDelegate
+
 protocol QueueDelegate: AnyObject {
     func queueWillChange()
     func queueDidPush()
@@ -19,6 +21,8 @@ protocol QueueDelegate: AnyObject {
     func queueDidClear()
 }
 
+// MARK: - QueueDelegate Extension
+// Default implementations so that no implementation is required when conforming to QueueDelegate
 extension QueueDelegate {
     func queueWillChange() {}
     func queueDidPush() {}
@@ -28,6 +32,8 @@ extension QueueDelegate {
     func queueDidClear() {}
 }
 
+// MARK: - Queue
+
 struct Queue<Type>: CustomStringConvertible {
     
     // MARK: - Variables
@@ -36,6 +42,7 @@ struct Queue<Type>: CustomStringConvertible {
         "\(arr)"
     }
     
+    // Weak to avoid strong reference cycle
     weak var delegate: QueueDelegate?
     
     // Computed variable of type Array<Type> for convenience
@@ -190,7 +197,7 @@ struct Queue<Type>: CustomStringConvertible {
     }
 }
 
-// MARK: - Queue Extension: LinkedList
+// MARK: - Queue Extension: Singly LinkedList
 
 extension Queue {
     class Node<Type> {

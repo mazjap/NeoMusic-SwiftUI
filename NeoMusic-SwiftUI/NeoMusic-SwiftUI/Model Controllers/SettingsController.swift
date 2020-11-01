@@ -17,7 +17,7 @@ class SettingsController: ObservableObject {
     @Published var colorScheme: JCColorScheme = JCColorScheme.default
     @Published var feedbackEnabled: Bool = true
     
-    let userDefaults = UserDefaults.standard
+    private let userDefaults = UserDefaults.standard
     
     // MARK: - Initializers
     

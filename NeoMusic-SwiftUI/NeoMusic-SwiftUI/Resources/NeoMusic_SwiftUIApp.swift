@@ -11,8 +11,8 @@ import SwiftUI
 struct NeoMusic_SwiftUIApp: App {
     typealias SomeView = RootView
     
-    @StateObject var musicController = MusicPlayerController()
-    @StateObject var feedbackGenerator = FeedbackGenerator(feedbackEnabled: SettingsController.shared.feedbackEnabled)
+    @StateObject private var musicController = MusicPlayerController()
+    @StateObject private var feedbackGenerator = FeedbackGenerator(feedbackEnabled: SettingsController.shared.feedbackEnabled)
     
     var body: some Scene {
         WindowGroup {

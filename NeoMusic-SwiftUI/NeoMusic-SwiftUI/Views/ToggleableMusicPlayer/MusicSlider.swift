@@ -15,13 +15,13 @@ struct MusicSlider: View {
     // MARK: - State
     
     @EnvironmentObject private var musicController: MusicPlayerController
-    @State var currentTime: Double = 0
-    @State var totalTime: Double = 0
     
-    @State var isSeeking: Bool = false
-    @GestureState var dragOffset: CGFloat = 0
-    @State var position: CGSize = .zero
-    @State var sideToPop: Side = .none
+    @GestureState private var dragOffset: CGFloat = 0
+    
+    @State private var currentTime: Double = 0
+    @State private var totalTime: Double = 0
+    @State private var isSeeking: Bool = false
+    @State private var sideToPop: Side = .none
     
     // MARK: - Variables
     

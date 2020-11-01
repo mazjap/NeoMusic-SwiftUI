@@ -8,17 +8,34 @@
 import SwiftUI
 
 class FeedbackGenerator: ObservableObject {
-    var feedbackEnabled: Bool
     
-    let nfg: UINotificationFeedbackGenerator
-    let ifg: UIImpactFeedbackGenerator
+    // MARK: - Variables
+    
+    private var feedbackEnabled: Bool {
+        didSet {
+            if feedbackEnabled {
+                nfg.notificationOccurred(.success)
+            }
+        }
+    }
+    
+    private let nfg: UINotificationFeedbackGenerator
+    private let ifg: UIImpactFeedbackGenerator
+    
+    // MARK: - Initializer
     
     init(feedbackEnabled: Bool = true) {
-        self.feedbackEnabled = feedbackEnabled
         self.nfg = .init()
         self.ifg = .init()
+        self.feedbackEnabled = false
         
-        nfg.notificationOccurred(.success)
+        self.feedbackEnabled = feedbackEnabled
+    }
+    
+    // MARK: - Functions
+    
+    func changeFeedbackEnabledStatus(to status: Bool) {
+        self.feedbackEnabled = status
     }
     
     func impactOccurred(intensity: CGFloat = 1) {
@@ -58,6 +75,8 @@ class FeedbackGenerator: ObservableObject {
         }
     }
 }
+
+// MARK: - FeedbackGenerator Extension: FeedbackType
 
 extension FeedbackGenerator {
     enum FeedbackType {

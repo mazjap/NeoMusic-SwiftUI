@@ -79,10 +79,6 @@ struct MusicArtwork: View {
     
     // MARK: - Functions
     
-    private func impact() {
-        feedback.impactOccurred()
-    }
-    
     private func angle(from center: CGPoint, to location: CGPoint) -> Double {
         return Double(atan2(location.y - center.y, location.x - center.x))
     }

@@ -8,26 +8,37 @@
 import SwiftUI
 
 struct TabItem: View {
-    var title: Text
-    var image: Image
-    let impact: UIImpactFeedbackGenerator?
-    var content: AnyView
     
-    init<Content>(title: String, imageName: String, impact: UIImpactFeedbackGenerator? = nil, @ViewBuilder _ content: () -> Content) where Content: View {
+    // MARK: - State
+    
+    @EnvironmentObject private var feedbackGenerator: FeedbackGenerator
+    
+    // MARK: - Variables
+    
+    let title: Text
+    let image: Image
+    let content: AnyView
+    
+    // MARK: - Initializer
+    
+    init<Content>(title: String, imageName: String, @ViewBuilder _ content: () -> Content) where Content: View {
         self.title = Text(title)
         self.image = Image(systemName: imageName)
         self.content = content().asAny()
-        self.impact = impact
     }
+    
+    // MARK: - Body
     
     var body: some View {
         Button(action: {
-            impact?.impactOccurred()
+            feedbackGenerator.impactOccurred()
         }) {
             content
         }
     }
 }
+
+// MARK: - Preview
 
 struct TabItem_Previews: PreviewProvider {
     static var previews: some View {
@@ -49,6 +60,6 @@ struct TabItem_Previews: PreviewProvider {
                 }
             }
         }
-        .environmentObject(SettingsController.shared)
+        .environmentObject(FeedbackGenerator(feedbackEnabled: false))
     }
 }

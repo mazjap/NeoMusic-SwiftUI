@@ -11,13 +11,10 @@
 import SwiftUI
 import MediaPlayer
 
-protocol Media {
-    associatedtype IDType = Hashable
-    
-    var id: IDType { get }
-}
-
 struct Song: Identifiable, Equatable {
+    
+    // MARK: - Variables
+    
     let artist: String
     let artwork: Image
     let title: String
@@ -26,11 +23,13 @@ struct Song: Identifiable, Equatable {
     let media: MPMediaItem?
     var isFavorite: Bool?
     var isExplicit: Bool
-    var persistentID: Int64
+    var persistentID: UInt64
     
     var id: String {
-        return persistentID != -1 ? String(persistentID) : "\(artist) - \(title)\(isExplicit ? " - Explicit" : "")"
+        return persistentID != 0 ? String(persistentID) : "\(artist) - \(title)\(isExplicit ? " - Explicit" : "")"
     }
+    
+    // MARK: - Initializer
     
     init(_ song: MPMediaItem?) {
         let defaultArtist = "No Artist"
@@ -46,7 +45,7 @@ struct Song: Identifiable, Equatable {
             duration = song.playbackDuration
             media = song
             isExplicit = song.isExplicitItem
-            persistentID = Int64(song.persistentID)
+            persistentID = song.persistentID
             
             if let image = song.artwork?.image(at: CGSize(width: 500, height: 500)) {
                 artwork = Image(uiImage: image)
@@ -61,9 +60,11 @@ struct Song: Identifiable, Equatable {
             duration = defaultDuration
             media = MPMediaItem()
             isExplicit = false
-            persistentID = -1
+            persistentID = 0
         }
     }
+    
+    // MARK: - Static Variables
     
     static var noSong = Song(nil)
 }

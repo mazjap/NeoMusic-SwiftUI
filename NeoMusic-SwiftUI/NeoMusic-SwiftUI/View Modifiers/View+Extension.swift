@@ -11,6 +11,9 @@
 import SwiftUI
 
 extension View {
+    
+    // MARK: - Functions
+    
     func asAny() -> AnyView {
         AnyView(self)
     }

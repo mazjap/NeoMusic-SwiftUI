@@ -11,24 +11,31 @@
 import SwiftUI
 
 struct TabBar: View {
-    static var height = UIScreen.main.bounds.height / 12
     
-    @GestureState var dragOffset: CGFloat = 0
+    // MARK: - State
     
     @EnvironmentObject private var settingsController: SettingsController
+    @EnvironmentObject private var feedbackGenerator: FeedbackGenerator
+    
+    @GestureState private var dragOffset: CGFloat = 0
+    
     @State private var selectedIndex: Int = 0 {
         didSet {
-            impact.impactOccurred()
+            feedbackGenerator.impactOccurred()
         }
     }
     
-    private let impact: UIImpactFeedbackGenerator
-    let items: [TabItem]
+    // MARK: - Variables
     
-    init(impact: UIImpactFeedbackGenerator = .init(), @TabBuilder _ items: () -> [TabItem]) {
+    private let items: [TabItem]
+    
+    // MARK: - Initializer
+    
+    init(@TabBuilder _ items: () -> [TabItem]) {
         self.items = items()
-        self.impact = impact
     }
+    
+    // MARK: - Body
     
     var body: some View {
         VStack {
@@ -85,6 +92,8 @@ struct TabBar: View {
         }
     }
     
+    // MARK: - Private Functions
+    
     private func changeIndex(to index: Int) {
         guard index >= 0, index < items.count else { return }
         withAnimation(.spring(response: 0.35, dampingFraction: 0.7, blendDuration: 1)) {
@@ -120,7 +129,13 @@ struct TabBar: View {
             }
         }
     }
+    
+    // MARK: - Static Variables
+    
+    static var height = UIScreen.main.bounds.height / 12
 }
+
+// MARK: - TabBar: PreferenceKey
 
 struct TabBarPreferenceKey: PreferenceKey {
     typealias Value = Anchor<CGRect>?
@@ -132,6 +147,8 @@ struct TabBarPreferenceKey: PreferenceKey {
     }
     
 }
+
+// MARK: - TabBar: TabBuilder
 
 @_functionBuilder
 struct TabBuilder {
@@ -170,5 +187,6 @@ struct TabBar_Previews: PreviewProvider {
             }
         }
         .environmentObject(SettingsController.shared)
+        .environmentObject(FeedbackGenerator.init(feedbackEnabled: false))
     }
 }

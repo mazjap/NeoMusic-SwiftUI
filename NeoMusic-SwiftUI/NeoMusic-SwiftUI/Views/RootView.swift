@@ -22,10 +22,10 @@ struct RootView: View {
     }
     @EnvironmentObject private var feedback: FeedbackGenerator
     
+    @StateObject private var searchController = SongSearchController()
+    
     @State private var musicPlayerIsOpen: Bool = false
     
-    // MARK: - Variables
-    var searchController = SongSearchController()
     
     // MARK: - Body
     

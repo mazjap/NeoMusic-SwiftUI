@@ -8,13 +8,20 @@
 import SwiftUI
 
 struct NeoSongRow: View {
+    
+    // MARK: - State
+    
     @Binding var selectedSong: Song?
+    
+    // MARK: - Variables
     
     let backgroundColor: Color
     let textColor: Color
     let song: Song
     let cornerRadius: CGFloat = 20
     let height = UIScreen.main.bounds.height / 10
+    
+    // MARK: - Body
     
     var body: some View {
         HStack {
@@ -55,6 +62,8 @@ struct NeoSongRow: View {
         }
     }
 }
+
+// MARK: - Previews
 
 struct NeoListItem_Previews: PreviewProvider {
     static var previews: some View {

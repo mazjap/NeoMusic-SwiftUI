@@ -8,16 +8,20 @@
 import SwiftUI
 
 struct SearchView: View {
-    @State var text: String = ""
-    @State var isLoading = false
-    
+    // MARK: - State
     @EnvironmentObject private var settingsController: SettingsController
     @EnvironmentObject private var musicController: MusicPlayerController
     @EnvironmentObject private var feedback: FeedbackGenerator
     
-    @ObservedObject var searchController: SongSearchController
+    @ObservedObject private var searchController: SongSearchController
     
-    let offsetHeight: CGFloat = 20
+    @State private var text: String = ""
+    
+    // MARK: - Variables
+    
+    private let offsetHeight: CGFloat = 20
+    
+    // MARK: - Initializers
     
     init(searchController: SongSearchController) {
         self.searchController = searchController
@@ -27,6 +31,8 @@ struct SearchView: View {
         UITableView.appearance().tableFooterView = UIView()
         UITableView.appearance().showsVerticalScrollIndicator = false
     }
+    
+    // MARK: - Body
     
     var body: some View {
         VStack {
@@ -40,59 +46,56 @@ struct SearchView: View {
                 .resignsFirstResponderOnDrag()
                 .frame(height: 50)
                 .padding(16)
-                
-            let rect = Rectangle()
-                .foregroundColor(settingsController.colorScheme.backgroundGradient.first)
-            
-            
-            let list = List {
-                let background = settingsController.colorScheme.backgroundGradient.first
-                let text = settingsController.colorScheme.textColor.color
-                
-                let selectedSong = Binding<Optional<Song>>(get: { return nil }, set: { song in
-                    guard let song = song else { return }
-                    
-                    musicController.addToUpNext(song)
-                    musicController.skipToNextItem()
-                })
-                
-                Section(header:
-                            Text("Songs")
-                            .customHeader(backgroundColor: background, textColor: text)) {
-                    ForEach(searchController.songs.byTitle) { song in
-                        NeoSongRow(selectedSong: selectedSong, backgroundColor: settingsController.colorScheme.backgroundGradient.first, textColor: settingsController.colorScheme.textColor.color, song: song)
-                            .listRowBackground(LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.backgroundGradient.first.average(to: settingsController.colorScheme.backgroundGradient.last).offsetColors), startPoint: .top, endPoint: .bottom)
-                                                .clipped()
-                                                .cornerRadius(20))
-                    }
-                }
-                
-                Section(header: Text("Artists")
-                            .customHeader(backgroundColor: background, textColor: text)) {
-                    ForEach(searchController.songs.byArtist) { song in
-                        NeoSongRow(selectedSong: selectedSong, backgroundColor: settingsController.colorScheme.backgroundGradient.first, textColor: settingsController.colorScheme.textColor.color, song: song)
-                        Spacer()
-                    }
-                }
-                
-                Section(header: Text("Albums")
-                            .customHeader(backgroundColor: background, textColor: text)) {
-                    ForEach(searchController.songs.byAlbum) { song in
-                        NeoSongRow(selectedSong: selectedSong, backgroundColor: settingsController.colorScheme.backgroundGradient.first, textColor: settingsController.colorScheme.textColor.color, song: song)
-                    }
-                    
-                    Rectangle()
-                        .frame(height: offsetHeight / 2 + MusicPlayer.musicPlayerHeightOffset)
-                        .foregroundColor(settingsController.colorScheme.backgroundGradient.first)
-                        .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                }
-            }
-            .asAny()
-                
             
             GeometryReader { geometry in
                 ZStack {
-                    searchController.songs.byTitle.isEmpty && searchController.songs.byArtist.isEmpty && searchController.songs.byAlbum.isEmpty ? TupleView((list.asAny(), rect.asAny())) : TupleView((rect.asAny(), list.asAny()))
+                    List {
+                        let background = settingsController.colorScheme.backgroundGradient.first
+                        let text = settingsController.colorScheme.textColor.color
+                        
+                        let selectedSong = Binding<Optional<Song>>(get: { return nil }, set: { song in
+                            guard let song = song else { return }
+                            
+                            musicController.addToUpNext(song)
+                            musicController.skipToNextItem()
+                        })
+                        
+                        Section(header:
+                                    Text("Songs")
+                                    .customHeader(backgroundColor: background, textColor: text)) {
+                            ForEach(searchController.songs.byTitle) { song in
+                                NeoSongRow(selectedSong: selectedSong, backgroundColor: settingsController.colorScheme.backgroundGradient.first, textColor: settingsController.colorScheme.textColor.color, song: song)
+                                    .listRowBackground(LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.backgroundGradient.first.average(to: settingsController.colorScheme.backgroundGradient.last).offsetColors), startPoint: .top, endPoint: .bottom)
+                                                        .clipped()
+                                                        .cornerRadius(20))
+                            }
+                        }
+                        
+                        Section(header: Text("Artists")
+                                    .customHeader(backgroundColor: background, textColor: text)) {
+                            ForEach(searchController.songs.byArtist) { song in
+                                NeoSongRow(selectedSong: selectedSong, backgroundColor: settingsController.colorScheme.backgroundGradient.first, textColor: settingsController.colorScheme.textColor.color, song: song)
+                                Spacer()
+                            }
+                        }
+                        
+                        Section(header: Text("Albums")
+                                    .customHeader(backgroundColor: background, textColor: text)) {
+                            ForEach(searchController.songs.byAlbum) { song in
+                                NeoSongRow(selectedSong: selectedSong, backgroundColor: settingsController.colorScheme.backgroundGradient.first, textColor: settingsController.colorScheme.textColor.color, song: song)
+                            }
+                            
+                            Rectangle()
+                                .frame(height: offsetHeight / 2 + MusicPlayer.musicPlayerHeightOffset)
+                                .foregroundColor(settingsController.colorScheme.backgroundGradient.first)
+                                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                        }
+                    }
+                }
+                .if(searchController.songs.byTitle.isEmpty && searchController.songs.byArtist.isEmpty && searchController.songs.byAlbum.isEmpty) {
+                    $0.opacity(0)
+                } else: {
+                    $0.opacity(1)
                 }
                 .clipShape(RoundedRectangle(cornerRadius: 20))
                 .padding([.top, .leading, .trailing], 16)
@@ -103,6 +106,8 @@ struct SearchView: View {
         }
     }
 }
+
+// MARK: - Preview
 
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {

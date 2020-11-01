@@ -11,9 +11,14 @@
 import SwiftUI
 
 struct Neumorph: ViewModifier {
-    let opacities: (black: Double, white: Double)
-    let distance: CGFloat
-    let radius: CGFloat
+    
+    // MARK: - Variables
+    
+    private let opacities: (black: Double, white: Double)
+    private let distance: CGFloat
+    private let radius: CGFloat
+    
+    // MARK: - Initializer
     
     init(color: Color, size: Size) {
         let brightness = color.perceivedBrightness
@@ -23,6 +28,8 @@ struct Neumorph: ViewModifier {
         self.radius = size.rawValue
     }
     
+    // MARK: - Body
+    
     func body(content: Content) -> some View {
         ZStack {
         content
@@ -31,6 +38,8 @@ struct Neumorph: ViewModifier {
         }
     }
 }
+
+// MARK: - Preview
 
 struct Neumorph_Previews: PreviewProvider {
     static var previews: some View {
@@ -117,6 +126,8 @@ struct Neumorph_Previews: PreviewProvider {
         }
     }
 }
+
+// MARK: - Neumorph Extension: Size
 
 extension Neumorph {
     enum Size: CGFloat {

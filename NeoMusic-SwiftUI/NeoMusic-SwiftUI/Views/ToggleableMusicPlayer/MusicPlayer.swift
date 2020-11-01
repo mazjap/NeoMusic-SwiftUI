@@ -18,9 +18,10 @@ struct MusicPlayer: View {
     @EnvironmentObject private var settingsController: SettingsController
     @EnvironmentObject private var feedbackGenerator: FeedbackGenerator
     
-    @State var rotation: Double = 0
+    @State private var rotation: Double = 0
+    @Namespace private var nspace
+    
     @Binding var isOpen: Bool
-    @Namespace var nspace
     
     // MARK: - Body
     
@@ -174,6 +175,8 @@ struct MusicPlayer: View {
             }
         }
     }
+    
+    // MARK: - Static Variables
     
     static let base = "MusicPlayer."
     

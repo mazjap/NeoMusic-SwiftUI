@@ -8,8 +8,20 @@
 import SwiftUI
 
 public struct CustomListHeader: ViewModifier {
-    var backgroundColor: Color
-    var textColor: Color
+    
+    // MARK: - Variables
+    
+    private let backgroundColor: Color
+    private let textColor: Color
+    
+    // MARK: - Initializer
+    
+    init(backgroundColor: Color, textColor: Color) {
+        self.backgroundColor = backgroundColor
+        self.textColor = textColor
+    }
+    
+    // MARK: - Body
     
     public func body(content: Content) -> some View {
         content

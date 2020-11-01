@@ -8,7 +8,12 @@
 import SwiftUI
 
 struct SettingsView: View {
+    
+    // MARK: - State
+    
     @EnvironmentObject private var settingsController: SettingsController
+    
+    // MARK: - Body
     
     var body: some View {
         NavigationView {
@@ -22,6 +27,8 @@ struct SettingsView: View {
         }
     }
 }
+
+// MARK: - Preview
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {

@@ -8,13 +8,20 @@
 import SwiftUI
 
 struct SearchBar: View {
+    // MARK: - State
+    @State private var isEditing = false
+    
     @Binding var searchText: String
-    @State var isEditing = false
+    
+    // MARK: - Variables
+    
     let font: Font?
     var colorScheme: JCColorScheme
     
     let onEditingChanged: (Bool) -> Void
     let onCommit: () -> Void
+    
+    // MARK: - Body
     
     var body: some View {
         ZStack {
@@ -43,6 +50,8 @@ struct SearchBar: View {
         }
     }
 }
+
+// MARK: - Preview
 
 struct SearchBar_Previews: PreviewProvider {
     static var previews: some View {
