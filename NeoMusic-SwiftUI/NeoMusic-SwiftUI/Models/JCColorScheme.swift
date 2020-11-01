@@ -50,13 +50,11 @@ struct EasyGradient: Codable, Equatable {
     }
     
     var first: Color {
-        guard let f = easyColors.first else { fatalError("EasyGradient contains no elements! This should not happen.") }
-        return f.color
+        return easyColors.first?.color ?? .clear
     }
     
     var last: Color {
-        guard let l = easyColors.last else { fatalError("EasyGradient contains no elements! This should not happen.") }
-        return l.color
+        return easyColors.last?.color ?? .clear
     }
     
     init(_ colors: [Color]) {
@@ -67,7 +65,7 @@ struct EasyGradient: Codable, Equatable {
         }
     }
     
-    mutating func addColor(_ color: Color, at: Int? = nil) {
+    mutating func addColor(_ color: Color, at i: Int? = nil) {
         let ezclr = EasyColor(color)
         
         if colors.count == 1 && colors[0] == .clear {
@@ -75,10 +73,10 @@ struct EasyGradient: Codable, Equatable {
             return
         }
         
-        if at == nil {
-            easyColors.append(ezclr)
-        } else if let index = at, index <= count, index >= 0 {
+        if let index = i, index <= count, index >= 0 {
             easyColors.insert(ezclr, at: index)
+        } else {
+            easyColors.append(ezclr)
         }
     }
     
@@ -136,15 +134,17 @@ struct EasyColor: Codable, Equatable {
     
     // Validate user-provided hex string, return nil if bad input
     init?(_ hex: String) {
-        var newHex = hex.trimmingCharacters(in: .whitespacesAndNewlines)
+        var formattedHex = hex.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        if newHex[newHex.startIndex] == String.Element("#") {
-            newHex.removeFirst()
+        if formattedHex[formattedHex.startIndex] == String.Element("#") {
+            formattedHex.removeFirst()
         }
         
-        guard let hexAsInt = UInt32(newHex, radix: 16) else { return nil }
+        guard let hexAsInt = UInt32(formattedHex, radix: 16) else { return nil }
         
-        self.init(red: UInt8((hexAsInt >> 16) & 0xFF), green: UInt8((hexAsInt >> 8) & 0xFF), blue: UInt8(hexAsInt & 0xFF))
+        self.init(red: UInt8((hexAsInt >> 16) & 0xFF),
+                  green: UInt8((hexAsInt >> 8) & 0xFF),
+                  blue: UInt8(hexAsInt & 0xFF))
     }
     
     static var none = EasyColor(.clear)

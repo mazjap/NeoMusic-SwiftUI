@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 extension UIApplication {
     var keyWindow: UIWindow? {
@@ -22,5 +23,11 @@ extension UIApplication {
     
     static func present(_ alert: UIAlertController, animated: Bool) {
         Self.shared.currentVC?.present(alert, animated: animated)
+    }
+    
+    func setHostingController<Content: View>(rootView: Content) {
+        if let window = keyWindow {
+            window.rootViewController = HostingController(rootView: rootView)
+        }
     }
 }

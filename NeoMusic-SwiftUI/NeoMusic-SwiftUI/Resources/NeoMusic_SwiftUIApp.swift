@@ -29,11 +29,3 @@ struct NeoMusic_SwiftUIApp: App {
         }
     }
 }
-
-extension UIApplication {
-    func setHostingController<Content: View>(rootView: Content) {
-        if let window = windows.first {
-            window.rootViewController = HostingController(rootView: rootView)
-        }
-    }
-}

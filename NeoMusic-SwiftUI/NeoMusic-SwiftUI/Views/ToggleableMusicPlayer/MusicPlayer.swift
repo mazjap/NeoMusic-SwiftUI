@@ -48,6 +48,9 @@ struct MusicPlayer: View {
     static let  backButtonKey = base + "BackButton"
     static let pauseButtonKey = base + "PauseButton"
     static let  skipButtonKey = base + "SkipButton"
+    
+    
+    static let musicPlayerHeightOffset: CGFloat = 100
 }
 
 struct OpenMusicPlayer: View {
@@ -84,7 +87,7 @@ struct OpenMusicPlayer: View {
                     Spacer()
                     
                     DefaultButton(imageName: "line.horizontal.3", imageColor: settingsController.colorScheme.mainButtonColor.color, buttonColor: settingsController.colorScheme.backgroundGradient.first) {
-                        // TODO: - Toggle up next
+                        // TODO: - Toggle up next view
                         feedbackGenerator.impactOccurred()
                     }
                 }
@@ -164,12 +167,12 @@ struct ClosedMusicPlayer: View {
         ZStack(alignment: .bottom) {
             // Background
             LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.backgroundGradient.colors), startPoint: .top, endPoint: .bottom)
-                .matchedGeometryEffect(id: MusicPlayer.backgroundKey, in: nspace, properties: .frame, isSource: isOpen)
+                .matchedGeometryEffect(id: MusicPlayer.backgroundKey, in: nspace, properties: .size, isSource: isOpen)
             
             HStack {
                 MusicArtwork(colorScheme: settingsController.colorScheme, image: musicController.currentSong.artwork, rotation: $rotation, size: .button)
                     .matchedGeometryEffect(id: "MusicPlayer.Artwork", in: nspace)
-                    .frame(width: 80, height: 80)
+                    .frame(width: MusicPlayer.musicPlayerHeightOffset - 20, height: MusicPlayer.musicPlayerHeightOffset - 20)
                     .padding(.all, 10)
                     .matchedGeometryEffect(id: MusicPlayer.artworkKey, in: nspace)
                 
@@ -219,7 +222,7 @@ struct ClosedMusicPlayer: View {
                 .padding(.horizontal, 10)
             }
         }
-        .frame(height: 100)
+        .frame(height: MusicPlayer.musicPlayerHeightOffset)
     }
 }
 
