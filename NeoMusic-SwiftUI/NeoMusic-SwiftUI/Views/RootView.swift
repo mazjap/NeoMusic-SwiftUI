@@ -15,15 +15,14 @@ struct RootView: View {
     // MARK: - State
     
     @EnvironmentObject private var settingsController: SettingsController
+    @EnvironmentObject private var feedback: FeedbackGenerator
     @EnvironmentObject private var musicController: MusicPlayerController {
         didSet {
             musicController.delegate = searchController
         }
     }
-    @EnvironmentObject private var feedback: FeedbackGenerator
     
     @StateObject private var searchController = SongSearchController()
-    
     @State private var musicPlayerIsOpen: Bool = false
     
     
@@ -54,7 +53,7 @@ struct RootView: View {
                 
                 MusicPlayer(isOpen: $musicPlayerIsOpen)
                     .frame(height: geometry.size.height - TabBar.height)
-                    .offset(y: musicPlayerIsOpen ? -TabBar.height / 2 : geometry.size.height / 2 - TabBar.height - 50)
+                    .offset(y: musicPlayerIsOpen ? -TabBar.height / 2 : geometry.size.height / 2 - TabBar.height - MusicPlayer.musicPlayerHeightOffset / 2)
             }
         }
     }

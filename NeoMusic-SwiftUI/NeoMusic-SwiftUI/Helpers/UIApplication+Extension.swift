@@ -5,7 +5,6 @@
 //  Created by Jordan Christensen on 10/2/20.
 //
 
-import UIKit
 import SwiftUI
 
 extension UIApplication {
@@ -26,8 +25,10 @@ extension UIApplication {
     }
     
     func setHostingController<Content: View>(rootView: Content) {
-        if let window = keyWindow {
-            window.rootViewController = HostingController(rootView: rootView)
-        }
+        keyWindow?.rootViewController = HostingController(rootView: rootView)
+    }
+    
+    func setNeedsStatusBarAppearanceUpdate() {
+        currentVC?.setNeedsStatusBarAppearanceUpdate()
     }
 }

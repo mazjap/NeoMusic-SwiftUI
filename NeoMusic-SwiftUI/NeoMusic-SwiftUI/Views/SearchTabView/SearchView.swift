@@ -27,9 +27,11 @@ struct SearchView: View {
         self.searchController = searchController
         self.text = searchController.searchTerm
         
-        UITableView.appearance().backgroundColor = .clear
-        UITableView.appearance().tableFooterView = UIView()
-        UITableView.appearance().showsVerticalScrollIndicator = false
+        let appearance = UITableView.appearance()
+        
+        appearance.backgroundColor = .clear
+        appearance.tableFooterView = UIView()
+        appearance.showsVerticalScrollIndicator = false
     }
     
     // MARK: - Body
