@@ -17,8 +17,17 @@ struct MusicView: View {
     // MARK: - Body
     
     var body: some View {
-        Text("Hello, World!")
-            .foregroundColor(settingsController.colorScheme.textColor.color)
+        GeometryReader { geometry in
+            ZStack {
+                LinearGradient(gradient: settingsController.colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
+                    .edgesIgnoringSafeArea(.top)
+                    .frame(height: geometry.size.height + MusicPlayer.musicPlayerHeightOffset - TabBar.height)
+                    .offset(y: -TabBar.height / 2)
+                
+                Text("Hello, World!")
+                    .foregroundColor(settingsController.colorScheme.textColor.color)
+            }
+        }
     }
 }
 

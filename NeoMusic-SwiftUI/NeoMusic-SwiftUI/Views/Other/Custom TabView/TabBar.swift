@@ -86,7 +86,7 @@ struct TabBar: View {
                 .overlayPreferenceValue(TabBarPreferenceKey.self) {
                     self.indicator($0)
                 }
-                .padding()
+                .spacing()
             }
             .frame(height: Self.height)
         }

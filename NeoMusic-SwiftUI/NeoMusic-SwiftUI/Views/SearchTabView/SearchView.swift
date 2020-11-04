@@ -37,75 +37,101 @@ struct SearchView: View {
     // MARK: - Body
     
     var body: some View {
-        VStack {
-            SearchBar(searchText: Binding<String>(get: {
-                return text
-            }, set: { newVal in
-                text = newVal
-                searchController.searchTerm = text
-            }), font: nil, colorScheme: settingsController.colorScheme,
-            onEditingChanged: { isEditing in }, onCommit: {})
-                .resignsFirstResponderOnDrag()
-                .frame(height: 50)
-                .padding(16)
-            
-            GeometryReader { geometry in
-                ZStack {
+        GeometryReader { geometry in
+            ZStack {
+                LinearGradient(gradient: settingsController.colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
+                    .edgesIgnoringSafeArea(.top)
+                    .frame(height: geometry.size.height + MusicPlayer.musicPlayerHeightOffset - TabBar.height)
+                    .offset(y: -TabBar.height / 2)
+                
+                VStack {
+                    SearchBar(searchText: Binding<String>(get: {
+                        return text
+                    }, set: { newVal in
+                        text = newVal
+                        searchController.searchTerm = text
+                    }), font: nil, colorScheme: settingsController.colorScheme,
+                    onEditingChanged: { isEditing in }, onCommit: {})
+                        .resignsFirstResponderOnDrag()
+                        .frame(height: 50)
+                    .spacing()
+                    
                     List {
-                        let background = settingsController.colorScheme.backgroundGradient.first
-                        let text = settingsController.colorScheme.textColor.color
                         
-                        let selectedSong = Binding<Optional<Song>>(get: { return nil }, set: { song in
-                            guard let song = song else { return }
-                            
-                            musicController.addToUpNext(song)
-                            musicController.skipToNextItem()
-                        })
-                        
-                        Section(header:
-                                    Text("Songs")
-                                    .customHeader(backgroundColor: background, textColor: text)) {
-                            ForEach(searchController.songs.byTitle) { song in
-                                NeoSongRow(selectedSong: selectedSong, backgroundColor: settingsController.colorScheme.backgroundGradient.first, textColor: settingsController.colorScheme.textColor.color, song: song)
-                                    .listRowBackground(LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.backgroundGradient.first.average(to: settingsController.colorScheme.backgroundGradient.last).offsetColors), startPoint: .top, endPoint: .bottom)
-                                                        .clipped()
-                                                        .cornerRadius(20))
-                            }
-                        }
-                        
-                        Section(header: Text("Artists")
-                                    .customHeader(backgroundColor: background, textColor: text)) {
-                            ForEach(searchController.songs.byArtist) { song in
-                                NeoSongRow(selectedSong: selectedSong, backgroundColor: settingsController.colorScheme.backgroundGradient.first, textColor: settingsController.colorScheme.textColor.color, song: song)
-                                Spacer()
-                            }
-                        }
-                        
-                        Section(header: Text("Albums")
-                                    .customHeader(backgroundColor: background, textColor: text)) {
-                            ForEach(searchController.songs.byAlbum) { song in
-                                NeoSongRow(selectedSong: selectedSong, backgroundColor: settingsController.colorScheme.backgroundGradient.first, textColor: settingsController.colorScheme.textColor.color, song: song)
-                            }
-                            
-                            Rectangle()
-                                .frame(height: offsetHeight / 2 + MusicPlayer.musicPlayerHeightOffset)
-                                .foregroundColor(settingsController.colorScheme.backgroundGradient.first)
-                                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                        }
                     }
                 }
-                .if(searchController.songs.byTitle.isEmpty && searchController.songs.byArtist.isEmpty && searchController.songs.byAlbum.isEmpty) {
-                    $0.opacity(0)
-                } else: {
-                    $0.opacity(1)
-                }
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-                .padding([.top, .leading, .trailing], 16)
-                .frame(height: geometry.size.height + offsetHeight)
-                .offset(y: offsetHeight / 2)
-                .neumorph(color: settingsController.colorScheme.backgroundGradient.first.average(to: settingsController.colorScheme.backgroundGradient.last), size: .list)
             }
         }
+        
+//        VStack {
+//            SearchBar(searchText: Binding<String>(get: {
+//                return text
+//            }, set: { newVal in
+//                text = newVal
+//                searchController.searchTerm = text
+//            }), font: nil, colorScheme: settingsController.colorScheme,
+//            onEditingChanged: { isEditing in }, onCommit: {})
+//                .resignsFirstResponderOnDrag()
+//                .frame(height: 50)
+//                .padding(16)
+//
+//            GeometryReader { geometry in
+//                ZStack {
+//                    List {
+//                        let background = settingsController.colorScheme.backgroundGradient.first
+//                        let text = settingsController.colorScheme.textColor.color
+//
+//                        let selectedSong = Binding<Optional<Song>>(get: { return nil }, set: { song in
+//                            guard let song = song else { return }
+//
+//                            musicController.addToUpNext(song)
+//                            musicController.skipToNextItem()
+//                        })
+//
+//                        Section(header:
+//                                    Text("Songs")
+//                                    .customHeader(backgroundColor: background, textColor: text)) {
+//                            ForEach(searchController.songs.byTitle) { song in
+//                                NeoSongRow(selectedSong: selectedSong, backgroundColor: settingsController.colorScheme.backgroundGradient.first, textColor: settingsController.colorScheme.textColor.color, song: song)
+//                                    .listRowBackground(LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.backgroundGradient.first.average(to: settingsController.colorScheme.backgroundGradient.last).offsetColors), startPoint: .top, endPoint: .bottom)
+//                                                        .clipped()
+//                                                        .cornerRadius(20))
+//                            }
+//                        }
+//
+//                        Section(header: Text("Artists")
+//                                    .customHeader(backgroundColor: background, textColor: text)) {
+//                            ForEach(searchController.songs.byArtist) { song in
+//                                NeoSongRow(selectedSong: selectedSong, backgroundColor: settingsController.colorScheme.backgroundGradient.first, textColor: settingsController.colorScheme.textColor.color, song: song)
+//                                Spacer()
+//                            }
+//                        }
+//
+//                        Section(header: Text("Albums")
+//                                    .customHeader(backgroundColor: background, textColor: text)) {
+//                            ForEach(searchController.songs.byAlbum) { song in
+//                                NeoSongRow(selectedSong: selectedSong, backgroundColor: settingsController.colorScheme.backgroundGradient.first, textColor: settingsController.colorScheme.textColor.color, song: song)
+//                            }
+//
+//                            Rectangle()
+//                                .frame(height: offsetHeight / 2 + MusicPlayer.musicPlayerHeightOffset)
+//                                .foregroundColor(settingsController.colorScheme.backgroundGradient.first)
+//                                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+//                        }
+//                    }
+//                }
+//                .if(searchController.searchTerm.isEmpty || (searchController.songs.byTitle.isEmpty && searchController.songs.byArtist.isEmpty && searchController.songs.byAlbum.isEmpty)) {
+//                    $0.opacity(0)
+//                } else: {
+//                    $0.opacity(1)
+//                }
+//                .cornerRadius(20)
+//                .padding([.top, .leading, .trailing], 16)
+//                .frame(height: geometry.size.height + offsetHeight)
+//                .offset(y: offsetHeight / 2)
+//                .neumorph(color: settingsController.colorScheme.backgroundGradient.first.average(to: settingsController.colorScheme.backgroundGradient.last), size: .list)
+//            }
+//        }
     }
 }
 

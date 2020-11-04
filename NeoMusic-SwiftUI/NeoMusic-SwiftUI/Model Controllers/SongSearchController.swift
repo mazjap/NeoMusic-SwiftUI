@@ -19,7 +19,7 @@ class SongSearchController: ObservableObject {
     @Published var searchType: SearchType
     @Published var isSearching: Bool = false {
         didSet {
-            NSLog(isSearching ? "Searching for songs with search term, \"\(searchTerm)\"" : "Done searching.")
+            NSLog(isSearching && !searchTerm.isEmpty ? "Searching for songs with search term, \"\(searchTerm)\"" : "Done searching.")
         }
     }
     
@@ -37,7 +37,7 @@ class SongSearchController: ObservableObject {
             }
 
             if let task = task {
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: task)
+                DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: DispatchTime.now().advanced(by: DispatchTimeInterval.seconds(1)), execute: task)
             }
         }
     }
@@ -70,41 +70,41 @@ class SongSearchController: ObservableObject {
     }
     
     func search(for term: String) {
-        isSearching = true
+        DispatchQueue.main.async {
+            self.isSearching = true
+        }
         
-        DispatchQueue.global(qos: .userInitiated).async {
-            guard !term.isEmpty else {
-                DispatchQueue.main.async {
-                    self.isSearching = false
-                }
-                return
-            }
-            
-            let search = term.lowercased()
-            let allSongs = self.getAllSongs()
-            
-            var byTitle = [Song]()
-            var byArtist = [Song]()
-            var byAlbum = [Song]()
-            
-            for song in allSongs {
-                if song.title.lowercased().contains(search) {
-                    byTitle.append(song)
-                }
-                
-                if song.artist.lowercased().contains(search) {
-                    byArtist.append(song)
-                }
-                
-                if song.albumTitle.lowercased().contains(search) {
-                    byAlbum.append(song)
-                }
-            }
-            
+        guard !term.isEmpty else {
             DispatchQueue.main.async {
-                self.songs = (byTitle, byArtist, byAlbum)
                 self.isSearching = false
             }
+            return
+        }
+        
+        let search = term.lowercased()
+        let allSongs = self.getAllSongs()
+        
+        var byTitle = [Song]()
+        var byArtist = [Song]()
+        var byAlbum = [Song]()
+        
+        for song in allSongs {
+            if song.title.lowercased().contains(search) {
+                byTitle.append(song)
+            }
+            
+            if song.artist.lowercased().contains(search) {
+                byArtist.append(song)
+            }
+            
+            if song.albumTitle.lowercased().contains(search) {
+                byAlbum.append(song)
+            }
+        }
+        
+        DispatchQueue.main.async {
+            self.songs = (byTitle, byArtist, byAlbum)
+            self.isSearching = false
         }
     }
 }

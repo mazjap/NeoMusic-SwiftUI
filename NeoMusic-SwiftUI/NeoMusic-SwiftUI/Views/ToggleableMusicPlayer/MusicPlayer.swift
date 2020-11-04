@@ -56,8 +56,8 @@ struct MusicPlayer: View {
                     Spacer()
                     
                     MusicArtwork(colorScheme: settingsController.colorScheme, image: musicController.currentSong.artwork, rotation: $rotation)
-                        .padding(.horizontal)
-                         .matchedGeometryEffect(id: MusicPlayer.artworkKey, in: nspace, isSource: !isOpen)
+                        .spacing(.bottom)
+                        .matchedGeometryEffect(id: MusicPlayer.artworkKey, in: nspace, isSource: !isOpen)
                     
                     HStack {
                         Text(musicController.currentSong.title)
@@ -110,13 +110,13 @@ struct MusicPlayer: View {
                         }
                     }
                 }
-                .padding(Constants.spacing)
+                .spacing()
             } else { // MARK: - isClosed
                 HStack {
                     MusicArtwork(colorScheme: settingsController.colorScheme, image: musicController.currentSong.artwork, rotation: $rotation, size: .button)
-                        .frame(width: MusicPlayer.musicPlayerHeightOffset - 20, height: MusicPlayer.musicPlayerHeightOffset - 20)
-                        .padding(.all, 10)
-                         .matchedGeometryEffect(id: MusicPlayer.artworkKey, in: nspace, isSource: isOpen)
+                        .frame(width: MusicPlayer.musicPlayerHeightOffset - Constants.spacing * 2, height: MusicPlayer.musicPlayerHeightOffset - Constants.spacing * 2)
+                        .spacing()
+                        .matchedGeometryEffect(id: MusicPlayer.artworkKey, in: nspace, isSource: isOpen)
                     
                     VStack(alignment: .leading) {
                         HStack {
@@ -162,7 +162,7 @@ struct MusicPlayer: View {
                         }
                          .matchedGeometryEffect(id: MusicPlayer.skipButtonKey, in: nspace, isSource: isOpen)
                     }
-                    .padding(.horizontal, 10)
+                    .spacing(.horizontal)
                 }
             }
         }

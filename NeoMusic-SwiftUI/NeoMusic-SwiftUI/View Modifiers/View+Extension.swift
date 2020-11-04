@@ -28,22 +28,23 @@ extension View {
             .modifier(CustomListHeader(backgroundColor: backgroundColor, textColor: textColor))
     }
     
-    // Conditionally modify view
-    @ViewBuilder
-    func `if`<Transform: View>(_ condition: Bool, transformation: (Self) -> Transform) -> some View {
-        if condition {
-            transformation(self)
-        } else {
-            self
-        }
+    func spacing(_ edges: Edge.Set = .all) -> some View {
+        self
+            .padding(edges, Constants.spacing)
     }
     
+    // Conditionally modify view
     @ViewBuilder
-    func `if`<Transform: View>(_ condition: Bool, transformation: (Self) -> Transform, else falseTransformation: (Self) -> Transform) -> some View {
+    func `if`<Content>(_ condition: Bool,
+                       trueModification: (Self) -> Content,
+                       else falseModification: ((Self) -> Content)? = nil) ->
+                       some View where Content: View {
         if condition {
-            transformation(self)
+            trueModification(self)
+        } else if let falseModification = falseModification {
+            falseModification(self)
         } else {
-            falseTransformation(self)
+            self
         }
     }
 }

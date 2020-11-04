@@ -24,10 +24,12 @@ struct BarButton: View {
         self.color = buttonColor
     }
     
-    init(imageName: String, buttonColor: Color, action: @escaping () -> Void) {
-        self.image = Image(systemName: imageName)
-        self.action = action
-        self.color = buttonColor
+    init(systemImageName: String, buttonColor: Color, action: @escaping () -> Void) {
+        self.init(image: Image(systemName: systemImageName), buttonColor: buttonColor, action: action)
+    }
+    
+    init(assetImageName: String, buttonColor: Color, action: @escaping () -> Void) {
+        self.init(image: Image(assetImageName), buttonColor: buttonColor, action: action)
     }
     
     // MARK: - Body
@@ -44,6 +46,6 @@ struct BarButton: View {
 
 struct BarButton_Previews: PreviewProvider {
     static var previews: some View {
-        BarButton(imageName: "circle.fill", buttonColor: .red) { }
+        BarButton(systemImageName: "circle.fill", buttonColor: .red) { }
     }
 }

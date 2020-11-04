@@ -13,6 +13,7 @@ public struct CustomListHeader: ViewModifier {
     
     private let backgroundColor: Color
     private let textColor: Color
+    private let spacing: CGFloat = 20
     
     // MARK: - Initializer
     
@@ -25,8 +26,8 @@ public struct CustomListHeader: ViewModifier {
     
     public func body(content: Content) -> some View {
         content
-            .padding(20)
-            .frame(width: UIScreen.main.bounds.width - 20, height: 28, alignment: .leading)
+            .padding(spacing)
+            .frame(width: UIScreen.main.bounds.width - spacing, height: 28, alignment: .leading)
             .background(backgroundColor)
             .foregroundColor(textColor)
     }

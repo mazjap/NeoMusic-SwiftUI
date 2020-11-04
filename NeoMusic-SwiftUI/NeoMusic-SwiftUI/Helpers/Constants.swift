@@ -11,7 +11,7 @@
 import SwiftUI
 
 struct Constants {
-    static let spacing: CGFloat = 10
+    static let spacing: CGFloat = 16
     
     static let defaultColorScheme =
         JCColorScheme(

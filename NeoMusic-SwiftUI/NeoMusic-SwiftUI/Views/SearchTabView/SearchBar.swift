@@ -32,7 +32,7 @@ struct SearchBar: View {
             HStack {
                 Image(systemName: "magnifyingglass")
                     .foregroundColor(colorScheme.textColor.color)
-                    .padding(.leading, 8)
+                    .padding(.leading, Constants.spacing / 2)
                 
                 ZStack(alignment: .leading) {
                     if searchText.isEmpty {
@@ -46,7 +46,7 @@ struct SearchBar: View {
                         .foregroundColor(colorScheme.textColor.color)
                 }
             }
-            .padding(.horizontal, 8)
+            .padding(.horizontal, Constants.spacing / 2)
         }
     }
 }

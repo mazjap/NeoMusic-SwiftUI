@@ -29,7 +29,7 @@ struct NeoSongRow: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .clipShape(Circle())
-                .padding(.vertical, 8)
+                .padding(.vertical, Constants.spacing / 2)
             
             VStack(alignment: .leading) {
                 Text(song.title)
@@ -51,8 +51,8 @@ struct NeoSongRow: View {
                     .aspectRatio(contentMode: .fit)
                     .foregroundColor(textColor)
             }
-            .padding(.vertical, height / 2 - 10)
-            .padding(.horizontal, 8)
+            .padding(.vertical, height / 2)
+            .padding(.horizontal, Constants.spacing / 2)
             
         }
         .listRowBackground(LinearGradient(gradient: Gradient(colors: backgroundColor.offsetColors), startPoint: .top, endPoint: .bottom))

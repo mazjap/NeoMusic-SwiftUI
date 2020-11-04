@@ -107,7 +107,7 @@ struct Artwork_Previews: PreviewProvider {
     
     static var previews: some View {
         MusicArtwork(colorScheme: .default, image: .placeholder, rotation: $rotation)
-            .padding()
+            .spacing()
             .previewLayout(.fixed(width: 400, height: 400))
     }
 }

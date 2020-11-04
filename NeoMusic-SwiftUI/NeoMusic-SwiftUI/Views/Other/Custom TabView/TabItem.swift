@@ -51,11 +51,11 @@ struct TabItem_Previews: PreviewProvider {
                         Rectangle()
                             .cornerRadius(20)
                             .foregroundColor(.red)
-                            .padding()
+                            .spacing()
                         
                         Circle()
                             .foregroundColor(.blue)
-                            .padding()
+                            .spacing()
                     }
                 }
             }
