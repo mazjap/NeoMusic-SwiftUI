@@ -40,8 +40,7 @@ struct SearchBar: View {
                             .font(font ?? .footnote)
                             .foregroundColor(colorScheme.textColor.color)
                     }
-                    
-                    TextField("", text: $searchText, onEditingChanged: onEditingChanged, onCommit: onCommit)
+                    TextField(searchText, text: $searchText, onEditingChanged: onEditingChanged, onCommit: onCommit)
                         .font(font ?? .callout)
                         .foregroundColor(colorScheme.textColor.color)
                 }

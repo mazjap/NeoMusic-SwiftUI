@@ -19,44 +19,49 @@ struct NeoSongRow: View {
     let textColor: Color
     let song: Song
     let cornerRadius: CGFloat = 20
-    let height = UIScreen.main.bounds.height / 10
     
     // MARK: - Body
     
     var body: some View {
-        HStack {
-            song.artwork
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .clipShape(Circle())
-                .padding(.vertical, Constants.spacing / 2)
-            
-            VStack(alignment: .leading) {
-                Text(song.title)
-                    .lineLimit(1)
-                    .font(.title)
-                    .foregroundColor(textColor)
-                
-                Text(song.artist)
-                    .lineLimit(1)
-                    .font(.caption)
-                    .foregroundColor(textColor)
-            }
-            
-            Spacer()
-            
-            Button(action: {}) {
-                Image(systemName: "heart")
+        ZStack {
+            HStack {
+                song.artwork
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .foregroundColor(textColor)
+                    .clipShape(Circle())
+                    .padding(.vertical, Constants.spacing / 2)
+                
+                VStack(alignment: .leading) {
+                    Text(song.title)
+                        .lineLimit(1)
+                        .font(.callout)
+                        .foregroundColor(textColor)
+                    
+                    Text(song.artist)
+                        .lineLimit(1)
+                        .font(.caption)
+                        .foregroundColor(textColor)
+                }
+                
+                Spacer()
+                
+                Button(action: {
+                    // TODO: Add/Remove song to/from favorites
+                }) {
+                    Image(systemName: "heart")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .foregroundColor(textColor)
+                }
+                .padding(.vertical, SearchView.cellHeight / 2)
+                .padding(.horizontal, Constants.spacing / 2)
+                
             }
-            .padding(.vertical, height / 2)
-            .padding(.horizontal, Constants.spacing / 2)
-            
         }
-        .listRowBackground(LinearGradient(gradient: Gradient(colors: backgroundColor.offsetColors), startPoint: .top, endPoint: .bottom))
-        .frame(height: height)
+        .listRowBackground(LinearGradient(gradient: Gradient(colors: backgroundColor.offsetColors), startPoint: .top, endPoint: .bottom)
+                            .clipped()
+                            .cornerRadius(20))
+        .frame(height: SearchView.cellHeight)
         .onTapGesture(count: 1) {
             selectedSong = song
         }

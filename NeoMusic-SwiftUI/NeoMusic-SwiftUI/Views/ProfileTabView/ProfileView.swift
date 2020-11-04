@@ -27,7 +27,7 @@ struct ProfileView: View {
                     .frame(height: geometry.size.height + MusicPlayer.musicPlayerHeightOffset - TabBar.height)
                     .offset(y: -TabBar.height / 2)
                 
-                Text("Hello, World!")
+                Text("Profile View")
                     .foregroundColor(settingsController.colorScheme.textColor.color)
                 
                 VStack {
