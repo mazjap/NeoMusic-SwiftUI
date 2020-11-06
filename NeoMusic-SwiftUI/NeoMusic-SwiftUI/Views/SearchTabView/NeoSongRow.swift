@@ -20,10 +20,20 @@ struct NeoSongRow: View {
     let song: Song
     let cornerRadius: CGFloat = 20
     
+    var gesture: some Gesture {
+        TapGesture(count: 1)
+            .onEnded { _ in
+                selectedSong = song
+            }
+    }
+    
     // MARK: - Body
     
     var body: some View {
         ZStack {
+            
+            Color.clear
+            
             HStack {
                 song.artwork
                     .resizable()
@@ -60,11 +70,11 @@ struct NeoSongRow: View {
         }
         .listRowBackground(LinearGradient(gradient: Gradient(colors: backgroundColor.offsetColors), startPoint: .top, endPoint: .bottom)
                             .clipped()
-                            .cornerRadius(20))
+                            .cornerRadius(20)
+                            .padding(.horizontal, 5)
+                            .gesture(gesture))
         .frame(height: SearchView.cellHeight)
-        .onTapGesture(count: 1) {
-            selectedSong = song
-        }
+        .gesture(gesture)
     }
 }
 

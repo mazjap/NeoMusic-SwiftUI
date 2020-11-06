@@ -10,15 +10,15 @@
 
 import MediaPlayer
 
-// MARK: - Helpers
+// MARK: - MusicPlayerControllerDelegate
 
 protocol MusicPlayerControllerDelegate: AnyObject {
     func songChanged(previousSong: Song)
 }
 
-extension Queue where Type == Song {
-    var collection: MPMediaItemCollection {
-        MPMediaItemCollection(items: arr.compactMap { $0.media })
+extension Array where Element == Song {
+    var mediaItems: [MPMediaItem] {
+        self.compactMap { $0.media }
     }
 }
 
@@ -34,9 +34,12 @@ class MusicPlayerController: ObservableObject {
         }
     }
     
-    private var player: MPMusicPlayerController = .systemMusicPlayer
-    
-    private var queue = Queue<Song>()
+    private var player: MPMusicPlayerController = .systemMusicPlayer {
+        didSet {
+            dynamicPlayer = Dynamic(player)
+        }
+    }
+    private var dynamicPlayer: Dynamic
     
     var currentPlaybackTime: TimeInterval {
         player.currentPlaybackTime
@@ -54,21 +57,15 @@ class MusicPlayerController: ObservableObject {
 
     @Published var currentSong: Song = Song.noSong {
         willSet {
-            if currentSong.persistentID != 0 {
-                delegate?.songChanged(previousSong: currentSong)
-            }
-            
             if UIApplication.shared.applicationState == .active {
                 objectWillChange.send()
             }
         }
         
         didSet {
-            queue.pop()
-            
-//            if queue.arr.count == 0 {
-//                queue.push(getAllSongs())
-//            }
+            if oldValue.persistentID != 0 {
+                delegate?.songChanged(previousSong: oldValue)
+            }
         }
     }
     
@@ -77,9 +74,10 @@ class MusicPlayerController: ObservableObject {
     // MARK: - Initializer
 
     init() {
+        dynamicPlayer = Dynamic(player)
         checkAuthorized()
         
-        queue.delegate = self
+        print(upNextSongs.map { $0.title })
     }
     
     // MARK: - Private Functions
@@ -192,24 +190,35 @@ class MusicPlayerController: ObservableObject {
     // MARK: - Queue Functions
     
     func setQueue(with songs: [Song]) {
-        queue.clear()
-        queue.push(songs)
+        guard isAuthorized else { checkAuthorized(); return }
+        
+        DispatchQueue.main.async {
+            let ids = songs.compactMap { $0.media?.playbackStoreID }
+            
+            self.player.setQueue(with: ids)
+            self.player.prepareToPlay()
+            self.player.play()
+        }
     }
     
     func addToUpNext(_ song: Song) {
-        queue.pushToFront(song)
+        addToUpNext([song])
     }
     
     func addToUpNext(_ songs: [Song]) {
-        queue.pushToFront(songs)
+        let descriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: MPMediaItemCollection(items: songs.mediaItems))
+
+        player.prepend(descriptor)
     }
     
     func addToUpLater(_ song: Song) {
-        queue.push(song)
+        addToUpLater([song])
     }
     
     func addToUpLater(_ songs: [Song]) {
-        queue.push(songs)
+        let descriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: MPMediaItemCollection(items: songs.mediaItems))
+
+        player.append(descriptor)
     }
     
     // MARK: - Objective-C Functions
@@ -229,33 +238,36 @@ class MusicPlayerController: ObservableObject {
     }
 }
 
-// MARK: - MusicPlayerController Extension: QueueDelegate
+// MARK: - MusicPlayerController Extension: Dynamic Player
 
-extension MusicPlayerController: QueueDelegate {
-//    internal func queueWillChange() {
-//        DispatchQueue.main.async {
-//            print(self.queue.arr.map { $0.title })
-//        }
-//    }
-    
-    internal func queueDidPush() {
-        updateQueue()
+extension MusicPlayerController {
+    private var songCount: Int {
+        return dynamicPlayer.numberOfItems.unwrapped() ?? 0
     }
     
-    internal func queueDidPushToFront() {
-        updateQueue()
+    private var currentIndex: Int {
+        return player.indexOfNowPlayingItem
     }
     
-    private func updateQueue() {
-        guard isAuthorized else { checkAuthorized(); return }
+    var upNextSongs: [Song] {
+        guard songCount > currentIndex else { return [] }
         
-        DispatchQueue.main.async {
-            let arr = self.queue.arr
-            let ids = arr.compactMap { $0.media?.playbackStoreID }
-            
-            self.player.setQueue(with: ids)
-            self.player.prepareToPlay()
-            self.player.play()
+        var temp = [Song]()
+        
+        for i in currentIndex..<songCount {
+            if let media = item(at: i) {
+                temp.append(Song(media))
+            }
         }
+        
+        return temp
+    }
+    
+    private func item(at index: Int) -> MPMediaItem? {
+        if let item: MPMediaItem = dynamicPlayer.nowPlayingItemAt(index: index).unwrapped() {
+            return item
+        }
+        
+        return nil
     }
 }

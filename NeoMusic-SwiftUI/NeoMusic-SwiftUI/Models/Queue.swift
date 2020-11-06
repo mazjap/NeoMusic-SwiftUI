@@ -35,6 +35,10 @@ extension QueueDelegate {
 // MARK: - Queue
 
 struct Queue<Type>: CustomStringConvertible {
+    static func + (lhs: Queue<Type>, rhs: Queue<Type>) -> Queue<Type> {
+        return Queue(lhs.arr + rhs.arr)
+    }
+    
     
     // MARK: - Variables
     

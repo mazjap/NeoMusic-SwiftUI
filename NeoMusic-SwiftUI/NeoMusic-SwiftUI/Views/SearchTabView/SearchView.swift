@@ -89,16 +89,20 @@ struct SearchView: View {
     
     // Extract Section View to function to avoid repeated code
     private func getSection(with type: SectionType, backgroundColor: Color, textColor: Color, selectedSong: Binding<Optional<Song>>) -> some View {
-        Section(header: Text(type.text).customHeader(backgroundColor: backgroundColor, textColor: textColor)) {
-            ForEach(type.songList(searchController: searchController)) { song in
-                    NeoSongRow(selectedSong: selectedSong, backgroundColor: backgroundColor, textColor: textColor, song: song)
-                Spacer()
-                    .frame(height: 5)
-                    .listRowBackground(
-                        backgroundColor
-                            .frame(height: 5)
-                    )
-            }
+        let songs = type.songList(searchController: searchController)
+        
+        if songs.isEmpty {
+            return Section {}
+                .frame(width: 0, height: 0)
+                .asAny()
+        } else {
+            return Section(header: Text(type.text).customHeader(backgroundColor: backgroundColor, textColor: textColor)) {
+                ForEach(songs) { song in
+                        NeoSongRow(selectedSong: selectedSong, backgroundColor: backgroundColor, textColor: textColor, song: song)
+                    Spacer()
+                        .listRowBackground(backgroundColor)
+                }
+            }.asAny()
         }
     }
     

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0E07DFEB252724F8006DDFF6 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E07DFEA252724F8006DDFF6 /* String+Extension.swift */; };
+		0E0FE7A42553800F002FB781 /* Invocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0FE7A32553800F002FB781 /* Invocation.swift */; };
 		0E2C908124F5CF2600AB950D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E2C908024F5CF2600AB950D /* Constants.swift */; };
 		0E2C908324F5D5A400AB950D /* JCColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E2C908224F5D5A400AB950D /* JCColorScheme.swift */; };
 		0E42F9F724F4EC9200901C89 /* DefaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E42F9F624F4EC9200901C89 /* DefaultButton.swift */; };
@@ -16,14 +17,17 @@
 		0E49677325299E97000D166C /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E49676E25299E97000D166C /* SearchBar.swift */; };
 		0E49677425299E97000D166C /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E49676F25299E97000D166C /* SearchView.swift */; };
 		0E49677525299E97000D166C /* NeoSongRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E49677025299E97000D166C /* NeoSongRow.swift */; };
-		0E49677625299E97000D166C /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E49677125299E97000D166C /* Queue.swift */; };
 		0E49677E2529A384000D166C /* ResignFirstResponderOnDrag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E49677D2529A383000D166C /* ResignFirstResponderOnDrag.swift */; };
 		0E50083C2532A47700B3BFAE /* CustomListHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E50083B2532A47700B3BFAE /* CustomListHeader.swift */; };
+		0E7073F425534F2700E11397 /* Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7073F325534F2700E11397 /* Dynamic.swift */; };
 		0E7AB59525479F8400CA1B40 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7AB59425479F8400CA1B40 /* SettingsView.swift */; };
 		0E7AB59A2547A0C800CA1B40 /* BarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7AB5992547A0C800CA1B40 /* BarButton.swift */; };
 		0E7AB59F2547AD6F00CA1B40 /* ColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7AB59E2547AD6F00CA1B40 /* ColorView.swift */; };
 		0E7BBE8C254F3D18005E035D /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7BBE8B254F3D18005E035D /* Cache.swift */; };
 		0E82941A2536783200FB131A /* HostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8294192536783200FB131A /* HostingController.swift */; };
+		0E886F442554C906006D75F7 /* MessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E886F432554C906006D75F7 /* MessageController.swift */; };
+		0E886F492554C954006D75F7 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E886F482554C954006D75F7 /* Queue.swift */; };
+		0E886F4E2554CB59006D75F7 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E886F4D2554CB59006D75F7 /* Message.swift */; };
 		0E8B8B3F24F587B10029B27D /* Image+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8B8B3E24F587B10029B27D /* Image+Extension.swift */; };
 		0E8B8B4124F59CB80029B27D /* MusicSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8B8B4024F59CB80029B27D /* MusicSlider.swift */; };
 		0E8B8B4324F5A04D0029B27D /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8B8B4224F5A04D0029B27D /* Color+Extension.swift */; };
@@ -97,6 +101,7 @@
 
 /* Begin PBXFileReference section */
 		0E07DFEA252724F8006DDFF6 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		0E0FE7A32553800F002FB781 /* Invocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invocation.swift; sourceTree = "<group>"; };
 		0E2C908024F5CF2600AB950D /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		0E2C908224F5D5A400AB950D /* JCColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JCColorScheme.swift; sourceTree = "<group>"; };
 		0E42F9F624F4EC9200901C89 /* DefaultButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultButton.swift; sourceTree = "<group>"; };
@@ -105,14 +110,17 @@
 		0E49676E25299E97000D166C /* SearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		0E49676F25299E97000D166C /* SearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		0E49677025299E97000D166C /* NeoSongRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeoSongRow.swift; sourceTree = "<group>"; };
-		0E49677125299E97000D166C /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		0E49677D2529A383000D166C /* ResignFirstResponderOnDrag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResignFirstResponderOnDrag.swift; sourceTree = "<group>"; };
 		0E50083B2532A47700B3BFAE /* CustomListHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomListHeader.swift; sourceTree = "<group>"; };
+		0E7073F325534F2700E11397 /* Dynamic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dynamic.swift; sourceTree = "<group>"; };
 		0E7AB59425479F8400CA1B40 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		0E7AB5992547A0C800CA1B40 /* BarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButton.swift; sourceTree = "<group>"; };
 		0E7AB59E2547AD6F00CA1B40 /* ColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorView.swift; sourceTree = "<group>"; };
 		0E7BBE8B254F3D18005E035D /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		0E8294192536783200FB131A /* HostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingController.swift; sourceTree = "<group>"; };
+		0E886F432554C906006D75F7 /* MessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageController.swift; sourceTree = "<group>"; };
+		0E886F482554C954006D75F7 /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
+		0E886F4D2554CB59006D75F7 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		0E8B8B3E24F587B10029B27D /* Image+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Extension.swift"; sourceTree = "<group>"; };
 		0E8B8B4024F59CB80029B27D /* MusicSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicSlider.swift; sourceTree = "<group>"; };
 		0E8B8B4224F5A04D0029B27D /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
@@ -186,6 +194,8 @@
 				0EA1848324FB1EBC00111B84 /* Notification.Name+Extension.swift */,
 				0E07DFEA252724F8006DDFF6 /* String+Extension.swift */,
 				0E49676D25299E96000D166C /* UIApplication+Extension.swift */,
+				0E7073F325534F2700E11397 /* Dynamic.swift */,
+				0E0FE7A32553800F002FB781 /* Invocation.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -197,6 +207,7 @@
 				0E8B8B4524F5A0B10029B27D /* SettingsController.swift */,
 				0E8EFA21252D367500B78F3E /* SongSearchController.swift */,
 				0E9D434A253515C00025B3FD /* FeedbackGenerator.swift */,
+				0E886F432554C906006D75F7 /* MessageController.swift */,
 			);
 			path = "Model Controllers";
 			sourceTree = "<group>";
@@ -206,9 +217,10 @@
 			children = (
 				0E8B8B4A24F5C1990029B27D /* Song.swift */,
 				0E2C908224F5D5A400AB950D /* JCColorScheme.swift */,
-				0E49677125299E97000D166C /* Queue.swift */,
 				0E7BBE8B254F3D18005E035D /* Cache.swift */,
 				0EF3F73A254F49A3002AD607 /* Media.swift */,
+				0E886F482554C954006D75F7 /* Queue.swift */,
+				0E886F4D2554CB59006D75F7 /* Message.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -397,6 +409,8 @@
 				4960888525158331003F1089 /* PBXTargetDependency */,
 			);
 			name = "NeoMusic-SwiftUI";
+			packageProductDependencies = (
+			);
 			productName = "NeoMusic-SwiftUI";
 			productReference = 0EDE700824F465D300E72D0C /* NeoMusic-SwiftUI.app */;
 			productType = "com.apple.product-type.application";
@@ -467,6 +481,8 @@
 				Base,
 			);
 			mainGroup = 0EDE6FFF24F465D300E72D0C;
+			packageReferences = (
+			);
 			productRefGroup = 0EDE700924F465D300E72D0C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -514,11 +530,14 @@
 				0E82941A2536783200FB131A /* HostingController.swift in Sources */,
 				0EA1848424FB1EBD00111B84 /* Notification.Name+Extension.swift in Sources */,
 				0E8B8B4624F5A0B10029B27D /* SettingsController.swift in Sources */,
+				0E0FE7A42553800F002FB781 /* Invocation.swift in Sources */,
+				0E886F492554C954006D75F7 /* Queue.swift in Sources */,
 				0E7AB59A2547A0C800CA1B40 /* BarButton.swift in Sources */,
 				49E153542515705000767842 /* TabBar.swift in Sources */,
 				0EBAE2DF251FB22600752EDE /* View+Extension.swift in Sources */,
 				0E49677E2529A384000D166C /* ResignFirstResponderOnDrag.swift in Sources */,
 				0EF4DC582542508A0006108F /* MusicView.swift in Sources */,
+				0E886F442554C906006D75F7 /* MessageController.swift in Sources */,
 				0E8B8B4924F5C1480029B27D /* MusicPlayerController.swift in Sources */,
 				0E7AB59F2547AD6F00CA1B40 /* ColorView.swift in Sources */,
 				0E42F9F924F4F63B00901C89 /* MusicArtwork.swift in Sources */,
@@ -527,6 +546,7 @@
 				0E49677325299E97000D166C /* SearchBar.swift in Sources */,
 				0EF3F73B254F49A3002AD607 /* Media.swift in Sources */,
 				49E1535C251570A500767842 /* TabItem.swift in Sources */,
+				0E7073F425534F2700E11397 /* Dynamic.swift in Sources */,
 				0EBAE2D2251FB01000752EDE /* Neumorph.swift in Sources */,
 				0E8EFA22252D367500B78F3E /* SongSearchController.swift in Sources */,
 				0E07DFEB252724F8006DDFF6 /* String+Extension.swift in Sources */,
@@ -534,7 +554,6 @@
 				0EDE700E24F465D300E72D0C /* NeoMusic_SwiftUIApp.swift in Sources */,
 				0EF4DC4F25424E120006108F /* ProfileView.swift in Sources */,
 				0E7BBE8C254F3D18005E035D /* Cache.swift in Sources */,
-				0E49677625299E97000D166C /* Queue.swift in Sources */,
 				0E7AB59525479F8400CA1B40 /* SettingsView.swift in Sources */,
 				0E49677225299E97000D166C /* UIApplication+Extension.swift in Sources */,
 				0E9D434B253515C00025B3FD /* FeedbackGenerator.swift in Sources */,
@@ -545,6 +564,7 @@
 				0E2C908324F5D5A400AB950D /* JCColorScheme.swift in Sources */,
 				0E42F9F724F4EC9200901C89 /* DefaultButton.swift in Sources */,
 				0E8B8B3F24F587B10029B27D /* Image+Extension.swift in Sources */,
+				0E886F4E2554CB59006D75F7 /* Message.swift in Sources */,
 				0E49677525299E97000D166C /* NeoSongRow.swift in Sources */,
 				0E8B8B4324F5A04D0029B27D /* Color+Extension.swift in Sources */,
 			);
@@ -726,6 +746,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"NeoMusic-SwiftUI/Preview Content\"";
 				DEVELOPMENT_TEAM = HFR8F4BT7E;
 				ENABLE_PREVIEWS = YES;
@@ -748,6 +769,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"NeoMusic-SwiftUI/Preview Content\"";
 				DEVELOPMENT_TEAM = HFR8F4BT7E;
 				ENABLE_PREVIEWS = YES;
@@ -814,6 +836,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = HFR8F4BT7E;
 				INFOPLIST_FILE = NeoWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -837,6 +860,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = HFR8F4BT7E;
 				INFOPLIST_FILE = NeoWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

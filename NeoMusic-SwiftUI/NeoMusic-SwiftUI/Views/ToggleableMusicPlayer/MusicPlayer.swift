@@ -52,6 +52,7 @@ struct MusicPlayer: View {
                             feedbackGenerator.impactOccurred()
                         }
                     }
+                    .spacing([.top, .leading, .trailing])
                     
                     Spacer()
                     
@@ -110,7 +111,6 @@ struct MusicPlayer: View {
                         }
                     }
                 }
-                .spacing()
             } else { // MARK: - isClosed
                 HStack {
                     MusicArtwork(colorScheme: settingsController.colorScheme, image: musicController.currentSong.artwork, rotation: $rotation, size: .button)

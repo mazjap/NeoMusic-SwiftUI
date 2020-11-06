@@ -45,9 +45,9 @@ struct MusicArtwork: View {
                 .overlay(
             image
                 .resizable()
-                .scaledToFill()
-                .frame(width: geometry.size.width * 0.975, height: geometry.size.height * 0.975)
+                .scaledToFit()
                 .clipShape(Circle())
+                .frame(width: geometry.size.width * 0.975, height: geometry.size.height * 0.975)
                 .rotationEffect(.radians(isDragging ? rotation : previousRotation))
                 .gesture(
                     DragGesture()

@@ -45,7 +45,7 @@ struct SearchBar: View {
                         .foregroundColor(colorScheme.textColor.color)
                 }
             }
-            .padding(.horizontal, Constants.spacing / 2)
+            .spacing(.horizontal)
         }
     }
 }
