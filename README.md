@@ -2,7 +2,7 @@
 
 # NeoMusic - SwiftUI
 
-NeoMusic is an iOS music player app designed to connect many music streaming services into one single app. Taking design queues from neomorphism, buttons and other views have the appearance of popping off the screen.
+NeoMusic is an iOS music player app designed to connect many music streaming services into one single app. Taking design queues from [neomorphism](https://uxdesign.cc/neumorphism-in-user-interfaces-b47cef3bf3a6), buttons and other views have the appearance of popping off the screen.
 
 
 [![GitHub Issues][issues-image]][issues-url]
@@ -55,7 +55,7 @@ Connect device or select simulator from drop down and run project
 - [x] Spinnable artwork
 - [x] iOS 14 Widget
 - [x] Music searching/filtering (Partial support)
-- [ ] Toggleable music player view
+- [x] Toggleable music player view
 - [ ] Spotify support
 
 ---
@@ -92,8 +92,9 @@ $ git clone https://github.com/mazjap/NeoMusic-SwiftUI
 
 ## Attribution
 
-- This README was adapted from [fvcproductions](https://github.com/fvcproductions/)'s [sampleREADME](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46).md.
+- This README was adapted from [fvcproductions](https://github.com/fvcproductions/)' [sampleREADME](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46).md.
 - The pull request template was adapted from [this PULL_REQUEST_TEMPLATE](https://github.com/embeddedartistry/templates/blob/master/oss_docs/PULL_REQUEST_TEMPLATE.md).md
+- Huge shoutout to [@mhdhejazi](https://github.com/mhdhejazi) for [Dynamic.swift](NeoMusic-SwiftUI/NeoMusic-SwiftUI/Helpers/Dynamic.swift) and [Invocation.swift](NeoMusic-SwiftUI/NeoMusic-SwiftUI/Helpers/Invocation.swift). Both were adapted from his [Dynamic](https://github.com/mhdhejazi/Dynamic) package
 
 ---
 
@@ -123,4 +124,4 @@ This project is licensed under the MIT License
 [pr-url]: ../../pulls
 [wiki-url]: ../../wiki
 [website-url]: https://jordan-christensen.com
-[testflight-url]: #
+[testflight-url]: https://testflight.apple.com/join/3qfzn4o2
