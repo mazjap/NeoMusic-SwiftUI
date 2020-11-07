@@ -33,6 +33,11 @@ extension View {
             .padding(edges, Constants.spacing)
     }
     
+    func frame(size: CGSize) -> some View {
+        self
+            .frame(width: size.width, height: size.height)
+    }
+    
     // Conditionally modify view
     @ViewBuilder
     func `if`<Content>(_ condition: Bool,

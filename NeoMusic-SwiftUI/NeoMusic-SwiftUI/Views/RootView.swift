@@ -23,6 +23,7 @@ struct RootView: View {
     }
     
     @StateObject private var searchController = SongSearchController()
+    @StateObject private var messageController = MessageController.shared
     @State private var musicPlayerIsOpen: Bool = false
     
     
@@ -54,6 +55,21 @@ struct RootView: View {
                 MusicPlayer(isOpen: $musicPlayerIsOpen)
                     .frame(height: geometry.size.height - TabBar.height)
                     .offset(y: musicPlayerIsOpen ? -TabBar.height / 2 : geometry.size.height / 2 - TabBar.height - MusicPlayer.musicPlayerHeightOffset / 2)
+                
+                if let message = messageController.message {
+                    let size = CGSize(width: UIScreen.main.bounds.width * 0.45, height: UIScreen.main.bounds.height * 0.15)
+                    
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundColor(settingsController.colorScheme.backgroundGradient.first.opacity(0.75))
+                            .frame(size: size)
+                        
+                        Text(message.value)
+                            .foregroundColor(message.type.color)
+                            .frame(size: size)
+                    }
+                    .offset(y: size.height - UIScreen.main.bounds.height / 2)
+                }
             }
         }
     }
