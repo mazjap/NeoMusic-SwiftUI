@@ -18,11 +18,6 @@ extension View {
         AnyView(self)
     }
     
-    func neumorph(color: Color, size: Neumorph.Size) -> some View {
-        self
-            .modifier(Neumorph(color: color, size: size))
-    }
-    
     func customHeader(backgroundColor: Color, textColor: Color) -> some View {
         self
             .modifier(CustomListHeader(backgroundColor: backgroundColor, textColor: textColor))
@@ -51,5 +46,15 @@ extension View {
         } else {
             self
         }
+    }
+}
+
+extension UIDevice {
+    var isSimulator: Bool {
+        #if targetEnvironment(simulator)
+            return true
+        #else
+            return false
+        #endif
     }
 }

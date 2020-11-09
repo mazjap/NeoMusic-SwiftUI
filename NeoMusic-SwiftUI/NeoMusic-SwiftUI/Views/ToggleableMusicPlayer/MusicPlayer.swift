@@ -36,7 +36,9 @@ struct MusicPlayer: View {
                     // Navigation Bar
                     HStack {
                         DefaultButton(imageName: "arrow.left", imageColor: settingsController.colorScheme.mainButtonColor.color, buttonColor: settingsController.colorScheme.backgroundGradient.first) {
-                            isOpen = false
+                            withAnimation {
+                                isOpen = false
+                            }
                             feedbackGenerator.impactOccurred()
                         }
                         
@@ -57,7 +59,7 @@ struct MusicPlayer: View {
                     Spacer()
                     
                     MusicArtwork(colorScheme: settingsController.colorScheme, image: musicController.currentSong.artwork, rotation: $rotation)
-                        .spacing(.bottom)
+                        .spacing([.bottom, .leading, .trailing])
                         .matchedGeometryEffect(id: MusicPlayer.artworkKey, in: nspace, isSource: !isOpen)
                     
                     HStack {
@@ -120,13 +122,17 @@ struct MusicPlayer: View {
                     
                     VStack(alignment: .leading) {
                         HStack {
+                            let font: Font = .footnote
+                            
                             Text(musicController.currentSong.title)
                                 .lineLimit(1)
-                                .font(.footnote)
+                                .font(font)
                                 .foregroundColor(settingsController.colorScheme.textColor.color)
                                 .matchedGeometryEffect(id: MusicPlayer.songTitleKey, in: nspace)
                             if musicController.currentSong.isExplicit {
                                 Image(systemName: "e.square.fill")
+                                    .resizable()
+                                    .frame(width: font.size, height: font.size)
                                     .foregroundColor(settingsController.colorScheme.textColor.color)
                                     .matchedGeometryEffect(id: MusicPlayer.songExplicitKey, in: nspace, isSource: isOpen)
                             }

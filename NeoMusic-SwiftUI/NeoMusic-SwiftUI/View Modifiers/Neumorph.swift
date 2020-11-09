@@ -43,87 +43,89 @@ struct Neumorph: ViewModifier {
 
 struct Neumorph_Previews: PreviewProvider {
     static var previews: some View {
-        VStack(spacing: 0) {
-            ZStack {
-                Color.blue
-                    .ignoresSafeArea()
-                HStack {
-                    Spacer()
-                    
-                    DefaultButton(imageName: "location.north.fill", imageColor: .white, buttonColor: .blue, type: .circle) {}
-                    
-                    Spacer()
-                    
-                    DefaultButton(imageName: "bolt.slash.circle.fill", imageColor: .white, buttonColor: .blue, type: .roundedSquare(rawValue: 20)) {}
-                    
-                    Spacer()
-                    
-                    DefaultButton(imageName: "bubble.right.fill", imageColor: .white, buttonColor: .blue, type: .square) {}
-                    
-                    Spacer()
-                }
-            }
-            
-            ZStack {
-                Color.falseBlack
-                    .ignoresSafeArea()
-                HStack {
-                    Spacer()
-                    
-                    DefaultButton(imageName: "paperplane.circle.fill", imageColor: .gray, buttonColor: .falseBlack, type: .circle) {}
-                    
-                    Spacer()
-                    
-                    DefaultButton(imageName: "externaldrive.fill.badge.checkmark", imageColor: .gray, buttonColor: .falseBlack, type: .roundedSquare(rawValue: 20)) {}
-                    
-                    Spacer()
-                    
-                    DefaultButton(imageName: "terminal.fill", imageColor: .gray, buttonColor: .falseBlack, type: .square) {}
-                    
-                    Spacer()
-                }
-            }
-            
-            ZStack {
-                Color.falseWhite
-                    .ignoresSafeArea()
-                HStack {
-                    Spacer()
-                    
-                    DefaultButton(imageName: "magnifyingglass", imageColor: .gray, buttonColor: .falseWhite, type: .circle) {}
-                    
-                    Spacer()
-                    
-                    DefaultButton(imageName: "newspaper.fill", imageColor: .gray, buttonColor: .falseWhite, type: .roundedSquare(rawValue: 20)) {}
-                    
-                    Spacer()
-                    
-                    DefaultButton(imageName: "circle.fill.square.fill", imageColor: .gray, buttonColor: .falseWhite, type: .square) {}
-                    
-                    Spacer()
-                }
-            }
-            
-            ZStack {
-                Color.red
-                    .ignoresSafeArea()
-                HStack {
-                    Spacer()
-                    
-                    DefaultButton(imageName: "phone.down.circle.fill", imageColor: .white, buttonColor: .red, type: .circle) {}
-                    
-                    Spacer()
-                    
-                    DefaultButton(imageName: "opticaldisc", imageColor: .white, buttonColor: .red, type: .roundedSquare(rawValue: 20)) {}
-                    
-                    Spacer()
-                    
-                    DefaultButton(imageName: "tv.fill", imageColor: .white, buttonColor: .red, type: .square) {}
-                    
-                    Spacer()
-                }
-            }
-        }
+//        VStack(spacing: 0) {
+//            ZStack {
+//                Color.blue
+//                    .ignoresSafeArea()
+//                HStack {
+//                    Spacer()
+//
+//                    DefaultButton(imageName: "location.north.fill", imageColor: .white, buttonColor: .blue, type: .circle) {}
+//
+//                    Spacer()
+//
+//                    DefaultButton(imageName: "bolt.slash.circle.fill", imageColor: .white, buttonColor: .blue, type: .roundedSquare(rawValue: 20)) {}
+//
+//                    Spacer()
+//
+//                    DefaultButton(imageName: "bubble.right.fill", imageColor: .white, buttonColor: .blue, type: .square) {}
+//
+//                    Spacer()
+//                }
+//            }
+//
+//            ZStack {
+//                Color.falseBlack
+//                    .ignoresSafeArea()
+//                HStack {
+//                    Spacer()
+//
+//                    DefaultButton(imageName: "paperplane.circle.fill", imageColor: .gray, buttonColor: .falseBlack, type: .circle) {}
+//
+//                    Spacer()
+//
+//                    DefaultButton(imageName: "externaldrive.fill.badge.checkmark", imageColor: .gray, buttonColor: .falseBlack, type: .roundedSquare(rawValue: 20)) {}
+//
+//                    Spacer()
+//
+//                    DefaultButton(imageName: "terminal.fill", imageColor: .gray, buttonColor: .falseBlack, type: .square) {}
+//
+//                    Spacer()
+//                }
+//            }
+//
+//            ZStack {
+//                Color.falseWhite
+//                    .ignoresSafeArea()
+//                HStack {
+//                    Spacer()
+//
+//                    DefaultButton(imageName: "magnifyingglass", imageColor: .gray, buttonColor: .falseWhite, type: .circle) {}
+//
+//                    Spacer()
+//
+//                    DefaultButton(imageName: "newspaper.fill", imageColor: .gray, buttonColor: .falseWhite, type: .roundedSquare(rawValue: 20)) {}
+//
+//                    Spacer()
+//
+//                    DefaultButton(imageName: "circle.fill.square.fill", imageColor: .gray, buttonColor: .falseWhite, type: .square) {}
+//
+//                    Spacer()
+//                }
+//            }
+//
+//            ZStack {
+//                Color.red
+//                    .ignoresSafeArea()
+//                HStack {
+//                    Spacer()
+//
+//                    DefaultButton(imageName: "phone.down.circle.fill", imageColor: .white, buttonColor: .red, type: .circle) {}
+//
+//                    Spacer()
+//
+//                    DefaultButton(imageName: "opticaldisc", imageColor: .white, buttonColor: .red, type: .roundedSquare(rawValue: 20)) {}
+//
+//                    Spacer()
+//
+//                    DefaultButton(imageName: "tv.fill", imageColor: .white, buttonColor: .red, type: .square) {}
+//
+//                    Spacer()
+//                }
+//            }
+//        }
+        
+        Text("")
     }
 }
 

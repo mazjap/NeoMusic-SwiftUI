@@ -8,17 +8,12 @@
 import WidgetKit
 import MediaPlayer
 
-class Controller: TimelineEntry {
+class Controller {
     private let player: MPMusicPlayerController
     
     let colorScheme: JCColorScheme
-    var date: Date
-    var song: Song {
-        player.nowPlayingItem != nil ? Song(player.nowPlayingItem) : .noSong
-    }
     
     init(date: Date = Date()) {
-        self.date = date
         self.player = .systemMusicPlayer
         self.colorScheme = SettingsController.shared.colorScheme
         
@@ -26,6 +21,14 @@ class Controller: TimelineEntry {
         
         NotificationCenter.default.addObserver(self, selector: #selector(update), name: .MPMusicPlayerControllerNowPlayingItemDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(update), name: .MPMusicPlayerControllerPlaybackStateDidChange, object: nil)
+    }
+    
+    func getSong(with date: Date = Date()) -> Song {
+        if let media = player.nowPlayingItem {
+            return Song(media, date: date)
+        }
+        
+        return .noSong
     }
     
     @objc

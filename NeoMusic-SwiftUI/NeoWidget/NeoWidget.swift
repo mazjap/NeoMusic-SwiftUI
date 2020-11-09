@@ -8,50 +8,60 @@
 import WidgetKit
 import SwiftUI
 
+let controller = Controller()
+var refreshDate = Date()
+
 struct Provider: TimelineProvider {
-    func placeholder(in context: Context) -> Controller {
-        Controller(date: Date())
+    func placeholder(in context: Context) -> Song {
+        .noSong
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (Controller) -> ()) {
-        let entry = Controller(date: Date().addingTimeInterval(1))
+    func getSnapshot(in context: Context, completion: @escaping (Song) -> ()) {
+        let entry = controller.getSong()
         completion(entry)
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        let timeline = Timeline(entries: [Controller()], policy: .never)
+    func getTimeline(in context: Context, completion: @escaping (Timeline<Song>) -> ()) {
+        let now = Date()
+        let refresh = now.addingTimeInterval(10)
+        
+        if now >= refreshDate {
+            refreshDate = refresh
+        }
+        let timeline = Timeline(entries: [controller.getSong(with: Date().addingTimeInterval(10))], policy: .after(refresh))
         completion(timeline)
     }
 }
 
 struct NeoWidgetEntryView : View {
-    var controller: Provider.Entry
-
     var body: some View {
-        let song = controller.song
+        let song = controller.getSong()
+        let font: Font = .footnote
         
         ZStack {
             LinearGradient(gradient: Gradient(colors: controller.colorScheme.backgroundGradient.colors), startPoint: .top, endPoint: .bottom)
             
             VStack {
-                Spacer()
                 // Title
                 HStack {
                     Text(song.title)
-                        .font(.footnote)
+                        .font(font)
                         .lineLimit(1)
                         .foregroundColor(controller.colorScheme.textColor.color)
                     
                     if song.isExplicit {
                         Image(systemName: "e.square.fill")
+                            .resizable()
+                            .foregroundColor(controller.colorScheme.textColor.color)
+                            .frame(width: font.size, height: font.size)
+                            
                     }
                 }
-                .padding(.horizontal, 5)
+                .padding([.leading, .top, .trailing], 7.5)
                 
                 // Artwork
-                WidgetArtwork(colorScheme: controller.colorScheme, image: controller.song.artwork)
-                
-                Spacer()
+                WidgetArtwork(colorScheme: controller.colorScheme, image: song.artwork)
+                    .padding(.bottom, 7.5)
             }
         }
     }
@@ -63,16 +73,16 @@ struct NeoWidget: Widget {
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: Self.kind, provider: Provider()) { entry in
-            NeoWidgetEntryView(controller: entry)
+            NeoWidgetEntryView()
         }
-        .configurationDisplayName("NeoWidget")
+        .configurationDisplayName(Self.kind)
         .description("Music.")
     }
 }
 
 struct NeoWidget_Previews: PreviewProvider {
     static var previews: some View {
-        NeoWidgetEntryView(controller: Controller())
+        NeoWidgetEntryView()
             .previewContext(WidgetPreviewContext(family: .systemSmall))
     }
 }

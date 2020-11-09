@@ -39,6 +39,7 @@ class MusicPlayerController: ObservableObject {
             dynamicPlayer = Dynamic(player)
         }
     }
+    
     private var dynamicPlayer: Dynamic
     
     var currentPlaybackTime: TimeInterval {
@@ -104,9 +105,12 @@ class MusicPlayerController: ObservableObject {
             MPMediaLibrary.requestAuthorization { [weak self] auth in
                 guard let self = self else { return }
                 
-                if auth != .authorized && auth != .restricted {
+                if auth == .authorized || auth == .restricted {
                     self.isAuthorized = true
                 }
+            }
+            if !isAuthorized {
+                fallthrough
             }
         case .denied:
             fallthrough
@@ -127,8 +131,7 @@ class MusicPlayerController: ObservableObject {
                 }
             })
             alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
-            
-            NSLog("Access to Apple Music is denied or unknown case \(Constants.codeLineLocation)")
+            NSLog("f:\(#file)l:\(#line) Error: Access to Apple Music is denied or unknown case")
             UIApplication.present(alert, animated: true)
         }
     }
@@ -186,8 +189,6 @@ class MusicPlayerController: ObservableObject {
         
         player.skipToNextItem()
     }
-    
-    // MARK: - Queue Functions
     
     func setQueue(with songs: [Song]) {
         guard isAuthorized else { checkAuthorized(); return }
@@ -271,3 +272,5 @@ extension MusicPlayerController {
         return nil
     }
 }
+
+

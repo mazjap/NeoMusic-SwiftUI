@@ -39,6 +39,12 @@
 		0E9CCA482556220C009AACA7 /* Hidden.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9CCA472556220C009AACA7 /* Hidden.swift */; };
 		0E9CCA4D255632E0009AACA7 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9CCA4C255632E0009AACA7 /* HTTPMethod.swift */; };
 		0E9D434B253515C00025B3FD /* FeedbackGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9D434A253515C00025B3FD /* FeedbackGenerator.swift */; };
+		0E9D98C52559BC9800343261 /* View+Neumorph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9D98C42559BC9800343261 /* View+Neumorph.swift */; };
+		0E9D98EC2559D82500343261 /* View+Neumorph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9D98C42559BC9800343261 /* View+Neumorph.swift */; };
+		0E9D98F02559D83700343261 /* Neumorph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE2D1251FB01000752EDE /* Neumorph.swift */; };
+		0E9D98F52559D9DB00343261 /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9D98F42559D9DB00343261 /* Font+Extension.swift */; };
+		0E9D98F92559D9DD00343261 /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9D98F42559D9DB00343261 /* Font+Extension.swift */; };
+		0E9D98FE2559E32800343261 /* UIImageColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9D98FD2559E32800343261 /* UIImageColor.swift */; };
 		0EA1848424FB1EBD00111B84 /* Notification.Name+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA1848324FB1EBC00111B84 /* Notification.Name+Extension.swift */; };
 		0EBAE2D2251FB01000752EDE /* Neumorph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE2D1251FB01000752EDE /* Neumorph.swift */; };
 		0EBAE2DF251FB22600752EDE /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE2DE251FB22600752EDE /* View+Extension.swift */; };
@@ -88,6 +94,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		0E9D987E2559B25A00343261 /* Embed App Clips */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/AppClips";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			name = "Embed App Clips";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4960883F25158089003F1089 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -134,6 +150,9 @@
 		0E9CCA472556220C009AACA7 /* Hidden.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hidden.swift; sourceTree = "<group>"; };
 		0E9CCA4C255632E0009AACA7 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
 		0E9D434A253515C00025B3FD /* FeedbackGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackGenerator.swift; sourceTree = "<group>"; };
+		0E9D98C42559BC9800343261 /* View+Neumorph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Neumorph.swift"; sourceTree = "<group>"; };
+		0E9D98F42559D9DB00343261 /* Font+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Extension.swift"; sourceTree = "<group>"; };
+		0E9D98FD2559E32800343261 /* UIImageColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageColor.swift; sourceTree = "<group>"; };
 		0EA1848324FB1EBC00111B84 /* Notification.Name+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+Extension.swift"; sourceTree = "<group>"; };
 		0EBAE2D1251FB01000752EDE /* Neumorph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Neumorph.swift; sourceTree = "<group>"; };
 		0EBAE2DE251FB22600752EDE /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
@@ -202,6 +221,9 @@
 				0E0FE7A32553800F002FB781 /* Invocation.swift */,
 				0E9CCA472556220C009AACA7 /* Hidden.swift */,
 				0E9CCA4C255632E0009AACA7 /* HTTPMethod.swift */,
+				0E9D98C42559BC9800343261 /* View+Neumorph.swift */,
+				0E9D98F42559D9DB00343261 /* Font+Extension.swift */,
+				0E9D98FD2559E32800343261 /* UIImageColor.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -408,6 +430,7 @@
 				0EDE700524F465D300E72D0C /* Frameworks */,
 				0EDE700624F465D300E72D0C /* Resources */,
 				4960883F25158089003F1089 /* Embed App Extensions */,
+				0E9D987E2559B25A00343261 /* Embed App Clips */,
 			);
 			buildRules = (
 			);
@@ -462,7 +485,7 @@
 		0EDE700024F465D300E72D0C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1200;
+				LastSwiftUpdateCheck = 1210;
 				LastUpgradeCheck = 1200;
 				TargetAttributes = {
 					0EDE700724F465D300E72D0C = {
@@ -535,6 +558,7 @@
 			files = (
 				0E82941A2536783200FB131A /* HostingController.swift in Sources */,
 				0EA1848424FB1EBD00111B84 /* Notification.Name+Extension.swift in Sources */,
+				0E9D98F52559D9DB00343261 /* Font+Extension.swift in Sources */,
 				0E9CCA4D255632E0009AACA7 /* HTTPMethod.swift in Sources */,
 				0E8B8B4624F5A0B10029B27D /* SettingsController.swift in Sources */,
 				0E0FE7A42553800F002FB781 /* Invocation.swift in Sources */,
@@ -548,6 +572,7 @@
 				0E8B8B4924F5C1480029B27D /* MusicPlayerController.swift in Sources */,
 				0E7AB59F2547AD6F00CA1B40 /* ColorView.swift in Sources */,
 				0E42F9F924F4F63B00901C89 /* MusicArtwork.swift in Sources */,
+				0E9D98FE2559E32800343261 /* UIImageColor.swift in Sources */,
 				0E8B8B4124F59CB80029B27D /* MusicSlider.swift in Sources */,
 				0E8B8B4B24F5C19A0029B27D /* Song.swift in Sources */,
 				0E49677325299E97000D166C /* SearchBar.swift in Sources */,
@@ -561,6 +586,7 @@
 				0E49677425299E97000D166C /* SearchView.swift in Sources */,
 				0EDE700E24F465D300E72D0C /* NeoMusic_SwiftUIApp.swift in Sources */,
 				0EF4DC4F25424E120006108F /* ProfileView.swift in Sources */,
+				0E9D98C52559BC9800343261 /* View+Neumorph.swift in Sources */,
 				0E7BBE8C254F3D18005E035D /* Cache.swift in Sources */,
 				0E7AB59525479F8400CA1B40 /* SettingsView.swift in Sources */,
 				0E49677225299E97000D166C /* UIApplication+Extension.swift in Sources */,
@@ -592,6 +618,8 @@
 			files = (
 				0EF3F73F254F49BE002AD607 /* Media.swift in Sources */,
 				4960889825158392003F1089 /* Controller.swift in Sources */,
+				0E9D98EC2559D82500343261 /* View+Neumorph.swift in Sources */,
+				0E9D98F02559D83700343261 /* Neumorph.swift in Sources */,
 				4960889725158392003F1089 /* WidgetArtwork.swift in Sources */,
 				496088B0251583E3003F1089 /* Image+Extension.swift in Sources */,
 				4960889125158368003F1089 /* NeoWidget.swift in Sources */,
@@ -600,6 +628,7 @@
 				496088A4251583C1003F1089 /* JCColorScheme.swift in Sources */,
 				496088A0251583BF003F1089 /* Song.swift in Sources */,
 				0EE4136C25278910003890A1 /* String+Extension.swift in Sources */,
+				0E9D98F92559D9DD00343261 /* Font+Extension.swift in Sources */,
 				496088AC251583E0003F1089 /* Color+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

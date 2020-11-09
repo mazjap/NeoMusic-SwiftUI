@@ -8,10 +8,11 @@
 //  Encapsulate song data
 //
 
+import WidgetKit
 import SwiftUI
 import MediaPlayer
 
-struct Song: Identifiable, Equatable {
+struct Song: TimelineEntry, Identifiable, Equatable {
     
     // MARK: - Variables
     
@@ -22,8 +23,9 @@ struct Song: Identifiable, Equatable {
     let duration: TimeInterval
     let media: MPMediaItem?
     var isFavorite: Bool?
-    var isExplicit: Bool
-    var persistentID: UInt64
+    let isExplicit: Bool
+    let persistentID: UInt64
+    var date: Date
     
     var id: String {
         return persistentID != 0 ? String(persistentID) : "\(artist) - \(title)\(isExplicit ? " - Explicit" : "")"
@@ -31,12 +33,14 @@ struct Song: Identifiable, Equatable {
     
     // MARK: - Initializer
     
-    init(_ song: MPMediaItem?) {
+    init(_ song: MPMediaItem?, date: Date = Date()) {
         let defaultArtist = "No Artist"
         let defaultImage = Image.placeholder
         let defaultTitle = "No Song Selected"
         let defaultAlbum = "No Album"
         let defaultDuration = 0.01
+        
+        self.date = date
         
         if let song = song {
             artist = song.artist ?? defaultArtist
