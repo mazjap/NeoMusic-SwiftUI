@@ -16,8 +16,9 @@ struct MusicArtwork: View {
     
     @EnvironmentObject private var feedback: FeedbackGenerator
     
-    @State private var rotation: Double = 0
     @Binding private var previousRotation: Double
+    
+    @State private var rotation: Double = 0
     @State private var isDragging: Bool = false
     @State private var startRotationAngle: Double = 0
     

@@ -21,6 +21,7 @@ struct MusicSlider: View {
     @State private var currentTime: Double = 0
     @State private var totalTime: Double = 0
     @State private var isSeeking: Bool = false
+    @State private var tempSeekingDuration: CGFloat = 0
     @State private var sideToPop: Side = .none
     
     // MARK: - Variables
@@ -67,13 +68,13 @@ struct MusicSlider: View {
             
             GeometryReader { geometry in
                 let totalDistance = geometry.size.width - sliderSize
-                let songCompletion = CGFloat(musicController.currentPlaybackTime / musicController.totalPlaybackTime)
+                let songCompletion = CGFloat(currentTime / totalTime)
                 
                 let songOffset = songCompletion * totalDistance
                 
-                let x = dragOffset + songOffset
+                let x = dragOffset + (isSeeking ? tempSeekingDuration : songOffset)
                 let verifiedDistance = max(min(totalDistance, x), 0)
-                let songDuration = Double(verifiedDistance / totalDistance) * musicController.totalPlaybackTime
+                let songDuration = Double(verifiedDistance / totalDistance) * totalTime
                 
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: lineHeight / 2)
@@ -106,9 +107,9 @@ struct MusicSlider: View {
                                     if !isSeeking {
                                         impact.impactOccurred(intensity: 0.35)
                                         
-                                        withAnimation {
-                                            isSeeking = true
-                                        }
+                                        isSeeking = true
+                                        
+                                        tempSeekingDuration = songOffset
                                     }
                                     
                                     withAnimation {
@@ -123,11 +124,11 @@ struct MusicSlider: View {
                                 }
                                 .onEnded { value in
                                     musicController.set(time: songDuration)
+                                    impact.impactOccurred(intensity: abs(x - tempSeekingDuration) / totalDistance)
                                     
-                                    withAnimation {
-                                        sideToPop = .none
-                                        isSeeking = false
-                                    }
+                                    sideToPop = .none
+                                    isSeeking = false
+                                    
                                 }
                         )
                     

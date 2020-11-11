@@ -37,9 +37,14 @@ struct BarButton: View {
     var body: some View {
         Button(action: action) {
             image
+                .resizable()
+                .scaledToFit()
+                .frame(height: Self.size)
         }
         .foregroundColor(color)
     }
+    
+    static let size = UIScreen.main.bounds.width / 18
 }
 
 // MARK: - Preview
