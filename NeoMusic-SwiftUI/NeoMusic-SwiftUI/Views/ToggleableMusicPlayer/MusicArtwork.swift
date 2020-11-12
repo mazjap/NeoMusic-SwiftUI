@@ -42,6 +42,7 @@ struct MusicArtwork: View {
         GeometryReader { geometry in
             Circle()
                 .fill(LinearGradient(gradient: Gradient(colors: colorScheme.backgroundGradient.colors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
+                .clipShape(Circle())
                 .neumorph(color: colorScheme.backgroundGradient.first.average(to: colorScheme.backgroundGradient.last), size: size)
                 .overlay(
             image

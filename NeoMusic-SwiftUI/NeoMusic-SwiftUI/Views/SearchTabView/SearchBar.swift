@@ -24,28 +24,32 @@ struct SearchBar: View {
     // MARK: - Body
     
     var body: some View {
-        ZStack {
-            Capsule()
-                .foregroundColor(colorScheme.backgroundGradient.first)
-                .neumorph(color: colorScheme.backgroundGradient.first, size: .button)
-            
-            HStack {
-                Image(systemName: "magnifyingglass")
-                    .foregroundColor(colorScheme.textColor.color)
-                    .padding(.leading, Constants.spacing / 2)
+        GeometryReader { geometry in
+            ZStack {
+                Capsule()
+                    .foregroundColor(colorScheme.backgroundGradient.first)
+                    .neumorph(color: colorScheme.backgroundGradient.first, size: .button)
                 
-                ZStack(alignment: .leading) {
-                    if searchText.isEmpty {
-                        Text("Search")
-                            .font(font ?? .footnote)
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundColor(colorScheme.textColor.color)
+                        .padding(.leading, Constants.spacing / 2)
+                    
+                    ZStack(alignment: .leading) {
+                        if searchText.isEmpty {
+                            Text("Search")
+                                .font(font ?? .footnote)
+                                .foregroundColor(colorScheme.textColor.color)
+                        }
+                        
+                        TextField(searchText, text: $searchText, onEditingChanged: onEditingChanged, onCommit: onCommit)
+                            .font(font ?? .callout)
+                            .frame(height: geometry.size.height)
                             .foregroundColor(colorScheme.textColor.color)
                     }
-                    TextField(searchText, text: $searchText, onEditingChanged: onEditingChanged, onCommit: onCommit)
-                        .font(font ?? .callout)
-                        .foregroundColor(colorScheme.textColor.color)
                 }
+                .spacing(.horizontal)
             }
-            .spacing(.horizontal)
         }
     }
 }

@@ -14,8 +14,8 @@ extension Color {
     static let defaultGradientTop = Color("DefaultGradientTop")
     static let defaultGradientBottom = Color("DefaultGradientBottom")
     
-    static let pauseGradientTop = Color("PauseGradientDark")
-    static let pauseGradientBottom = Color("PauseGradientLight")
+    static let sliderGradientTop = Color("SliderGradientDark")
+    static let sliderGradientBottom = Color("SliderGradientLight")
     
     static let playGradientTop = Color("PlayGradientDark")
     static let playGradientBottom = Color("PlayGradientLight")

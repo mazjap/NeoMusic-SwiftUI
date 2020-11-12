@@ -11,5 +11,13 @@
 import SwiftUI
 
 extension Image {
-    static let placeholder = Image("Placeholder")
+    static let placeholders = [
+        Image("Placeholder1"),
+        Image("Placeholder2"),
+        Image("Placeholder3")
+    ]
+    
+    static var placeholder: Image {
+        placeholders[Int.random(in: 0..<placeholders.count)]
+    }
 }

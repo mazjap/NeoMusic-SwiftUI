@@ -14,18 +14,27 @@ struct NeoMusic_SwiftUIApp: App {
     @StateObject private var musicController = MusicPlayerController()
     @StateObject private var feedbackGenerator = FeedbackGenerator(feedbackEnabled: SettingsController.shared.feedbackEnabled)
     
+    @State private var gradient = JCColorScheme.default.backgroundGradient.gradient
+    
     var body: some Scene {
         WindowGroup {
-            Text("Loading...")
+            Rectangle()
+                .fill(LinearGradient(gradient: gradient, startPoint: .top, endPoint: .bottom))
+                .ignoresSafeArea()
                 .onAppear(perform: {
-                            UIApplication.shared.setHostingController(rootView:
-                                SomeView()
-                                    .environmentObject(SettingsController.shared)
-                                    .environmentObject(musicController)
-                                    .environmentObject(feedbackGenerator)
-                            )
+                    let settingsController = SettingsController.shared
+                    withAnimation {
+                        gradient = settingsController.colorScheme.backgroundGradient.gradient
                     }
-                )
+                    
+                    UIApplication.shared.setHostingController(rootView:
+                        SomeView()
+                            .environmentObject(settingsController)
+                            .environmentObject(musicController)
+                            .environmentObject(feedbackGenerator)
+                    )
+                }
+            )
         }
     }
 }

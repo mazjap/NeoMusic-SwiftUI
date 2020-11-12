@@ -34,6 +34,8 @@ struct Provider: TimelineProvider {
 }
 
 struct NeoWidgetEntryView : View {
+    let spacing: CGFloat = 7.5
+    
     var body: some View {
         let song = controller.getSong()
         let font: Font = .footnote
@@ -57,11 +59,11 @@ struct NeoWidgetEntryView : View {
                             
                     }
                 }
-                .padding([.leading, .top, .trailing], 7.5)
+                .padding([.leading, .top, .trailing], spacing)
                 
                 // Artwork
                 WidgetArtwork(colorScheme: controller.colorScheme, image: song.artwork)
-                    .padding(.bottom, 7.5)
+                    .padding(.bottom, spacing)
             }
         }
     }

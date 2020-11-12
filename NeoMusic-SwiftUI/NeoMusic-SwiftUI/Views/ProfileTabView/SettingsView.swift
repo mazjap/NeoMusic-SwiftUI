@@ -13,18 +13,51 @@ struct SettingsView: View {
     
     @EnvironmentObject private var settingsController: SettingsController
     
+    init() {
+        let sc = SettingsController.shared
+        let nbAppearance = UINavigationBar.appearance()
+        let textColor = sc.colorScheme.textColor.color.uiColor
+        
+        nbAppearance.titleTextAttributes = [.foregroundColor: textColor]
+        nbAppearance.largeTitleTextAttributes = [.foregroundColor: textColor]
+        nbAppearance.barTintColor = sc.colorScheme.backgroundGradient.last.uiColor
+    }
+    
     // MARK: - Body
     
     var body: some View {
-        NavigationView {
-            List {
-                NavigationLink(destination: ColorView()) {
-                    Text("Color Scheme")
-                        .foregroundColor(settingsController.colorScheme.textColor.color)
-                }
+        List {
+            NavigationLink(destination: ColorView(type: .backgroundGradient)) {
+                Text("Background Gradient Colors")
+                    .foregroundColor(settingsController.colorScheme.textColor.color)
             }
-            .navigationBarTitle("Settings")
+            .listRowBackground(settingsController.colorScheme.backgroundGradient.last)
+            
+            NavigationLink(destination: ColorView(type: .sliderGradient)) {
+                Text("Slider Gradient Colors")
+                    .foregroundColor(settingsController.colorScheme.textColor.color)
+            }
+            .listRowBackground(settingsController.colorScheme.backgroundGradient.last)
+            
+            NavigationLink(destination: ColorView(type: .textColor)) {
+                Text("Text Color")
+                    .foregroundColor(settingsController.colorScheme.textColor.color)
+            }
+            .listRowBackground(settingsController.colorScheme.backgroundGradient.last)
+            
+            NavigationLink(destination: ColorView(type: .buttonColor)) {
+                Text("Button Color")
+                    .foregroundColor(settingsController.colorScheme.textColor.color)
+            }
+            .listRowBackground(settingsController.colorScheme.backgroundGradient.last)
+            
+            NavigationLink(destination: ColorView(type: .secondaryButtonColor)) {
+                Text("Secondary Button Color")
+                    .foregroundColor(settingsController.colorScheme.textColor.color)
+            }
+            .listRowBackground(settingsController.colorScheme.backgroundGradient.last)
         }
+        .navigationBarTitle("Settings")
     }
 }
 

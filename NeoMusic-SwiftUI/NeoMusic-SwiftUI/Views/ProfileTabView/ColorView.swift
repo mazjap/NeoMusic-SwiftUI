@@ -9,6 +9,14 @@ import SwiftUI
 
 struct ColorView: View {
     
+    // MARK: - State
+    
+    @EnvironmentObject private var settingsController: SettingsController
+    
+    // MARK: - Variables
+    
+    let type: JCColorScheme.ColorType
+    
     // MARK: - Body
     
     var body: some View {
@@ -20,6 +28,6 @@ struct ColorView: View {
 
 struct ColorView_Previews: PreviewProvider {
     static var previews: some View {
-        ColorView()
+        ColorView(type: .backgroundGradient)
     }
 }

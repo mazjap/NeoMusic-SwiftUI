@@ -84,7 +84,6 @@ struct MusicSlider: View {
                     
                     RoundedRectangle(cornerRadius: (lineHeight - 2) / 2)
                         .fill(LinearGradient(gradient: colorScheme.sliderGradient.gradient, startPoint: .top, endPoint: .bottom))
-                        .animation(.linear)
                         .frame(width: verifiedDistance, height: lineHeight - 2)
                         .padding(.horizontal, sliderSize / 2)
                     
@@ -95,7 +94,6 @@ struct MusicSlider: View {
                             .fill(LinearGradient(gradient: colorScheme.backgroundGradient.gradient, startPoint: .bottomTrailing, endPoint: .topLeading))
                             .frame(width: sliderSize * 0.95, height: sliderSize * 0.95)
                         )
-                        .animation(.linear)
                         .offset(x: verifiedDistance, y: 0)
                         .frame(width: sliderSize, height: sliderSize)
                         .gesture(
@@ -136,7 +134,6 @@ struct MusicSlider: View {
                         .foregroundColor(colorScheme.textColor.color)
                         .font(.caption)
                         .offset(x: verifiedDistance, y: -sliderSize / 2 - 10)
-                        .animation(.linear)
                         .opacity(isSeeking ? 1 : 0)
                 }
             }

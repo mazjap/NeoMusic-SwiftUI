@@ -16,7 +16,7 @@ struct Constants {
     static let defaultColorScheme =
         JCColorScheme(
             backgroundGradient: EasyGradient([.defaultGradientTop, .defaultGradientBottom]),
-            sliderGradient: EasyGradient([.pauseGradientTop, .pauseGradientBottom]),
+            sliderGradient: EasyGradient([.sliderGradientTop, .sliderGradientBottom]),
             textColor: .white,
             mainButtonColor: .white,
             secondaryButtonColor: .white)

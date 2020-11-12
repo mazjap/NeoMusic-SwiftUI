@@ -118,7 +118,7 @@ struct OpenPlayer: View {
                     if musicController.currentSong.isExplicit {
                         Image(systemName: "e.square.fill")
                             .foregroundColor(settingsController.colorScheme.textColor.color)
-                            .matchedGeometryEffect(id: MusicPlayer.songExplicitKey, in: nspace, isSource: !isOpen)
+                            .matchedGeometryEffect(id: MusicPlayer.songExplicitKey, in: nspace, properties: .position, isSource: !isOpen)
                     }
                 }
                 .spacing(.horizontal)
@@ -128,7 +128,7 @@ struct OpenPlayer: View {
                     .font(.subheadline)
                     .foregroundColor(settingsController.colorScheme.textColor.color)
                     .spacing(.horizontal)
-                    .matchedGeometryEffect(id: MusicPlayer.songArtistKey, in: nspace, isSource: !isOpen)
+                    .matchedGeometryEffect(id: MusicPlayer.songArtistKey, in: nspace, properties: .position, isSource: !isOpen)
                 
                 VStack {
                     MusicSlider(colorScheme: settingsController.colorScheme)
@@ -204,13 +204,13 @@ struct ClosedPlayer: View {
                             .lineLimit(1)
                             .font(font)
                             .foregroundColor(settingsController.colorScheme.textColor.color)
-                            .matchedGeometryEffect(id: MusicPlayer.songTitleKey, in: nspace)
+                            .matchedGeometryEffect(id: MusicPlayer.songTitleKey, in: nspace, properties: .position, isSource: isOpen)
                         if musicController.currentSong.isExplicit {
                             Image(systemName: "e.square.fill")
                                 .resizable()
                                 .frame(width: font.size, height: font.size)
                                 .foregroundColor(settingsController.colorScheme.textColor.color)
-                                .matchedGeometryEffect(id: MusicPlayer.songExplicitKey, in: nspace, isSource: isOpen)
+                                .matchedGeometryEffect(id: MusicPlayer.songExplicitKey, in: nspace, properties: .position, isSource: isOpen)
                         }
                     }
                 

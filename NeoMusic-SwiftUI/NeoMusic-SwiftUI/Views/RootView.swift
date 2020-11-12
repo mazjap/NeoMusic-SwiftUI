@@ -24,7 +24,7 @@ struct RootView: View {
     
     @StateObject private var searchController = SongSearchController()
     @StateObject private var messageController = MessageController.shared
-    @State private var musicPlayerIsOpen: Bool = false
+    @State private var musicPlayerIsOpen: Bool = true
     
     
     // MARK: - Body

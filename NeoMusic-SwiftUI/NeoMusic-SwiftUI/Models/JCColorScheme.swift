@@ -177,6 +177,18 @@ struct EasyColor: Codable, Equatable {
     static var none = EasyColor(.clear)
 }
 
+// MARK: - JCColorScheme Extension: ColorType
+
+extension JCColorScheme {
+    enum ColorType {
+        case backgroundGradient
+        case sliderGradient
+        case textColor
+        case buttonColor
+        case secondaryButtonColor
+    }
+}
+
 // MARK: Gradient Extension: reversed
 
 extension Gradient {

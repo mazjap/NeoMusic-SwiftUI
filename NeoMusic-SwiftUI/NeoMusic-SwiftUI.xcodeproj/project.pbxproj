@@ -46,13 +46,13 @@
 		0E9D98F92559D9DD00343261 /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9D98F42559D9DB00343261 /* Font+Extension.swift */; };
 		0E9D98FE2559E32800343261 /* UIImageColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9D98FD2559E32800343261 /* UIImageColor.swift */; };
 		0EA1848424FB1EBD00111B84 /* Notification.Name+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA1848324FB1EBC00111B84 /* Notification.Name+Extension.swift */; };
+		0EB0EFEC255C541C00CEDF50 /* UIDevice+Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB0EFEB255C541C00CEDF50 /* UIDevice+Network.swift */; };
 		0EBAE2D2251FB01000752EDE /* Neumorph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE2D1251FB01000752EDE /* Neumorph.swift */; };
 		0EBAE2DF251FB22600752EDE /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE2DE251FB22600752EDE /* View+Extension.swift */; };
 		0EDE700E24F465D300E72D0C /* NeoMusic_SwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE700D24F465D300E72D0C /* NeoMusic_SwiftUIApp.swift */; };
 		0EDE701024F465D300E72D0C /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE700F24F465D300E72D0C /* MusicPlayer.swift */; };
 		0EDE701224F465D600E72D0C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0EDE701124F465D600E72D0C /* Assets.xcassets */; };
 		0EDE701524F465D600E72D0C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0EDE701424F465D600E72D0C /* Preview Assets.xcassets */; };
-		0EDE701824F465D600E72D0C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EDE701624F465D600E72D0C /* LaunchScreen.storyboard */; };
 		0EE4136C25278910003890A1 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E07DFEA252724F8006DDFF6 /* String+Extension.swift */; };
 		0EE413852528B56A003890A1 /* NeoMusic_SwiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE702224F465D700E72D0C /* NeoMusic_SwiftUITests.swift */; };
 		0EF3F73B254F49A3002AD607 /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF3F73A254F49A3002AD607 /* Media.swift */; };
@@ -154,6 +154,7 @@
 		0E9D98F42559D9DB00343261 /* Font+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Extension.swift"; sourceTree = "<group>"; };
 		0E9D98FD2559E32800343261 /* UIImageColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageColor.swift; sourceTree = "<group>"; };
 		0EA1848324FB1EBC00111B84 /* Notification.Name+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+Extension.swift"; sourceTree = "<group>"; };
+		0EB0EFEB255C541C00CEDF50 /* UIDevice+Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Network.swift"; sourceTree = "<group>"; };
 		0EBAE2D1251FB01000752EDE /* Neumorph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Neumorph.swift; sourceTree = "<group>"; };
 		0EBAE2DE251FB22600752EDE /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		0EDE700824F465D300E72D0C /* NeoMusic-SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NeoMusic-SwiftUI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -161,7 +162,6 @@
 		0EDE700F24F465D300E72D0C /* MusicPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayer.swift; sourceTree = "<group>"; };
 		0EDE701124F465D600E72D0C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0EDE701424F465D600E72D0C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		0EDE701724F465D600E72D0C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0EDE701924F465D600E72D0C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0EDE701E24F465D700E72D0C /* NeoMusic-SwiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "NeoMusic-SwiftUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EDE702224F465D700E72D0C /* NeoMusic_SwiftUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeoMusic_SwiftUITests.swift; sourceTree = "<group>"; };
@@ -224,6 +224,7 @@
 				0E9D98C42559BC9800343261 /* View+Neumorph.swift */,
 				0E9D98F42559D9DB00343261 /* Font+Extension.swift */,
 				0E9D98FD2559E32800343261 /* UIImageColor.swift */,
+				0EB0EFEB255C541C00CEDF50 /* UIDevice+Network.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -287,6 +288,7 @@
 			children = (
 				49E153532515705000767842 /* TabBar.swift */,
 				49E1535B251570A500767842 /* TabItem.swift */,
+				0E7AB5992547A0C800CA1B40 /* BarButton.swift */,
 			);
 			path = "Custom TabView";
 			sourceTree = "<group>";
@@ -332,7 +334,6 @@
 				0E8B8B4C24F5C19E0029B27D /* Models */,
 				0E8B8B4724F5BC390029B27D /* Model Controllers */,
 				0E8B8B4424F5A09E0029B27D /* Helpers */,
-				0EDE701624F465D600E72D0C /* LaunchScreen.storyboard */,
 				0EDE701324F465D600E72D0C /* Preview Content */,
 			);
 			path = "NeoMusic-SwiftUI";
@@ -383,7 +384,6 @@
 			isa = PBXGroup;
 			children = (
 				0EF4DC4E25424E120006108F /* ProfileView.swift */,
-				0E7AB5992547A0C800CA1B40 /* BarButton.swift */,
 				0E7AB59425479F8400CA1B40 /* SettingsView.swift */,
 				0E7AB59E2547AD6F00CA1B40 /* ColorView.swift */,
 			);
@@ -528,7 +528,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0EDE701824F465D600E72D0C /* LaunchScreen.storyboard in Resources */,
 				0EDE701524F465D600E72D0C /* Preview Assets.xcassets in Resources */,
 				0EDE701224F465D600E72D0C /* Assets.xcassets in Resources */,
 			);
@@ -596,6 +595,7 @@
 				0E50083C2532A47700B3BFAE /* CustomListHeader.swift in Sources */,
 				0E8B8B4E24F5C71E0029B27D /* RootView.swift in Sources */,
 				0E2C908324F5D5A400AB950D /* JCColorScheme.swift in Sources */,
+				0EB0EFEC255C541C00CEDF50 /* UIDevice+Network.swift in Sources */,
 				0E42F9F724F4EC9200901C89 /* DefaultButton.swift in Sources */,
 				0E8B8B3F24F587B10029B27D /* Image+Extension.swift in Sources */,
 				0E886F4E2554CB59006D75F7 /* Message.swift in Sources */,
@@ -647,17 +647,6 @@
 			targetProxy = 4960888425158331003F1089 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		0EDE701624F465D600E72D0C /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0EDE701724F465D600E72D0C /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		0EDE703024F465D700E72D0C /* Debug */ = {

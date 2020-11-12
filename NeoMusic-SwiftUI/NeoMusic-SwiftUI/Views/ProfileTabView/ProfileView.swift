@@ -20,31 +20,28 @@ struct ProfileView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            ZStack {
-                
-                LinearGradient(gradient: settingsController.colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
-                    .edgesIgnoringSafeArea(.top)
-                    .frame(height: geometry.size.height + MusicPlayer.musicPlayerHeightOffset - TabBar.height)
-                    .offset(y: -TabBar.height / 2)
-                
-                Text("Profile View")
-                    .foregroundColor(settingsController.colorScheme.textColor.color)
-                
-                VStack {
-                    HStack {
-                        Spacer()
-                        NavigationLink(
-                            destination: SettingsView(),
-                            isActive: $showSettingsView) {
-                            BarButton(systemImageName: "gearshape.fill", buttonColor: settingsController.colorScheme.mainButtonColor.color) {
-                                showSettingsView = true
-                            }
+            NavigationView {
+                ZStack {
+                    LinearGradient(gradient: settingsController.colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
+                        .edgesIgnoringSafeArea(.top)
+                        .frame(height: geometry.size.height + MusicPlayer.musicPlayerHeightOffset - TabBar.height)
+                        .offset(y: -TabBar.height / 2)
+
+                    VStack {
+                        HStack {
+                            Spacer()
+                            NavigationLink("", destination: SettingsView(), isActive: $showSettingsView)
                         }
+                        .spacing()
+                        
+                        Spacer()
                     }
-                    .spacing()
-                    
-                    Spacer()
                 }
+                .navigationBarItems(trailing:
+                    BarButton(systemImageName: "gearshape.fill", buttonColor: settingsController.colorScheme.mainButtonColor.color) {
+                        showSettingsView = true
+                    }
+                )
             }
         }
     }

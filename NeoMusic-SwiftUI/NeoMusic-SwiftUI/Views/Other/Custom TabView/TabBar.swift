@@ -68,7 +68,6 @@ struct TabBar: View {
                 items[selectedIndex + 1 >= items.count ? 0 : selectedIndex + 1]
                     .offset(x: UIScreen.main.bounds.width + dragOffset)
             }
-            .animation(.easeInOut)
 
             Spacer()
             ZStack {
