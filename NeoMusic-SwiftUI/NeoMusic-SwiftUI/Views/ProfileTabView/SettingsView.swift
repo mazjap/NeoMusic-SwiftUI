@@ -20,44 +20,49 @@ struct SettingsView: View {
         
         nbAppearance.titleTextAttributes = [.foregroundColor: textColor]
         nbAppearance.largeTitleTextAttributes = [.foregroundColor: textColor]
-        nbAppearance.barTintColor = sc.colorScheme.backgroundGradient.last.uiColor
+        nbAppearance.barTintColor = .clear
     }
     
     // MARK: - Body
     
     var body: some View {
-        List {
-            NavigationLink(destination: ColorView(type: .backgroundGradient)) {
-                Text("Background Gradient Colors")
-                    .foregroundColor(settingsController.colorScheme.textColor.color)
-            }
-            .listRowBackground(settingsController.colorScheme.backgroundGradient.last)
+        ZStack {
+            LinearGradient(gradient: settingsController.colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
+                .ignoresSafeArea()
             
-            NavigationLink(destination: ColorView(type: .sliderGradient)) {
-                Text("Slider Gradient Colors")
-                    .foregroundColor(settingsController.colorScheme.textColor.color)
+            List {
+                NavigationLink(destination: ColorView(type: .backgroundGradient)) {
+                    Text("Background Gradient Colors")
+                        .foregroundColor(settingsController.colorScheme.textColor.color)
+                }
+                .listRowBackground(settingsController.colorScheme.backgroundGradient.last)
+                
+                NavigationLink(destination: ColorView(type: .sliderGradient)) {
+                    Text("Slider Gradient Colors")
+                        .foregroundColor(settingsController.colorScheme.textColor.color)
+                }
+                .listRowBackground(settingsController.colorScheme.backgroundGradient.last)
+                
+                NavigationLink(destination: ColorView(type: .textColor)) {
+                    Text("Text Color")
+                        .foregroundColor(settingsController.colorScheme.textColor.color)
+                }
+                .listRowBackground(settingsController.colorScheme.backgroundGradient.last)
+                
+                NavigationLink(destination: ColorView(type: .buttonColor)) {
+                    Text("Button Color")
+                        .foregroundColor(settingsController.colorScheme.textColor.color)
+                }
+                .listRowBackground(settingsController.colorScheme.backgroundGradient.last)
+                
+                NavigationLink(destination: ColorView(type: .secondaryButtonColor)) {
+                    Text("Secondary Button Color")
+                        .foregroundColor(settingsController.colorScheme.textColor.color)
+                }
+                .listRowBackground(settingsController.colorScheme.backgroundGradient.last)
             }
-            .listRowBackground(settingsController.colorScheme.backgroundGradient.last)
-            
-            NavigationLink(destination: ColorView(type: .textColor)) {
-                Text("Text Color")
-                    .foregroundColor(settingsController.colorScheme.textColor.color)
-            }
-            .listRowBackground(settingsController.colorScheme.backgroundGradient.last)
-            
-            NavigationLink(destination: ColorView(type: .buttonColor)) {
-                Text("Button Color")
-                    .foregroundColor(settingsController.colorScheme.textColor.color)
-            }
-            .listRowBackground(settingsController.colorScheme.backgroundGradient.last)
-            
-            NavigationLink(destination: ColorView(type: .secondaryButtonColor)) {
-                Text("Secondary Button Color")
-                    .foregroundColor(settingsController.colorScheme.textColor.color)
-            }
-            .listRowBackground(settingsController.colorScheme.backgroundGradient.last)
+            .navigationBarTitle("Settings")
         }
-        .navigationBarTitle("Settings")
     }
 }
 
@@ -67,11 +72,7 @@ struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         let setCon = SettingsController.shared
         
-        return ZStack {
-            LinearGradient(gradient: setCon.colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
-        
-            SettingsView()
-                .environmentObject(setCon)
-        }
+        SettingsView()
+            .environmentObject(setCon)
     }
 }

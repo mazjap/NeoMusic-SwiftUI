@@ -29,6 +29,4 @@ struct Constants {
         secondaryButtonColor: .black)
     
     static let darkColorScheme = JCColorScheme(backgroundGradient: EasyGradient([.falseBlack]), sliderGradient: EasyGradient([.gray]), textColor: .gray, mainButtonColor: .falseWhite, secondaryButtonColor: .white)
-    
-    static let codeLineLocation = "@f\(#file)l\(#line)"
 }

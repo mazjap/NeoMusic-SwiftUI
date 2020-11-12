@@ -50,6 +50,7 @@ struct MusicArtwork: View {
                 .scaledToFill()
                 .frame(width: geometry.size.width * 0.975, height: geometry.size.height * 0.975)
                 .clipShape(Circle())
+                .contentShape(Circle())
                 .rotationEffect(.radians(isDragging ? rotation : previousRotation))
                 .gesture(
                     DragGesture()

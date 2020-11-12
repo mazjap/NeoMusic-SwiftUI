@@ -186,6 +186,15 @@ extension JCColorScheme {
         case textColor
         case buttonColor
         case secondaryButtonColor
+        
+        var isGradient: Bool {
+            switch self {
+            case .backgroundGradient, .sliderGradient:
+                return true
+            default:
+                return false
+            }
+        }
     }
 }
 

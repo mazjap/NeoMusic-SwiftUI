@@ -69,15 +69,15 @@ Please refer to the [wiki][wiki-url] for technical details on the project.
 
 ## Contributing
 
-1. :fork_and_knife: Fork this repo!
+### Feature Requests
 
-2. :dancers: Clone your newly forked repo to your local machine using:
-```shell
-$ git clone https://github.com/mazjap/NeoMusic-SwiftUI
-```
-3. :computer: Add some code
+I would love to hear from you about new features which would improve this app and further the aims of the project. Please provide as much detail and information as possible to show why you think your new feature should be implemented.
 
-4. :leftwards_arrow_with_hook: [Create a new pull request](https://github.com/mazjap/NeoMusic-SwiftUI/compare/) and fill in relevant info.
+### Pull Requests
+
+If you have developed a bug fix or new feature that would improve this app, please submit a pull request. It is best to communicate your ideas with me first before investing a great deal of time into a pull request to ensure that it will mesh smoothly with the project.
+
+Remember that this project is licensed under the MIT license, and by submitting a pull request, you agree that your work will be, too.
 
 ---
 

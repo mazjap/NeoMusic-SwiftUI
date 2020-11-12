@@ -10,6 +10,8 @@
 
 import SwiftUI
 
+// MARK: - MusicPlayer
+
 struct MusicPlayer: View {
     
     // MARK: - State
@@ -33,11 +35,6 @@ struct MusicPlayer: View {
                 ClosedPlayer(namespace: nspace, isOpen: $isOpen, rotation: $rotation)
             }
         }
-        .onTapGesture(count: 1) {
-            withAnimation {
-                isOpen.toggle()
-            }
-        }
     }
     
     // MARK: - Static Variables
@@ -57,20 +54,34 @@ struct MusicPlayer: View {
     static let musicPlayerHeightOffset: CGFloat = 100
 }
 
+// MARK: - OpenPlayer
+
 struct OpenPlayer: View {
+    
+    // MARK: - State
+    
     @EnvironmentObject private var feedbackGenerator: FeedbackGenerator
     @EnvironmentObject private var musicController: MusicPlayerController
     @EnvironmentObject private var settingsController: SettingsController
     
-    private let nspace: Namespace.ID
-    @Binding var isOpen: Bool
+    @State private var offset: CGFloat = 0
+    
+    @Binding private var isOpen: Bool
     @Binding private var rotation: Double
+    
+    // MARK: - Variables
+    
+    private let nspace: Namespace.ID
+    
+    // MARK: - Initializer
     
     init(namespace: Namespace.ID, isOpen: Binding<Bool>, rotation: Binding<Double>) {
         nspace = namespace
         _isOpen = isOpen
         _rotation = rotation
     }
+    
+    // MARK: - Body
     
     var body: some View {
         ZStack {
@@ -165,23 +176,61 @@ struct OpenPlayer: View {
                 }
             }
         }
+        .offset(y: isOpen ? offset : 0)
+        .gesture(
+            DragGesture()
+                .onChanged { value in
+                    if !isOpen {
+                        return
+                    }
+                    
+                    if isOpen && value.translation.height >= 0 {
+                        offset = value.translation.height
+                    }
+                    
+                    if offset > 50 {
+                        withAnimation {
+                            isOpen.toggle()
+                        }
+                    }
+                }
+                .onEnded { value in
+                    withAnimation {
+                        offset = 0
+                    }
+                }
+        )
     }
 }
 
+// MARK: - ClosedPlayer
+
 struct ClosedPlayer: View {
+    
+    // MARK: - State
+    
     @EnvironmentObject private var feedbackGenerator: FeedbackGenerator
     @EnvironmentObject private var musicController: MusicPlayerController
     @EnvironmentObject private var settingsController: SettingsController
     
-    private let nspace: Namespace.ID
-    @Binding var isOpen: Bool
+    @State private var offset: CGFloat = 0
+    
+    @Binding private var isOpen: Bool
     @Binding private var rotation: Double
+    
+    // MARK: - Variables
+    
+    private let nspace: Namespace.ID
+    
+    // MARK: - Initializer
     
     init(namespace: Namespace.ID, isOpen: Binding<Bool>, rotation: Binding<Double>) {
         nspace = namespace
         _isOpen = isOpen
         _rotation = rotation
     }
+    
+    // MARK: - Body
     
     var body: some View {
         ZStack {
@@ -248,7 +297,32 @@ struct ClosedPlayer: View {
                 .spacing(.horizontal)
             }
         }
-        .frame(height: MusicPlayer.musicPlayerHeightOffset)
+        .frame(height: MusicPlayer.musicPlayerHeightOffset + (isOpen ? 0 : abs(offset)))
+        .offset(y: isOpen ? 0 : offset)
+        .gesture(
+            DragGesture()
+                .onChanged { value in
+                    if isOpen {
+                        return
+                    }
+                    
+                    if value.translation.height <= 0 {
+                        offset = value.translation.height
+                    }
+                    
+                    if offset < -50 {
+                        withAnimation {
+                            isOpen.toggle()
+                        }
+                    }
+                }
+                .onEnded { value in
+                    withAnimation {
+                        offset = 0
+                    }
+                }
+        )
+        
     }
 }
 
