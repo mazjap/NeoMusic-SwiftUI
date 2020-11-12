@@ -78,7 +78,7 @@ struct MusicSlider: View {
                 
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: lineHeight / 2)
-                        .fill(LinearGradient(gradient: colorScheme.backgroundGradient.gradient.reversed, startPoint: .top, endPoint: .bottom))
+                        .fill(LinearGradient(gradient: colorScheme.backgroundGradient.last.offsetGradient, startPoint: .top, endPoint: .bottom))
                         .frame(height: lineHeight)
                         .padding(.horizontal, sliderSize / 2)
                     
@@ -91,7 +91,7 @@ struct MusicSlider: View {
                         .fill(LinearGradient(gradient: colorScheme.backgroundGradient.gradient.reversed, startPoint: .bottomTrailing, endPoint: .topLeading))
                         .overlay(
                         Circle()
-                            .fill(LinearGradient(gradient: colorScheme.backgroundGradient.gradient, startPoint: .bottomTrailing, endPoint: .topLeading))
+                            .fill(LinearGradient(gradient: colorScheme.backgroundGradient.last.offsetGradient.reversed, startPoint: .bottomTrailing, endPoint: .topLeading))
                             .frame(width: sliderSize * 0.95, height: sliderSize * 0.95)
                         )
                         .offset(x: verifiedDistance, y: 0)

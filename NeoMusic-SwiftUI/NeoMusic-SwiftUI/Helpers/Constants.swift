@@ -13,13 +13,12 @@ import SwiftUI
 struct Constants {
     static let spacing: CGFloat = 16
     
-    static let defaultColorScheme =
-        JCColorScheme(
-            backgroundGradient: EasyGradient([.defaultGradientTop, .defaultGradientBottom]),
-            sliderGradient: EasyGradient([.sliderGradientTop, .sliderGradientBottom]),
-            textColor: .white,
-            mainButtonColor: .white,
-            secondaryButtonColor: .white)
+    static let defaultColorScheme = JCColorScheme(
+        backgroundGradient: EasyGradient([.defaultGradientTop, .defaultGradientBottom]),
+        sliderGradient: EasyGradient([.sliderGradientTop, .sliderGradientBottom]),
+        textColor: .white,
+        mainButtonColor: .white,
+        secondaryButtonColor: .white)
     
     static let lightColorScheme = JCColorScheme(
         backgroundGradient: EasyGradient([.falseWhite]),
@@ -28,5 +27,9 @@ struct Constants {
         mainButtonColor: .falseBlack,
         secondaryButtonColor: .black)
     
-    static let darkColorScheme = JCColorScheme(backgroundGradient: EasyGradient([.falseBlack]), sliderGradient: EasyGradient([.gray]), textColor: .gray, mainButtonColor: .falseWhite, secondaryButtonColor: .white)
+    static let darkColorScheme = JCColorScheme(
+        backgroundGradient: EasyGradient([.falseBlack]),
+        sliderGradient: EasyGradient([.purple, .red]),
+        textColor: .falseWhite, mainButtonColor: .white,
+        secondaryButtonColor: .falseWhite)
 }

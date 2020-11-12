@@ -19,6 +19,8 @@
 		0E49677525299E97000D166C /* NeoSongRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E49677025299E97000D166C /* NeoSongRow.swift */; };
 		0E49677E2529A384000D166C /* ResignFirstResponderOnDrag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E49677D2529A383000D166C /* ResignFirstResponderOnDrag.swift */; };
 		0E50083C2532A47700B3BFAE /* CustomListHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E50083B2532A47700B3BFAE /* CustomListHeader.swift */; };
+		0E6DF4D4255DA384007DD831 /* CSPresets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6DF4D3255DA384007DD831 /* CSPresets.swift */; };
+		0E6DF4D9255DAFDE007DD831 /* CSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6DF4D8255DAFDE007DD831 /* CSButton.swift */; };
 		0E7073F425534F2700E11397 /* Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7073F325534F2700E11397 /* Dynamic.swift */; };
 		0E7AB59525479F8400CA1B40 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7AB59425479F8400CA1B40 /* SettingsView.swift */; };
 		0E7AB59A2547A0C800CA1B40 /* BarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7AB5992547A0C800CA1B40 /* BarButton.swift */; };
@@ -130,6 +132,8 @@
 		0E49677025299E97000D166C /* NeoSongRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeoSongRow.swift; sourceTree = "<group>"; };
 		0E49677D2529A383000D166C /* ResignFirstResponderOnDrag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResignFirstResponderOnDrag.swift; sourceTree = "<group>"; };
 		0E50083B2532A47700B3BFAE /* CustomListHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomListHeader.swift; sourceTree = "<group>"; };
+		0E6DF4D3255DA384007DD831 /* CSPresets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSPresets.swift; sourceTree = "<group>"; };
+		0E6DF4D8255DAFDE007DD831 /* CSButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSButton.swift; sourceTree = "<group>"; };
 		0E7073F325534F2700E11397 /* Dynamic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dynamic.swift; sourceTree = "<group>"; };
 		0E7AB59425479F8400CA1B40 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		0E7AB5992547A0C800CA1B40 /* BarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButton.swift; sourceTree = "<group>"; };
@@ -386,6 +390,8 @@
 				0EF4DC4E25424E120006108F /* ProfileView.swift */,
 				0E7AB59425479F8400CA1B40 /* SettingsView.swift */,
 				0E7AB59E2547AD6F00CA1B40 /* ColorView.swift */,
+				0E6DF4D3255DA384007DD831 /* CSPresets.swift */,
+				0E6DF4D8255DAFDE007DD831 /* CSButton.swift */,
 			);
 			path = ProfileTabView;
 			sourceTree = "<group>";
@@ -565,6 +571,7 @@
 				0E7AB59A2547A0C800CA1B40 /* BarButton.swift in Sources */,
 				49E153542515705000767842 /* TabBar.swift in Sources */,
 				0EBAE2DF251FB22600752EDE /* View+Extension.swift in Sources */,
+				0E6DF4D4255DA384007DD831 /* CSPresets.swift in Sources */,
 				0E49677E2529A384000D166C /* ResignFirstResponderOnDrag.swift in Sources */,
 				0EF4DC582542508A0006108F /* MusicView.swift in Sources */,
 				0E886F442554C906006D75F7 /* MessageController.swift in Sources */,
@@ -597,6 +604,7 @@
 				0E2C908324F5D5A400AB950D /* JCColorScheme.swift in Sources */,
 				0EB0EFEC255C541C00CEDF50 /* UIDevice+Network.swift in Sources */,
 				0E42F9F724F4EC9200901C89 /* DefaultButton.swift in Sources */,
+				0E6DF4D9255DAFDE007DD831 /* CSButton.swift in Sources */,
 				0E8B8B3F24F587B10029B27D /* Image+Extension.swift in Sources */,
 				0E886F4E2554CB59006D75F7 /* Message.swift in Sources */,
 				0E49677525299E97000D166C /* NeoSongRow.swift in Sources */,

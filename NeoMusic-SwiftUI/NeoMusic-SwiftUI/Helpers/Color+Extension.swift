@@ -21,7 +21,7 @@ extension Color {
     static let playGradientBottom = Color("PlayGradientLight")
     
     static let falseWhite = Color(red: 0.92, green: 0.92, blue: 0.98)
-    static let falseBlack = Color(red: 0.12, green: 0.12, blue: 0.08)
+    static let falseBlack = Color(red: 0.08, green: 0.08, blue: 0.12)
     
     var rgb: (r: Double, g: Double, b: Double) {
         #if canImport(UIKit)
@@ -102,5 +102,9 @@ extension Color {
                 Color(hue: vals.h, saturation: vals.s, brightness: vals.b + 0.1)
             ]
         }
+    }
+    
+    var offsetGradient: Gradient {
+        Gradient(colors: offsetColors)
     }
 }

@@ -47,21 +47,18 @@ struct ColorView: View {
             case .backgroundGradient:
                 sc.colorScheme.backgroundGradient.removeColor(at: 0)
                 sc.colorScheme.backgroundGradient.addColor(color, at: 0)
-                sc.setColorScheme(sc.colorScheme)
             case .sliderGradient:
                 sc.colorScheme.sliderGradient.removeColor(at: 0)
                 sc.colorScheme.sliderGradient.addColor(color, at: 0)
-                sc.setColorScheme(sc.colorScheme)
             case .textColor:
                 sc.colorScheme.textColor = EasyColor(color)
-                sc.setColorScheme(sc.colorScheme)
             case .buttonColor:
                 sc.colorScheme.mainButtonColor = EasyColor(color)
-                sc.setColorScheme(sc.colorScheme)
             case .secondaryButtonColor:
                 sc.colorScheme.secondaryButtonColor = EasyColor(color)
-                sc.setColorScheme(sc.colorScheme)
             }
+            sc.setColorScheme(sc.colorScheme)
+            UIApplication.shared.setNeedsStatusBarAppearanceUpdate()
         })
         
         self._color2 = .init(get: {
@@ -82,14 +79,15 @@ struct ColorView: View {
             case .backgroundGradient:
                 sc.colorScheme.backgroundGradient.removeColor(at: 1)
                 sc.colorScheme.backgroundGradient.addColor(color, at: 1)
-                sc.setColorScheme(sc.colorScheme)
             case .sliderGradient:
                 sc.colorScheme.sliderGradient.removeColor(at: 1)
                 sc.colorScheme.sliderGradient.addColor(color, at: 1)
-                sc.setColorScheme(sc.colorScheme)
             default:
                 return
             }
+            
+            sc.setColorScheme(sc.colorScheme)
+            UIApplication.shared.setNeedsStatusBarAppearanceUpdate()
         })
     }
     

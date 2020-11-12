@@ -24,11 +24,14 @@ extension UIApplication {
         Self.shared.currentVC?.present(alert, animated: animated)
     }
     
-    func setHostingController<Content: View>(rootView: Content) {
-        keyWindow?.rootViewController = HostingController(rootView: rootView)
+    func setHostingController(controller: HostingController<AnyView>) {
+        keyWindow?.rootViewController = controller
+        Self.hostingVC = controller
     }
     
     func setNeedsStatusBarAppearanceUpdate() {
-        currentVC?.setNeedsStatusBarAppearanceUpdate()
+        Self.hostingVC?.setNeedsStatusBarAppearanceUpdate()
     }
+    
+    static private weak var hostingVC: HostingController<AnyView>?
 }

@@ -9,7 +9,6 @@ import SwiftUI
 
 @main
 struct NeoMusic_SwiftUIApp: App {
-    typealias SomeView = RootView
     
     @StateObject private var musicController = MusicPlayerController()
     @StateObject private var feedbackGenerator = FeedbackGenerator(feedbackEnabled: SettingsController.shared.feedbackEnabled)
@@ -27,11 +26,14 @@ struct NeoMusic_SwiftUIApp: App {
                         gradient = settingsController.colorScheme.backgroundGradient.gradient
                     }
                     
-                    UIApplication.shared.setHostingController(rootView:
-                        SomeView()
-                            .environmentObject(settingsController)
-                            .environmentObject(musicController)
-                            .environmentObject(feedbackGenerator)
+                    UIApplication.shared.setHostingController(controller:
+                                                                HostingController(rootView:
+                                                                    RootView()
+                                                                        .environmentObject(settingsController)
+                                                                        .environmentObject(musicController)
+                                                                        .environmentObject(feedbackGenerator)
+                                                                        .asAny()
+                                                                )
                     )
                 }
             )
