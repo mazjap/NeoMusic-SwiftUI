@@ -21,6 +21,8 @@
 		0E50083C2532A47700B3BFAE /* CustomListHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E50083B2532A47700B3BFAE /* CustomListHeader.swift */; };
 		0E6DF4D4255DA384007DD831 /* CSPresets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6DF4D3255DA384007DD831 /* CSPresets.swift */; };
 		0E6DF4D9255DAFDE007DD831 /* CSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6DF4D8255DAFDE007DD831 /* CSButton.swift */; };
+		0E6DF4E9255DFD07007DD831 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6DF4E8255DFD07007DD831 /* UIImage+Extension.swift */; };
+		0E6DF4ED255DFD9F007DD831 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6DF4E8255DFD07007DD831 /* UIImage+Extension.swift */; };
 		0E7073F425534F2700E11397 /* Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7073F325534F2700E11397 /* Dynamic.swift */; };
 		0E7AB59525479F8400CA1B40 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7AB59425479F8400CA1B40 /* SettingsView.swift */; };
 		0E7AB59A2547A0C800CA1B40 /* BarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7AB5992547A0C800CA1B40 /* BarButton.swift */; };
@@ -134,6 +136,7 @@
 		0E50083B2532A47700B3BFAE /* CustomListHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomListHeader.swift; sourceTree = "<group>"; };
 		0E6DF4D3255DA384007DD831 /* CSPresets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSPresets.swift; sourceTree = "<group>"; };
 		0E6DF4D8255DAFDE007DD831 /* CSButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSButton.swift; sourceTree = "<group>"; };
+		0E6DF4E8255DFD07007DD831 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		0E7073F325534F2700E11397 /* Dynamic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dynamic.swift; sourceTree = "<group>"; };
 		0E7AB59425479F8400CA1B40 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		0E7AB5992547A0C800CA1B40 /* BarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButton.swift; sourceTree = "<group>"; };
@@ -229,6 +232,7 @@
 				0E9D98F42559D9DB00343261 /* Font+Extension.swift */,
 				0E9D98FD2559E32800343261 /* UIImageColor.swift */,
 				0EB0EFEB255C541C00CEDF50 /* UIDevice+Network.swift */,
+				0E6DF4E8255DFD07007DD831 /* UIImage+Extension.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -597,6 +601,7 @@
 				0E7AB59525479F8400CA1B40 /* SettingsView.swift in Sources */,
 				0E49677225299E97000D166C /* UIApplication+Extension.swift in Sources */,
 				0E9D434B253515C00025B3FD /* FeedbackGenerator.swift in Sources */,
+				0E6DF4E9255DFD07007DD831 /* UIImage+Extension.swift in Sources */,
 				0E2C908124F5CF2600AB950D /* Constants.swift in Sources */,
 				0EDE701024F465D300E72D0C /* MusicPlayer.swift in Sources */,
 				0E50083C2532A47700B3BFAE /* CustomListHeader.swift in Sources */,
@@ -636,6 +641,7 @@
 				496088A4251583C1003F1089 /* JCColorScheme.swift in Sources */,
 				496088A0251583BF003F1089 /* Song.swift in Sources */,
 				0EE4136C25278910003890A1 /* String+Extension.swift in Sources */,
+				0E6DF4ED255DFD9F007DD831 /* UIImage+Extension.swift in Sources */,
 				0E9D98F92559D9DD00343261 /* Font+Extension.swift in Sources */,
 				496088AC251583E0003F1089 /* Color+Extension.swift in Sources */,
 			);

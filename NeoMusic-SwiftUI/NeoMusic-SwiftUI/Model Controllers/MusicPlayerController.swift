@@ -194,7 +194,7 @@ class MusicPlayerController: ObservableObject {
         guard isAuthorized else { checkAuthorized(); return }
         
         DispatchQueue.main.async {
-            let ids = songs.compactMap { $0.media?.playbackStoreID }
+            let ids = songs.compactMap { $0.storeID }
             
             self.player.setQueue(with: ids)
             self.player.prepareToPlay()
