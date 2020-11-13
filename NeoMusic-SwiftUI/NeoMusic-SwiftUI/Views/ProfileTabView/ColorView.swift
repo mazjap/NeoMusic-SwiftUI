@@ -57,7 +57,7 @@ struct ColorView: View {
             case .secondaryButtonColor:
                 sc.colorScheme.secondaryButtonColor = EasyColor(color)
             }
-            sc.setColorScheme(sc.colorScheme)
+            sc.setCurrentColorScheme(sc.colorScheme)
             UIApplication.shared.setNeedsStatusBarAppearanceUpdate()
         })
         
@@ -86,7 +86,7 @@ struct ColorView: View {
                 return
             }
             
-            sc.setColorScheme(sc.colorScheme)
+            sc.setCurrentColorScheme(sc.colorScheme)
             UIApplication.shared.setNeedsStatusBarAppearanceUpdate()
         })
     }

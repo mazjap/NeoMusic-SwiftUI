@@ -37,6 +37,7 @@ struct ProfileView: View {
                         Spacer()
                     }
                 }
+                .navigationViewStyle(StackNavigationViewStyle())
                 .navigationBarItems(trailing:
                     BarButton(systemImageName: "gearshape.fill", buttonColor: settingsController.colorScheme.mainButtonColor.color) {
                         showSettingsView = true

@@ -28,7 +28,8 @@ struct Provider: TimelineProvider {
         if now >= refreshDate {
             refreshDate = refresh
         }
-        let timeline = Timeline(entries: [controller.getSong(with: Date().addingTimeInterval(10))], policy: .after(refresh))
+        
+        let timeline = Timeline(entries: [controller.getSong(with: refreshDate)], policy: .atEnd)
         completion(timeline)
     }
 }
@@ -41,7 +42,7 @@ struct NeoWidgetEntryView : View {
         let font: Font = .footnote
         
         ZStack {
-            LinearGradient(gradient: Gradient(colors: controller.colorScheme.backgroundGradient.colors), startPoint: .top, endPoint: .bottom)
+            LinearGradient(gradient: controller.colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
             
             VStack {
                 // Title
@@ -62,7 +63,7 @@ struct NeoWidgetEntryView : View {
                 .padding([.leading, .top, .trailing], spacing)
                 
                 // Artwork
-                WidgetArtwork(colorScheme: controller.colorScheme, image: song.artwork)
+                WidgetArtwork(colorScheme: controller.colorScheme, image: song.image)
                     .padding(.bottom, spacing)
             }
         }

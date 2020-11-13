@@ -266,6 +266,7 @@
 			isa = PBXGroup;
 			children = (
 				0E42F9F624F4EC9200901C89 /* DefaultButton.swift */,
+				0E7AB5992547A0C800CA1B40 /* BarButton.swift */,
 				0EBAE2D6251FB20200752EDE /* Custom TabView */,
 			);
 			path = Other;
@@ -296,7 +297,6 @@
 			children = (
 				49E153532515705000767842 /* TabBar.swift */,
 				49E1535B251570A500767842 /* TabItem.swift */,
-				0E7AB5992547A0C800CA1B40 /* BarButton.swift */,
 			);
 			path = "Custom TabView";
 			sourceTree = "<group>";

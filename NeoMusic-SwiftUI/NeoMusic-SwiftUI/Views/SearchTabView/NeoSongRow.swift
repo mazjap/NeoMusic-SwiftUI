@@ -35,7 +35,7 @@ struct NeoSongRow: View {
             Color.clear
             
             HStack {
-                song.artwork
+                song.image
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .clipShape(Circle())

@@ -12,7 +12,11 @@ import SwiftUI
 
 // MARK: - JCColorScheme
 
-struct JCColorScheme: Codable, Equatable {
+struct JCColorScheme: Codable, Equatable, Identifiable {
+    var id: String {
+        "BG:\(backgroundGradient), SG:\(sliderGradient), TC:\(textColor), MBC:\(mainButtonColor), SBC:\(secondaryButtonColor)"
+    }
+    
     
     // MARK: - Variables
     
@@ -45,9 +49,13 @@ struct JCColorScheme: Codable, Equatable {
 
 // MARK: - EasyGradient
 
-struct EasyGradient: Codable, Equatable {
+struct EasyGradient: Codable, Equatable, CustomStringConvertible {
     
     // MARK: - Variables
+    
+    var description: String {
+        "\(colors)"
+    }
     
     private var easyColors: [EasyColor]
     
@@ -129,9 +137,13 @@ struct EasyGradient: Codable, Equatable {
 
 // MARK: - EasyColor
 
-struct EasyColor: Codable, Equatable {
+struct EasyColor: Codable, Equatable, CustomStringConvertible {
     
     // MARK: - Variables
+    
+    var description: String {
+        "R:\(r) G:\(g) B:\(b) A:\(a)"
+    }
     
     var r = 0.0
     var g = 0.0
@@ -203,5 +215,15 @@ extension JCColorScheme {
 extension Gradient {
     var reversed: Gradient {
         Gradient(colors: stops.map { $0.color }.reversed())
+    }
+    
+    var caGradient: CAGradientLayer {
+        let g = CAGradientLayer()
+        g.colors = [stops.map { $0.color.uiColor.cgColor }]
+        g.startPoint = CGPoint(x: 0.5, y: 1.0)
+        g.endPoint = CGPoint(x: 0.5, y: 0.0)
+        g.locations = [0, 1]
+        
+        return g
     }
 }

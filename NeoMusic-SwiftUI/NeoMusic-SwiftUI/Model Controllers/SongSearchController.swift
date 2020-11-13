@@ -208,9 +208,9 @@ class SongSearchController: ObservableObject {
                             let artists = try JSONSerialization.data(withJSONObject: artistJson)
                             
                             
-                            let songArray: [Song] = try JSONDecoder().decode([Song].self, from: songs)
+//                            let songArray: [Song] = try JSONDecoder().decode([Song].self, from: songs)
                             
-                            print(songArray)
+                            print(songs)
                             print(albums)
                             print(artists)
                         } catch {

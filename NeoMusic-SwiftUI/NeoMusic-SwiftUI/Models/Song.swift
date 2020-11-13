@@ -93,7 +93,7 @@ struct Song: TimelineEntry, Identifiable, Equatable {
     static var noSong = Song(nil)
 }
 
-extension Song: Decodable {
+extension Song {//: Decodable {
     enum CodingKeys: String, CodingKey {
         case artwork
         case artist
@@ -107,8 +107,8 @@ extension Song: Decodable {
         case date
     }
     
-    init(from decoder: Decoder) throws {
-        let container = try? decoder.container(keyedBy: CodingKeys.self)
-        
-    }
+//    init(from decoder: Decoder) throws {
+//        let container = try? decoder.container(keyedBy: CodingKeys.self)
+//        
+//    }
 }
