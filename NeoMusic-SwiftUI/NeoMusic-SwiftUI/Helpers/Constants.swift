@@ -21,14 +21,14 @@ struct Constants {
         secondaryButtonColor: .white)
     
     static let lightColorScheme = JCColorScheme(
-        backgroundGradient: EasyGradient([.falseWhite]),
-        sliderGradient: EasyGradient([.gray]),
+        backgroundGradient: EasyGradient([.falseWhite, .falseWhite]),
+        sliderGradient: EasyGradient([.gray, .lightGray]),
         textColor: .gray,
         mainButtonColor: .falseBlack,
         secondaryButtonColor: .black)
     
     static let darkColorScheme = JCColorScheme(
-        backgroundGradient: EasyGradient([.falseBlack]),
+        backgroundGradient: EasyGradient([.falseBlack, .falseBlack]),
         sliderGradient: EasyGradient([.purple, .red]),
         textColor: .falseWhite, mainButtonColor: .white,
         secondaryButtonColor: .falseWhite)

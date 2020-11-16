@@ -30,9 +30,7 @@ struct TabItem: View {
     // MARK: - Body
     
     var body: some View {
-        Button(action: {
-            feedbackGenerator.impactOccurred()
-        }) {
+        Button(action: {}) {
             content
         }
     }

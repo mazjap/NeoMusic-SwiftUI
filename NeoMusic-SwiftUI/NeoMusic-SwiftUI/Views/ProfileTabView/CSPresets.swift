@@ -67,14 +67,12 @@ struct CSPresets_Previews: PreviewProvider {
 
 extension Array where Element == JCColorScheme {
     var arrs: [[JCColorScheme]] {
-        var tempArr = [[JCColorScheme]]()
-        var index = 0
-        for (i, colorScheme) in enumerated() {
-            if i % 3 == 0 {
+        var tempArr: [[JCColorScheme]] = [[]]
+        for colorScheme in self {
+            if tempArr[tempArr.count - 1].count == 3 {
                 tempArr.append([colorScheme])
-                index += 1
             } else {
-                tempArr[index].append(colorScheme)
+                tempArr[tempArr.count - 1].append(colorScheme)
             }
         }
         return tempArr

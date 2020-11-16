@@ -20,6 +20,10 @@ struct MusicPlayer: View {
     @EnvironmentObject private var settingsController: SettingsController
     @EnvironmentObject private var feedbackGenerator: FeedbackGenerator
     
+    @State private var startTime: Double = 0
+    @State private var currentTime: Double = 0
+    @State private var totalTime: Double = 0
+    
     @State private var rotation: Double = 0
     @Namespace private var nspace
     
@@ -30,7 +34,7 @@ struct MusicPlayer: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             if isOpen { // MARK: - isOpen
-                OpenPlayer(namespace: nspace, isOpen: $isOpen, rotation: $rotation)
+                OpenPlayer(namespace: nspace, isOpen: $isOpen, rotation: $rotation, start: $startTime, end: $totalTime, current: $currentTime)
             } else { // MARK: - isClosed
                 ClosedPlayer(namespace: nspace, isOpen: $isOpen, rotation: $rotation)
             }
@@ -69,16 +73,25 @@ struct OpenPlayer: View {
     @Binding private var isOpen: Bool
     @Binding private var rotation: Double
     
+    @Binding private var startTime: Double
+    @Binding private var totalTime: Double
+    @Binding private var currentTime: Double
+    
     // MARK: - Variables
     
     private let nspace: Namespace.ID
     
+    let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
+    
     // MARK: - Initializer
     
-    init(namespace: Namespace.ID, isOpen: Binding<Bool>, rotation: Binding<Double>) {
-        nspace = namespace
-        _isOpen = isOpen
-        _rotation = rotation
+    init(namespace: Namespace.ID, isOpen: Binding<Bool>, rotation: Binding<Double>, start: Binding<Double>, end: Binding<Double>, current: Binding<Double>) {
+        self.nspace = namespace
+        self._isOpen = isOpen
+        self._rotation = rotation
+        self._startTime = start
+        self._totalTime = end
+        self._currentTime = current
     }
     
     // MARK: - Body
@@ -142,8 +155,19 @@ struct OpenPlayer: View {
                     .matchedGeometryEffect(id: MusicPlayer.songArtistKey, in: nspace, properties: .position, isSource: !isOpen)
                 
                 VStack {
-                    MusicSlider(colorScheme: settingsController.colorScheme)
+                    MusicSlider(colorScheme: settingsController.colorScheme, min: $startTime, max: $totalTime, current: $currentTime) { time in
+                        musicController.set(time: time)
+                    }
                         .padding(.horizontal, 5)
+                        .onReceive(timer) { _ in
+                            if musicController.currentPlaybackTime == musicController.totalPlaybackTime {
+                                currentTime = 0
+                                totalTime = 0.01
+                            } else {
+                                currentTime = musicController.currentPlaybackTime
+                                totalTime = musicController.totalPlaybackTime
+                            }
+                        }
                     
                     HStack {
                         Spacer()

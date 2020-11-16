@@ -91,23 +91,31 @@ struct EasyGradient: Codable, Equatable, CustomStringConvertible {
     
     // MARK: - Functions
     
-    mutating func addColor(_ color: Color, at i: Int? = nil) {
-        let ezclr = EasyColor(color)
-        
+    subscript(i: Int) -> EasyColor {
+        guard i >= 0 else { return easyColors[0] }
+        guard i < easyColors.count else {return easyColors[easyColors.count - 1]}
+        return easyColors[i]
+    }
+    
+    mutating func addColor(_ color: EasyColor, at i: Int? = nil) {
         if colors.count == 1 && colors[0] == .clear {
-            easyColors[0] = EasyColor(color)
+            easyColors[0] = color
             return
         }
         
         if let index = i, index <= count, index >= 0 {
-            easyColors.insert(ezclr, at: index)
+            easyColors.insert(color, at: index)
         } else {
-            easyColors.append(ezclr)
+            easyColors.append(color)
         }
     }
     
+    mutating func addColor(_ color: Color, at i: Int? = nil) {
+        addColor(EasyColor(color), at: i)
+    }
+    
     @discardableResult
-    mutating func removeColor(at index: Int) -> Color? {
+    mutating func removeColor(at index: Int) -> EasyColor? {
         guard count != 0, index >= 0, index < count else { return nil }
         
         let ezclr = easyColors.remove(at: index)
@@ -115,7 +123,7 @@ struct EasyGradient: Codable, Equatable, CustomStringConvertible {
             addColor(EasyColor.none.color)
         }
         
-        return ezclr.color
+        return ezclr
     }
     
     func color(at index: Int) -> Color {
@@ -154,6 +162,10 @@ struct EasyColor: Codable, Equatable, CustomStringConvertible {
         Color(red: r, green: g, blue: b)
     }
     
+    var hex: String {
+        String(format:"%02X", Int(r * 0xff)) + String(format:"%02X", Int(g * 0xff)) + String(format:"%02X", Int(r * 0xff))
+    }
+    
     // MARK: - Initializers
 
     init(_ color: Color) {
@@ -167,6 +179,10 @@ struct EasyColor: Codable, Equatable, CustomStringConvertible {
         r = Double(red) / 0xFF
         g = Double(green) / 0xFF
         b = Double(blue) / 0xFF
+    }
+    
+    init(hue: Double, saturation: Double, brightness: Double) {
+        self.init(Color(hue: hue, saturation: saturation, brightness: brightness))
     }
     
     // Validate user-provided hex string, return nil if bad input
@@ -226,4 +242,11 @@ extension Gradient {
         
         return g
     }
+}
+
+
+extension EasyColor {
+    static let red = EasyColor(.red)
+    static let black = EasyColor(.black)
+    static let blue = EasyColor(.blue)
 }

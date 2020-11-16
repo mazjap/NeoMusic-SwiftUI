@@ -14,27 +14,32 @@ struct MusicSlider: View {
     
     // MARK: - State
     
-    @EnvironmentObject private var musicController: MusicPlayerController
+    @EnvironmentObject private var feedbackGenerator: FeedbackGenerator
     
     @GestureState private var dragOffset: CGFloat = 0
     
-    @State private var currentTime: Double = 0
-    @State private var totalTime: Double = 0
+    @Binding private var minimum: Double
+    @Binding private var maximum: Double
+    @Binding private var current: Double
+    
     @State private var isSeeking: Bool = false
     @State private var tempSeekingDuration: CGFloat = 0
     @State private var sideToPop: Side = .none
     
     // MARK: - Variables
     
+    let action: (Double) -> Void
+    
     let lineHeight: CGFloat = 5
     let sliderSize = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height) / 14
-    let impact: UIImpactFeedbackGenerator
     let colorScheme: JCColorScheme
-    let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
     
-    init(colorScheme: JCColorScheme, impact: UIImpactFeedbackGenerator = .init()) {
+    init(colorScheme: JCColorScheme, min: Binding<Double>, max: Binding<Double>, current: Binding<Double>, onChange action: @escaping (Double) -> Void) {
         self.colorScheme = colorScheme
-        self.impact = impact
+        self._minimum = min
+        self._maximum = max
+        self._current = current
+        self.action = action
     }
     
     // MARK: - Body
@@ -42,7 +47,7 @@ struct MusicSlider: View {
     var body: some View {
         VStack {
             HStack {
-                Text(format(currentTime))
+                Text(format(current))
                     .font(.subheadline)
                     .foregroundColor(colorScheme.textColor.color)
                     .padding(.leading, sliderSize / 2)
@@ -50,31 +55,22 @@ struct MusicSlider: View {
                 
                 Spacer()
                 
-                Text(format(totalTime))
+                Text(format(maximum))
                     .font(.subheadline)
                     .foregroundColor(colorScheme.textColor.color)
                     .padding(.trailing, sliderSize / 2)
                     .offset(y: sideToPop == .right ? -10 : 0)
             }
-            .onReceive(timer) { _ in
-                if musicController.currentPlaybackTime == musicController.totalPlaybackTime {
-                    currentTime = 0
-                    totalTime = 0.01
-                } else {
-                    currentTime = musicController.currentPlaybackTime
-                    totalTime = musicController.totalPlaybackTime
-                }
-            }
             
             GeometryReader { geometry in
                 let totalDistance = geometry.size.width - sliderSize
-                let songCompletion = CGFloat(currentTime / totalTime)
+                let songCompletion = CGFloat(current / maximum)
                 
                 let songOffset = songCompletion * totalDistance
                 
                 let x = dragOffset + (isSeeking ? tempSeekingDuration : songOffset)
                 let verifiedDistance = max(min(totalDistance, x), 0)
-                let songDuration = Double(verifiedDistance / totalDistance) * totalTime
+                let songDuration = Double(verifiedDistance / totalDistance) * maximum
                 
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: lineHeight / 2)
@@ -103,7 +99,7 @@ struct MusicSlider: View {
                                 }
                                 .onChanged { _ in
                                     if !isSeeking {
-                                        impact.impactOccurred(intensity: 0.35)
+                                        feedbackGenerator.impactOccurred(intensity: 0.35)
                                         
                                         isSeeking = true
                                         
@@ -121,8 +117,8 @@ struct MusicSlider: View {
                                     }
                                 }
                                 .onEnded { value in
-                                    musicController.set(time: songDuration)
-                                    impact.impactOccurred(intensity: abs(x - tempSeekingDuration) / totalDistance)
+                                    action(songDuration)
+                                    feedbackGenerator.impactOccurred(intensity: abs(x - tempSeekingDuration) / totalDistance)
                                     
                                     sideToPop = .none
                                     isSeeking = false
@@ -178,12 +174,16 @@ extension MusicSlider {
 // MARK: - Preview
 
 struct MusicSlider_Previews: PreviewProvider {
+    @State static var zero: Double = 0
+    @State static var two: Double = 2
+    @State static var five: Double = 5
+    
     static var previews: some View {
         ZStack {
             LinearGradient(gradient: JCColorScheme.default.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea()
             
-            MusicSlider(colorScheme: Constants.defaultColorScheme)
+            MusicSlider(colorScheme: Constants.defaultColorScheme, min: $zero, max: $five, current: $two, onChange: {_ in})
                 .environmentObject(MusicPlayerController())
         }
     }

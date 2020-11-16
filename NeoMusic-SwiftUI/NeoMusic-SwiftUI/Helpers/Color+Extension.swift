@@ -23,6 +23,8 @@ extension Color {
     static let falseWhite = Color(red: 0.92, green: 0.92, blue: 0.98)
     static let falseBlack = Color(red: 0.08, green: 0.08, blue: 0.12)
     
+    static let lightGray = Color(UIColor.lightGray)
+    
     var rgb: (r: Double, g: Double, b: Double) {
         #if canImport(UIKit)
         typealias NativeColor = UIColor
@@ -72,10 +74,10 @@ extension Color {
     }
     
     func average(to color: Color, at percent: Double = 0.5) -> Color {
-        let c1 = hsb
-        let c2 = color.hsb
+        let c1 = rgb
+        let c2 = color.rgb
         
-        return Color(hue: percent * c1.h + (1 - percent) * c2.h, saturation: percent * c1.s + (1 - percent) * c2.s, brightness: percent * c1.b + (1 - percent) * c2.b)
+        return Color(red: c1.r + percent * (c2.r - c1.r), green: c1.g + percent * (c2.g - c1.g), blue:  c1.b + percent * (c2.b - c1.b))
     }
     
     var offsetColors: [Color] {

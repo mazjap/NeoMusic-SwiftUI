@@ -37,6 +37,13 @@ struct ProfileView: View {
                         Spacer()
                     }
                 }
+                .background(NavController { navController in
+                    let textColor = settingsController.colorScheme.textColor.color.uiColor
+                    
+                    navController.navigationBar.largeTitleTextAttributes = [.foregroundColor : textColor]
+                    navController.navigationBar.titleTextAttributes = [.foregroundColor : textColor]
+                    navController.navigationBar.barTintColor = .clear
+                })
                 .navigationViewStyle(StackNavigationViewStyle())
                 .navigationBarItems(trailing:
                     BarButton(systemImageName: "gearshape.fill", buttonColor: settingsController.colorScheme.mainButtonColor.color) {

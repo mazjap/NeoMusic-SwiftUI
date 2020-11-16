@@ -22,18 +22,16 @@ struct NeoMusic_SwiftUIApp: App {
                 .ignoresSafeArea()
                 .onAppear(perform: {
                     let settingsController = SettingsController.shared
-                    withAnimation {
-                        gradient = settingsController.colorScheme.backgroundGradient.gradient
-                    }
+                    gradient = settingsController.colorScheme.backgroundGradient.gradient
                     
-                    UIApplication.shared.setHostingController(controller:
-                                                                HostingController(rootView:
-                                                                    RootView()
-                                                                        .environmentObject(settingsController)
-                                                                        .environmentObject(musicController)
-                                                                        .environmentObject(feedbackGenerator)
-                                                                        .asAny()
-                                                                )
+                    UIApplication.shared.setHostingController(
+                        with: RootView()
+                                .environmentObject(settingsController)
+                                .environmentObject(musicController)
+                                .environmentObject(feedbackGenerator)
+                                .asAny(),
+                        animate: true,
+                        from: LinearGradient(gradient: gradient, startPoint: .top, endPoint: .bottom)
                     )
                 }
             )

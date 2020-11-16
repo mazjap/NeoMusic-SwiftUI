@@ -19,11 +19,7 @@ struct TabBar: View {
     
     @GestureState private var dragOffset: CGFloat = 0
     
-    @State private var selectedIndex: Int = 0 {
-        didSet {
-            feedbackGenerator.impactOccurred()
-        }
-    }
+    @State private var selectedIndex: Int
     
     // MARK: - Variables
     
@@ -31,8 +27,10 @@ struct TabBar: View {
     
     // MARK: - Initializer
     
-    init(@TabBuilder _ items: () -> [TabItem]) {
+    init(startIndex: Int = 0, @TabBuilder _ items: () -> [TabItem]) {
         self.items = items()
+        
+        self._selectedIndex = .init(initialValue: (startIndex < self.items.count && startIndex >= 0 ? startIndex : 0))
     }
     
     // MARK: - Body
@@ -98,6 +96,8 @@ struct TabBar: View {
         withAnimation(.spring(response: 0.35, dampingFraction: 0.7, blendDuration: 1)) {
             self.selectedIndex = index
         }
+        
+        feedbackGenerator.impactOccurred()
     }
     
     private func item(at index: Int) -> some View {
