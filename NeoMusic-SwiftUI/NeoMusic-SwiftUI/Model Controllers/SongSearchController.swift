@@ -11,13 +11,27 @@
 import MediaPlayer
 import StoreKit
 
+extension Array where Element == MPMediaItem {
+    func toSongs() -> [Song] {
+        return compactMap{ Song($0) }
+    }
+}
+
 class SongSearchController: ObservableObject {
     
     // MARK: - Published Variables
     
-    @Published var songs: (byTitle: [Song], byArtist: [Song], byAlbum: [Song])
+    @Published var songs: [Song]
+    @Published var albums: [Album]
+    @Published var artists: [Artist]
     @Published var lastPlayed: [Song]
-    @Published var searchType: SearchType
+    @Published var searchType: SearchType {
+        didSet {
+            if !searchTerm.isEmpty {
+                search()
+            }
+        }
+    }
     @Published var isAuthorized: Bool
     @Published var isSearching: Bool = false {
         didSet {
@@ -41,7 +55,7 @@ class SongSearchController: ObservableObject {
             
             task = DispatchWorkItem { [weak self] in
                 guard let self = self else { return }
-                self.search(for: self.searchTerm)
+                self.search()
             }
 
             if let task = task {
@@ -50,10 +64,16 @@ class SongSearchController: ObservableObject {
         }
     }
     
+    var isEmpty: Bool {
+        return songs.isEmpty && albums.isEmpty && artists.isEmpty
+    }
+    
     // MARK: - Initializer
     
     init(search term: String = "", searchType: SearchType = .library, lastPlayed: [Song] = []) {
-        self.songs = ([], [], [])
+        self.songs = []
+        self.albums = []
+        self.artists = []
         self.lastPlayed = lastPlayed
         self.searchType = searchType
         self.searchTerm = term
@@ -94,59 +114,58 @@ class SongSearchController: ObservableObject {
     
     // MARK: - Functions
     
-    func getAllSongs() -> [Song] {
-        var songs = [Song]()
-        switch searchType {
-        case .library:
-            guard let collections = MPMediaQuery.songs().collections else { return [] }
-            for collection in collections {
-                songs += collection.items.compactMap { Song($0) }
-            }
-        case .applemusic:
-            // TODO: - Add online music search support
-            break
-        }
-        
-        return songs
-    }
-    
-    func search(for term: String) {
+    func search() {
         DispatchQueue.main.async {
             self.isSearching = true
         }
         
-        guard !term.isEmpty else {
+        guard !searchTerm.isEmpty else {
             DispatchQueue.main.async {
                 self.isSearching = false
             }
             return
         }
         
-        let search = term.lowercased()
+        let search = searchTerm.lowercased()
         
         if searchType == .library {
-            let allSongs = self.getAllSongs()
+            let titleQuery = MPMediaQuery.songs()
+            let artistQuery = MPMediaQuery.artists()
+            let albumQuery = MPMediaQuery.albums()
             
-            var byTitle = [Song]()
-            var byArtist = [Song]()
-            var byAlbum = [Song]()
+            titleQuery.addFilterPredicate(MPMediaPropertyPredicate(value: search, forProperty: MPMediaItemPropertyTitle, comparisonType:MPMediaPredicateComparison.contains))
+            artistQuery.addFilterPredicate(MPMediaPropertyPredicate(value: search, forProperty: MPMediaItemPropertyArtist, comparisonType:MPMediaPredicateComparison.contains))
+            albumQuery.addFilterPredicate(MPMediaPropertyPredicate(value: search, forProperty: MPMediaItemPropertyAlbumTitle, comparisonType:MPMediaPredicateComparison.contains))
             
-            for song in allSongs {
-                if song.title.lowercased().contains(search) {
-                    byTitle.append(song)
-                }
-                
-                if song.artist.lowercased().contains(search) {
-                    byArtist.append(song)
-                }
-                
-                if song.albumTitle.lowercased().contains(search) {
-                    byAlbum.append(song)
+            var albumIDSet = Set<UInt64>()
+            var artistIDSet = Set<UInt64>()
+            
+            if let items = artistQuery.items {
+                for item in items {
+                    artistIDSet.insert(item.artistPersistentID)
                 }
             }
             
-            DispatchQueue.main.async {
-                self.songs = (byTitle, byArtist, byAlbum)
+            if let items = albumQuery.items {
+                for item in items {
+                    albumIDSet.insert(item.albumPersistentID)
+                }
+            }
+            
+            let albumList = albumIDSet.compactMap { Album.createAlbum(for: $0) }
+            let artistList = artistIDSet.compactMap { Artist.createArtist(for: $0) }
+            
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                if let mediaList = titleQuery.items {
+                    DispatchQueue.main.async {
+                        self.songs = mediaList.toSongs()
+                    }
+                }
+                
+                self.albums = albumList
+                self.artists = artistList
+            
                 self.isSearching = false
             }
         } else if searchType == .applemusic {
@@ -207,12 +226,15 @@ class SongSearchController: ObservableObject {
                             let albums = try JSONSerialization.data(withJSONObject: albumsJson)
                             let artists = try JSONSerialization.data(withJSONObject: artistJson)
                             
-                            
 //                            let songArray: [Song] = try JSONDecoder().decode([Song].self, from: songs)
                             
-                            print(songs)
-                            print(albums)
-                            print(artists)
+                            DispatchQueue.main.async { //[weak self] in
+//                                guard let self = self else { return }
+//                                self.songs = ()
+                                print(songs)
+                                print(albums)
+                                print(artists)
+                            }
                         } catch {
                             NSLog("f:\(#file)l:\(#line) Error: \(error)")
                         }

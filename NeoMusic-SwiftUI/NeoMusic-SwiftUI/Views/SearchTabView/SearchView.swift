@@ -11,11 +11,12 @@ struct SearchView: View {
     // MARK: - State
     @EnvironmentObject private var settingsController: SettingsController
     @EnvironmentObject private var musicController: MusicPlayerController
-    @EnvironmentObject private var feedback: FeedbackGenerator
+    @EnvironmentObject private var feedbackGenerator: FeedbackGenerator
     
     @ObservedObject private var searchController: SongSearchController
     
     @State private var text: String = ""
+    @State private var segmentedIndex: Int = 0
     
     // MARK: - Variables
     
@@ -47,6 +48,10 @@ struct SearchView: View {
                     .offset(y: -TabBar.height / 2)
                 
                 VStack {
+                    SegmentedControl(index: $segmentedIndex, textColor: settingsController.colorScheme.textColor.color, background: settingsController.colorScheme.backgroundGradient.first)
+                        .options(["Library", "Apple Music"])
+                    .spacing([.top, .leading, .trailing])
+                    
                     SearchBar(searchText: Binding<String>(get: { return text }, set: { newVal in
                         text = newVal
                         searchController.searchTerm = text
@@ -54,29 +59,24 @@ struct SearchView: View {
                     onEditingChanged: { isEditing in }, onCommit: {})
                         .resignsFirstResponderOnDrag()
                         .frame(height: 50)
-                    .spacing([.top, .leading, .trailing])
+                    .spacing(.horizontal)
                     
                     List {
                         let backgroundColor = settingsController.colorScheme.backgroundGradient.first
                         let textColor = settingsController.colorScheme.textColor.color
-                        let selectedSong = Binding<Optional<Song>> { return nil } set: { song in
-                            if let song = song {
-                                musicController.addToUpNext(song)
-                            }
-                        }
                         
-                        getSection(with: .title, backgroundColor: backgroundColor, textColor: textColor, selectedSong: selectedSong)
+                        getSection(with: .title, backgroundColor: backgroundColor, textColor: textColor)
                         
-                        getSection(with: .album, backgroundColor: backgroundColor, textColor: textColor, selectedSong: selectedSong)
+                        getSection(with: .album, backgroundColor: backgroundColor, textColor: textColor)
                         
-                        getSection(with: .artist, backgroundColor: backgroundColor, textColor: textColor, selectedSong: selectedSong)
+                        getSection(with: .artist, backgroundColor: backgroundColor, textColor: textColor)
                         
                         Spacer()
                             .frame(height: 100)
                             .listRowBackground(backgroundColor)
                     }
                     .cornerRadius(20)
-                    .opacity(searchController.searchTerm.isEmpty || searchController.songs == ([], [], []) ? 0 : 1)
+                    .opacity(searchController.searchTerm.isEmpty || searchController.isEmpty ? 0 : 1)
                     .spacing()
                     .offset(y: offsetHeight / 2)
                     .neumorph(color: settingsController.colorScheme.backgroundGradient.first.average(to: settingsController.colorScheme.backgroundGradient.last), size: .list)
@@ -88,22 +88,49 @@ struct SearchView: View {
     // MARK: - Functions
     
     // Extract Section View to function to avoid repeated code
-    private func getSection(with type: SectionType, backgroundColor: Color, textColor: Color, selectedSong: Binding<Optional<Song>>) -> some View {
-        let songs = type.songList(searchController: searchController)
+    private func getSection(with type: SectionType, backgroundColor: Color, textColor: Color) -> some View  {
+        let media: [Any]
         
-        if songs.isEmpty {
-            return Section {}
-                .frame(width: 0, height: 0)
-                .asAny()
-        } else {
-            return Section(header: Text(type.text).customHeader(backgroundColor: backgroundColor, textColor: textColor)) {
-                ForEach(songs) { song in
+        let badSection: AnyView = Section {}
+            .frame(width: 0, height: 0)
+            .asAny()
+        
+        return Section(header: Text(type.text).customHeader(backgroundColor: backgroundColor, textColor: textColor)) {
+            switch type {
+            case .title:
+                let selectedSong = Binding<Optional<Song>> { return nil } set: { song in
+                    if let song = song {
+                        musicController.addToUpNext(song)
+                    }
+                }
+                
+                ForEach(searchController.songs) { song in
                         NeoSongRow(selectedSong: selectedSong, backgroundColor: backgroundColor, textColor: textColor, song: song)
                     Spacer()
                         .listRowBackground(backgroundColor)
                 }
-            }.asAny()
-        }
+            case .album:
+                let selectedAlbum = Binding<Optional<Album>> { return nil } set: { album in
+                    if let album = album {
+                        musicController.addToUpNext(album)
+                    }
+                }
+                
+                ForEach(searchController.albums) { album in
+                    NeoAlbumRow(selectedAlbum: selectedAlbum, backgroundColor: backgroundColor, textColor: textColor, album: album)
+                }
+            case .artist:
+                let selectedArtist = Binding<Optional<Artist>> { return nil } set: { artist in
+                    if let artist = artist {
+                        musicController.addToUpNext(artist)
+                    }
+                }
+                
+                ForEach(searchController.artists) { artist in
+                    NeoArtistRow(selectedArtist: selectedArtist, backgroundColor: backgroundColor, textColor: textColor, artist: artist)
+                }
+            }
+        }.asAny()
     }
     
     // MARK: - Static Variables
@@ -128,17 +155,6 @@ extension SearchView {
                 return "Album"
             case .artist:
                 return "Artist"
-            }
-        }
-        
-        func songList(searchController: SongSearchController) -> [Song] {
-            switch self {
-            case .title:
-                return searchController.songs.byTitle
-            case .album:
-                return searchController.songs.byAlbum
-            case .artist:
-                return searchController.songs.byArtist
             }
         }
     }

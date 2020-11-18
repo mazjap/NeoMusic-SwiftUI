@@ -32,4 +32,16 @@ struct Constants {
         sliderGradient: EasyGradient([.purple, .red]),
         textColor: .falseWhite, mainButtonColor: .white,
         secondaryButtonColor: .falseWhite)
+    
+    static let noArtist = "No Artist Found"
+    static let noAlbum = "No Album Found"
+    static let noSong = "No Song Found"
+    
+    static var cacheCount = 0
+    
+    static var cacheNumber: Int {
+        cacheCount += 1
+        return cacheCount
+        
+    }
 }

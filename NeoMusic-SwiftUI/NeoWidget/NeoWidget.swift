@@ -12,16 +12,16 @@ let controller = Controller()
 var refreshDate = Date()
 
 struct Provider: TimelineProvider {
-    func placeholder(in context: Context) -> Song {
-        .noSong
+    func placeholder(in context: Context) -> WidgetSong {
+        .noSong(date: refreshDate)
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (Song) -> ()) {
+    func getSnapshot(in context: Context, completion: @escaping (WidgetSong) -> ()) {
         let entry = controller.getSong()
-        completion(entry)
+        completion(entry ?? .noSong(date: refreshDate))
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<Song>) -> ()) {
+    func getTimeline(in context: Context, completion: @escaping (Timeline<WidgetSong>) -> ()) {
         let now = Date()
         let refresh = now.addingTimeInterval(10)
         
@@ -29,17 +29,17 @@ struct Provider: TimelineProvider {
             refreshDate = refresh
         }
         
-        let timeline = Timeline(entries: [controller.getSong(with: refreshDate)], policy: .atEnd)
+        let timeline = Timeline(entries: [controller.getSong(with: refresh) ?? WidgetSong.noSong(date: refresh)], policy: .atEnd)
         completion(timeline)
     }
 }
 
 struct NeoWidgetEntryView : View {
     let spacing: CGFloat = 7.5
+    let font: Font = .footnote
     
     var body: some View {
-        let song = controller.getSong()
-        let font: Font = .footnote
+        let song = controller.getSong() ?? .noSong()
         
         ZStack {
             LinearGradient(gradient: controller.colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
@@ -63,7 +63,7 @@ struct NeoWidgetEntryView : View {
                 .padding([.leading, .top, .trailing], spacing)
                 
                 // Artwork
-                WidgetArtwork(colorScheme: controller.colorScheme, image: song.image)
+                WidgetArtwork(colorScheme: controller.colorScheme, image: Image(uiImage: song.artwork))
                     .padding(.bottom, spacing)
             }
         }

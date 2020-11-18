@@ -12,7 +12,13 @@ class Cache<Key, Value> where Key: Hashable {
     // MARK: - Variables
     
     private var dictionary = Dictionary<Key, Value>()
-    private let queue = DispatchQueue(label: "com.mazjap.NeoMusic-SwiftUI.Cache.Queue")
+    private let queue: DispatchQueue
+    
+    // MARK: - Initializer
+    
+    init() {
+        self.queue = DispatchQueue(label: "com.mazjap.NeoMusic-SwiftUI.Cache.Queue\(Constants.cacheNumber)", qos: .utility)
+    }
     
     // MARK: - Functions
     

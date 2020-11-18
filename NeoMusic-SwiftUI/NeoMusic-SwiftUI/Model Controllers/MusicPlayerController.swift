@@ -16,12 +16,6 @@ protocol MusicPlayerControllerDelegate: AnyObject {
     func songChanged(previousSong: Song)
 }
 
-extension Array where Element == Song {
-    var mediaItems: [MPMediaItem] {
-        self.compactMap { $0.media }
-    }
-}
-
 // MARK: - MusicPlayerController
 
 class MusicPlayerController: ObservableObject {
@@ -136,18 +130,6 @@ class MusicPlayerController: ObservableObject {
         }
     }
     
-    private func getAllSongs(shuffled: Bool = true) -> [Song] {
-        var songs = [Song]()
-        
-        for collection in MPMediaQuery.songs().collections ?? [] {
-            for item in collection.items {
-                songs.append(Song(item))
-            }
-        }
-        
-        return shuffled ? songs.shuffled() : songs
-    }
-    
     private func pause() {
         guard isAuthorized else { checkAuthorized(); return }
         
@@ -160,7 +142,31 @@ class MusicPlayerController: ObservableObject {
         player.play()
     }
     
-    // MARK: - Music Control Functions & Public Functions
+    private func addToUpNext(media: [MPMediaItem]) {
+        let descriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: MPMediaItemCollection(items: media))
+
+        player.prepend(descriptor)
+    }
+    
+    private func addToUpLater(media: [MPMediaItem]) {
+        let descriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: MPMediaItemCollection(items: media))
+
+        player.append(descriptor)
+    }
+    
+    private func setQueue(media: [MPMediaItem]) {
+        DispatchQueue.main.async {
+            let ids = media.map { $0.playbackStoreID }
+            
+            self.player.setQueue(with: ids)
+            self.player.prepareToPlay()
+            self.player.play()
+        }
+    }
+    
+    // MARK: - Public Functions
+    
+    // MARK: - Music Control Functions
 
     func set(time: TimeInterval) {
         guard isAuthorized else { checkAuthorized(); return }
@@ -193,13 +199,19 @@ class MusicPlayerController: ObservableObject {
     func setQueue(with songs: [Song]) {
         guard isAuthorized else { checkAuthorized(); return }
         
-        DispatchQueue.main.async {
-            let ids = songs.compactMap { $0.storeID }
-            
-            self.player.setQueue(with: ids)
-            self.player.prepareToPlay()
-            self.player.play()
-        }
+        setQueue(media: songs.compactMap { $0.media })
+    }
+    
+    func setQueue(with album: Album) {
+        guard isAuthorized else { checkAuthorized(); return }
+        
+        setQueue(media: album.items)
+    }
+    
+    func setQueue(with artist: Artist) {
+        guard isAuthorized else { checkAuthorized(); return }
+        
+        setQueue(media: artist.items)
     }
     
     func addToUpNext(_ song: Song) {
@@ -207,9 +219,15 @@ class MusicPlayerController: ObservableObject {
     }
     
     func addToUpNext(_ songs: [Song]) {
-        let descriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: MPMediaItemCollection(items: songs.mediaItems))
-
-        player.prepend(descriptor)
+        addToUpNext(media: songs.compactMap { $0.media })
+    }
+    
+    func addToUpNext(_ album: Album) {
+        addToUpNext(media: album.items)
+    }
+    
+    func addToUpNext(_ artist: Artist) {
+        addToUpNext(media: artist.items)
     }
     
     func addToUpLater(_ song: Song) {
@@ -217,9 +235,15 @@ class MusicPlayerController: ObservableObject {
     }
     
     func addToUpLater(_ songs: [Song]) {
-        let descriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: MPMediaItemCollection(items: songs.mediaItems))
-
-        player.append(descriptor)
+        addToUpLater(media: songs.compactMap { $0.media })
+    }
+    
+    func addToUpLater(_ album: Album) {
+        addToUpLater(media: album.items)
+    }
+    
+    func addToUpLater(_ artist: Artist) {
+        addToUpLater(media: artist.items)
     }
     
     // MARK: - Objective-C Functions

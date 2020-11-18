@@ -147,7 +147,7 @@ struct OpenPlayer: View {
                 }
                 .spacing(.horizontal)
                 
-                Text(musicController.currentSong.artist)
+                Text(musicController.currentSong.artistName)
                     .lineLimit(1)
                     .font(.subheadline)
                     .foregroundColor(settingsController.colorScheme.textColor.color)
@@ -288,7 +288,7 @@ struct ClosedPlayer: View {
                         }
                     }
                 
-                    Text(musicController.currentSong.artist)
+                    Text(musicController.currentSong.artistName)
                         .lineLimit(1)
                         .font(.caption)
                         .foregroundColor(settingsController.colorScheme.textColor.color)
@@ -355,12 +355,25 @@ struct ClosedPlayer: View {
 // MARK: - Preview
 
 struct ContentView_Previews: PreviewProvider {
-    @State static var isOpen = false
+    @State static var closed = false
+    @State static var open = true
+    
+    static let sc = SettingsController.shared
+    static let fg = FeedbackGenerator(feedbackEnabled: false)
+    static let mc = MusicPlayerController()
     
     static var previews: some View {
-        MusicPlayer(isOpen: $isOpen)
-            .environmentObject(SettingsController.shared)
-            .environmentObject(MusicPlayerController())
-            .environmentObject(FeedbackGenerator())
+        VStack {
+            MusicPlayer(isOpen: $closed)
+                .environmentObject(sc)
+                .environmentObject(mc)
+                .environmentObject(fg)
+            
+            MusicPlayer(isOpen: $open)
+                .environmentObject(sc)
+                .environmentObject(mc)
+                .environmentObject(fg)
+            
+        }
     }
 }

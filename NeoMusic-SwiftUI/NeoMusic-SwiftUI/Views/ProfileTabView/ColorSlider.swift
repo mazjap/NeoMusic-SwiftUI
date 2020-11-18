@@ -18,35 +18,35 @@ struct ColorSlider: View {
     @State private var brightness: Double = 1
     
     
-    private var width: CGFloat = 10
+    static let width: CGFloat = 10
     private var dragWidth: CGFloat
     
     private var offsetRadius: CGFloat {
-        return width / 3
+        return Self.width / 3
     }
     
     @Binding private var selectedColor: EasyColor
     
     init(_ color: Binding<EasyColor>? = nil, size: CGSize = .zero) {
         self._selectedColor = color ?? .init(get: {return .red}, set: {_ in})
-        self.dragWidth = (size.width - width) / 2
+        self.dragWidth = (size.width - Self.width) / 2
     }
     
     var body: some View {
         GeometryReader { geometry in
-                RoundedRectangle(cornerRadius: width / 2)
+            RoundedRectangle(cornerRadius: Self.width / 2)
                     .foregroundColor(settingsController.colorScheme.textColor.color)
                     .overlay(
                 LinearGradient(gradient: Gradient(colors: colors()), startPoint: .top, endPoint: .bottom)
-                    .frame(width: width - offsetRadius, height: geometry.size.height - offsetRadius)
-                    .clipShape(RoundedRectangle(cornerRadius: (width - offsetRadius) / 2))
+                    .frame(width: Self.width - offsetRadius, height: geometry.size.height - offsetRadius)
+                    .clipShape(RoundedRectangle(cornerRadius: (Self.width - offsetRadius) / 2))
             )
-            .frame(width: width)
+                .frame(width: Self.width)
             .gesture(
                 DragGesture()
                     .onChanged { value in
                         let touch = value.location
-                        let widthCondition = (touch.x < width + dragWidth) && (touch.x > -dragWidth)
+                        let widthCondition = (touch.x < Self.width + dragWidth) && (touch.x > -dragWidth)
 
                         if widthCondition {
                             let y = min(geometry.size.height, max(0, touch.y))
@@ -60,13 +60,13 @@ struct ColorSlider: View {
                     }
                     .onEnded { _ in
                         isEditingSaturation = false
-                        saturation = 0
+                        saturation = 1
                         hue = 0
                         brightness = 0
                     }
             )
         }
-        .frame(width: width)
+        .frame(width: Self.width)
     }
     
     func colors(saturation: Double = 1, brightness: Double = 1) -> [Color] {

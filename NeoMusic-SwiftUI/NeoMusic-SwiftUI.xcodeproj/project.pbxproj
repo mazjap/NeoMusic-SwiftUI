@@ -11,6 +11,11 @@
 		0E0FE7A42553800F002FB781 /* Invocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0FE7A32553800F002FB781 /* Invocation.swift */; };
 		0E2C908124F5CF2600AB950D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E2C908024F5CF2600AB950D /* Constants.swift */; };
 		0E2C908324F5D5A400AB950D /* JCColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E2C908224F5D5A400AB950D /* JCColorScheme.swift */; };
+		0E3738D925649393002F5A3C /* SliderShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3738D825649393002F5A3C /* SliderShape.swift */; };
+		0E3738DE25649B3D002F5A3C /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3738DD25649B3D002F5A3C /* SegmentedControl.swift */; };
+		0E3738E62564B86A002F5A3C /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3738E52564B86A002F5A3C /* Album.swift */; };
+		0E3738EB2564B873002F5A3C /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3738EA2564B873002F5A3C /* Artist.swift */; };
+		0E37390525651772002F5A3C /* WidgetSong.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3738FD25651472002F5A3C /* WidgetSong.swift */; };
 		0E42F9F724F4EC9200901C89 /* DefaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E42F9F624F4EC9200901C89 /* DefaultButton.swift */; };
 		0E42F9F924F4F63B00901C89 /* MusicArtwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E42F9F824F4F63B00901C89 /* MusicArtwork.swift */; };
 		0E49677225299E97000D166C /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E49676D25299E96000D166C /* UIApplication+Extension.swift */; };
@@ -19,6 +24,8 @@
 		0E49677525299E97000D166C /* NeoSongRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E49677025299E97000D166C /* NeoSongRow.swift */; };
 		0E49677E2529A384000D166C /* ResignFirstResponderOnDrag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E49677D2529A383000D166C /* ResignFirstResponderOnDrag.swift */; };
 		0E50083C2532A47700B3BFAE /* CustomListHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E50083B2532A47700B3BFAE /* CustomListHeader.swift */; };
+		0E6290C32565955600EBA222 /* NeoAlbumRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6290C22565955600EBA222 /* NeoAlbumRow.swift */; };
+		0E6290C82565968A00EBA222 /* NeoAristRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6290C72565968A00EBA222 /* NeoAristRow.swift */; };
 		0E6DF4D4255DA384007DD831 /* CSPresets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6DF4D3255DA384007DD831 /* CSPresets.swift */; };
 		0E6DF4D9255DAFDE007DD831 /* CSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6DF4D8255DAFDE007DD831 /* CSButton.swift */; };
 		0E6DF4E9255DFD07007DD831 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6DF4E8255DFD07007DD831 /* UIImage+Extension.swift */; };
@@ -73,7 +80,6 @@
 		4960889725158392003F1089 /* WidgetArtwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4960889525158392003F1089 /* WidgetArtwork.swift */; };
 		4960889825158392003F1089 /* Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4960889625158392003F1089 /* Controller.swift */; };
 		4960889C251583B6003F1089 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E2C908024F5CF2600AB950D /* Constants.swift */; };
-		496088A0251583BF003F1089 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8B8B4A24F5C1990029B27D /* Song.swift */; };
 		496088A4251583C1003F1089 /* JCColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E2C908224F5D5A400AB950D /* JCColorScheme.swift */; };
 		496088A8251583D3003F1089 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8B8B4524F5A0B10029B27D /* SettingsController.swift */; };
 		496088AC251583E0003F1089 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8B8B4224F5A04D0029B27D /* Color+Extension.swift */; };
@@ -128,6 +134,11 @@
 		0E0FE7A32553800F002FB781 /* Invocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invocation.swift; sourceTree = "<group>"; };
 		0E2C908024F5CF2600AB950D /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		0E2C908224F5D5A400AB950D /* JCColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JCColorScheme.swift; sourceTree = "<group>"; };
+		0E3738D825649393002F5A3C /* SliderShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderShape.swift; sourceTree = "<group>"; };
+		0E3738DD25649B3D002F5A3C /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
+		0E3738E52564B86A002F5A3C /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
+		0E3738EA2564B873002F5A3C /* Artist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
+		0E3738FD25651472002F5A3C /* WidgetSong.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetSong.swift; sourceTree = "<group>"; };
 		0E42F9F624F4EC9200901C89 /* DefaultButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultButton.swift; sourceTree = "<group>"; };
 		0E42F9F824F4F63B00901C89 /* MusicArtwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicArtwork.swift; sourceTree = "<group>"; };
 		0E49676D25299E96000D166C /* UIApplication+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extension.swift"; sourceTree = "<group>"; };
@@ -136,6 +147,8 @@
 		0E49677025299E97000D166C /* NeoSongRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeoSongRow.swift; sourceTree = "<group>"; };
 		0E49677D2529A383000D166C /* ResignFirstResponderOnDrag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResignFirstResponderOnDrag.swift; sourceTree = "<group>"; };
 		0E50083B2532A47700B3BFAE /* CustomListHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomListHeader.swift; sourceTree = "<group>"; };
+		0E6290C22565955600EBA222 /* NeoAlbumRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeoAlbumRow.swift; sourceTree = "<group>"; };
+		0E6290C72565968A00EBA222 /* NeoAristRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeoAristRow.swift; sourceTree = "<group>"; };
 		0E6DF4D3255DA384007DD831 /* CSPresets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSPresets.swift; sourceTree = "<group>"; };
 		0E6DF4D8255DAFDE007DD831 /* CSButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSButton.swift; sourceTree = "<group>"; };
 		0E6DF4E8255DFD07007DD831 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
@@ -257,6 +270,8 @@
 			isa = PBXGroup;
 			children = (
 				0E8B8B4A24F5C1990029B27D /* Song.swift */,
+				0E3738E52564B86A002F5A3C /* Album.swift */,
+				0E3738EA2564B873002F5A3C /* Artist.swift */,
 				0E2C908224F5D5A400AB950D /* JCColorScheme.swift */,
 				0E7BBE8B254F3D18005E035D /* Cache.swift */,
 				0EF3F73A254F49A3002AD607 /* Media.swift */,
@@ -271,6 +286,7 @@
 			children = (
 				0E42F9F624F4EC9200901C89 /* DefaultButton.swift */,
 				0E7AB5992547A0C800CA1B40 /* BarButton.swift */,
+				0E3738DD25649B3D002F5A3C /* SegmentedControl.swift */,
 				0EF517962563085400A1B214 /* NavController.swift */,
 				0EBAE2D6251FB20200752EDE /* Custom TabView */,
 			);
@@ -293,6 +309,8 @@
 				0E49676F25299E97000D166C /* SearchView.swift */,
 				0E49676E25299E97000D166C /* SearchBar.swift */,
 				0E49677025299E97000D166C /* NeoSongRow.swift */,
+				0E6290C72565968A00EBA222 /* NeoAristRow.swift */,
+				0E6290C22565955600EBA222 /* NeoAlbumRow.swift */,
 			);
 			path = SearchTabView;
 			sourceTree = "<group>";
@@ -402,6 +420,7 @@
 				0E6DF4D3255DA384007DD831 /* CSPresets.swift */,
 				0E6DF4D8255DAFDE007DD831 /* CSButton.swift */,
 				0EF5178725627A5C00A1B214 /* ColorSlider.swift */,
+				0E3738D825649393002F5A3C /* SliderShape.swift */,
 			);
 			path = ProfileTabView;
 			sourceTree = "<group>";
@@ -427,6 +446,7 @@
 			isa = PBXGroup;
 			children = (
 				4960889025158368003F1089 /* NeoWidget.swift */,
+				0E3738FD25651472002F5A3C /* WidgetSong.swift */,
 				4960889625158392003F1089 /* Controller.swift */,
 				4960889525158392003F1089 /* WidgetArtwork.swift */,
 				4960888125158331003F1089 /* Assets.xcassets */,
@@ -572,6 +592,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E3738DE25649B3D002F5A3C /* SegmentedControl.swift in Sources */,
 				0E82941A2536783200FB131A /* HostingController.swift in Sources */,
 				0EA1848424FB1EBD00111B84 /* Notification.Name+Extension.swift in Sources */,
 				0E9D98F52559D9DB00343261 /* Font+Extension.swift in Sources */,
@@ -580,6 +601,7 @@
 				0E0FE7A42553800F002FB781 /* Invocation.swift in Sources */,
 				0E886F492554C954006D75F7 /* Queue.swift in Sources */,
 				0E7AB59A2547A0C800CA1B40 /* BarButton.swift in Sources */,
+				0E3738D925649393002F5A3C /* SliderShape.swift in Sources */,
 				49E153542515705000767842 /* TabBar.swift in Sources */,
 				0EBAE2DF251FB22600752EDE /* View+Extension.swift in Sources */,
 				0E6DF4D4255DA384007DD831 /* CSPresets.swift in Sources */,
@@ -593,12 +615,14 @@
 				0E8B8B4124F59CB80029B27D /* MusicSlider.swift in Sources */,
 				0E8B8B4B24F5C19A0029B27D /* Song.swift in Sources */,
 				0E49677325299E97000D166C /* SearchBar.swift in Sources */,
+				0E3738E62564B86A002F5A3C /* Album.swift in Sources */,
 				0E9CCA482556220C009AACA7 /* Hidden.swift in Sources */,
 				0EF3F73B254F49A3002AD607 /* Media.swift in Sources */,
 				49E1535C251570A500767842 /* TabItem.swift in Sources */,
 				0E7073F425534F2700E11397 /* Dynamic.swift in Sources */,
 				0EBAE2D2251FB01000752EDE /* Neumorph.swift in Sources */,
 				0EF517972563085400A1B214 /* NavController.swift in Sources */,
+				0E6290C82565968A00EBA222 /* NeoAristRow.swift in Sources */,
 				0E8EFA22252D367500B78F3E /* SongSearchController.swift in Sources */,
 				0E07DFEB252724F8006DDFF6 /* String+Extension.swift in Sources */,
 				0E49677425299E97000D166C /* SearchView.swift in Sources */,
@@ -612,6 +636,7 @@
 				0EF5178825627A5C00A1B214 /* ColorSlider.swift in Sources */,
 				0E6DF4E9255DFD07007DD831 /* UIImage+Extension.swift in Sources */,
 				0E2C908124F5CF2600AB950D /* Constants.swift in Sources */,
+				0E3738EB2564B873002F5A3C /* Artist.swift in Sources */,
 				0EDE701024F465D300E72D0C /* MusicPlayer.swift in Sources */,
 				0E50083C2532A47700B3BFAE /* CustomListHeader.swift in Sources */,
 				0E8B8B4E24F5C71E0029B27D /* RootView.swift in Sources */,
@@ -623,6 +648,7 @@
 				0E886F4E2554CB59006D75F7 /* Message.swift in Sources */,
 				0E49677525299E97000D166C /* NeoSongRow.swift in Sources */,
 				0E8B8B4324F5A04D0029B27D /* Color+Extension.swift in Sources */,
+				0E6290C32565955600EBA222 /* NeoAlbumRow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -644,11 +670,11 @@
 				0E9D98F02559D83700343261 /* Neumorph.swift in Sources */,
 				4960889725158392003F1089 /* WidgetArtwork.swift in Sources */,
 				496088B0251583E3003F1089 /* Image+Extension.swift in Sources */,
+				0E37390525651772002F5A3C /* WidgetSong.swift in Sources */,
 				4960889125158368003F1089 /* NeoWidget.swift in Sources */,
 				496088A8251583D3003F1089 /* SettingsController.swift in Sources */,
 				4960889C251583B6003F1089 /* Constants.swift in Sources */,
 				496088A4251583C1003F1089 /* JCColorScheme.swift in Sources */,
-				496088A0251583BF003F1089 /* Song.swift in Sources */,
 				0EE4136C25278910003890A1 /* String+Extension.swift in Sources */,
 				0E6DF4ED255DFD9F007DD831 /* UIImage+Extension.swift in Sources */,
 				0E9D98F92559D9DD00343261 /* Font+Extension.swift in Sources */,

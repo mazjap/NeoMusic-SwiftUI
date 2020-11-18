@@ -118,12 +118,12 @@ struct TabBar: View {
     
     private func indicator(_ bounds: Anchor<CGRect>?) -> some View {
         GeometryReader { geometry in
+            let frame = geometry[bounds!]
             if bounds != nil {
-                Rectangle()
+                RoundedRectangle(cornerRadius: 3)
                     .fill(settingsController.colorScheme.mainButtonColor.color)
-                    .frame(width: geometry[bounds!].width, height: 3)
-                    .clipShape(RoundedRectangle(cornerRadius: 3))
-                    .offset(x: geometry[bounds!].minX, y: 6)
+                    .frame(width: frame.width, height: 3)
+                    .offset(x: frame.minX, y: 6)
                     .frame(maxHeight: .infinity, alignment: .bottomLeading)
             }
         }
@@ -137,11 +137,9 @@ struct TabBar: View {
 // MARK: - TabBar: PreferenceKey
 
 struct TabBarPreferenceKey: PreferenceKey {
-    typealias Value = Anchor<CGRect>?
-    
-    static var defaultValue: Value = nil
+    static var defaultValue: Anchor<CGRect>? = nil
         
-    static func reduce(value: inout Value, nextValue: () -> Value) {
+    static func reduce(value: inout Anchor<CGRect>?, nextValue: () -> Anchor<CGRect>?) {
         value = value ?? nextValue()
     }
     
