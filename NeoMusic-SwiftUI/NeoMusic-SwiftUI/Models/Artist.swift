@@ -53,7 +53,7 @@ struct Artist: Identifiable, Equatable {
         }
         
         let item = items.first
-        self.init(name: item?.artist ?? Constants.noArtist, albums: tempAlbums , id: id)
+        self.init(name: item?.artist, albums: tempAlbums , id: id)
     }
     
     private init(name: String? = nil, albums: [Album] = [], id: UInt64 = 0) {
@@ -70,13 +70,7 @@ struct Artist: Identifiable, Equatable {
     // MARK: - Static Functions
     
     static func createArtist(for id: UInt64) -> Artist? {
-        if let temp = cache.value(for: id) {
-            return temp
-        } else if let temp = Artist(id: id) {
-            return temp
-        }
-        
-        return nil
+        return cache.value(for: id) ?? Artist(id: id)
     }
     
     // MARK: - Static Variables

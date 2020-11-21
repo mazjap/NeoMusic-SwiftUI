@@ -22,25 +22,26 @@ struct SegmentedControl: View {
     // MARK: - Variable
     
     private var textColor: Color
-    private var gradient: Gradient
+    private var color: Color
     
     init(index: Binding<Int>, textColor: Color, background: Color) {
         self._selectedIndex = index
         self.textColor = textColor
-        self.gradient = background.offsetGradient
+        self.color = background
     }
     
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 20)
-                .fill(LinearGradient(gradient: gradient, startPoint: .top, endPoint: .bottom))
+            RoundedRectangle(cornerRadius: Self.height / 2)
+                .fill(color)
             HStack {
                 Spacer()
                 ForEach(0..<options.count) { i in
                     ZStack {
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(LinearGradient(gradient: gradient, startPoint: .bottom, endPoint: .top))
+                        RoundedRectangle(cornerRadius: Self.height / 2)
+                            .fill(LinearGradient(gradient: color.offsetGradient, startPoint: .top, endPoint: .bottom))
                             .opacity(selectedIndex == i ? 1 : 0)
+                            .neumorph(color: nil, size: .button)
                             .matchedGeometryEffect(id: Self.selectedID, in: nspace, isSource: i == selectedIndex)
                         
                         Button(options[i]) {
@@ -55,6 +56,7 @@ struct SegmentedControl: View {
             }
         }
         .frame(height: Self.height)
+        .neumorph(color: color, size: .button)
     }
     
     private func changeIndex(to index: Int) {
@@ -68,7 +70,7 @@ struct SegmentedControl: View {
     
     // MARK: - Static Variables
     
-    static let height: CGFloat = 50
+    static let height: CGFloat = 30
     static private let selectedID = "SegmentedControl.selectedRectangle"
 }
 

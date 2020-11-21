@@ -25,9 +25,3 @@ struct NavController: UIViewControllerRepresentable {
         }
     }
 }
-
-struct NavController_Previews: PreviewProvider {
-    static var previews: some View {
-        NavController()
-    }
-}

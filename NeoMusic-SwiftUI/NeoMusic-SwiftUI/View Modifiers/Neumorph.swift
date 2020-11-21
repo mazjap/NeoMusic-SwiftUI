@@ -20,10 +20,13 @@ struct Neumorph: ViewModifier {
     
     // MARK: - Initializer
     
-    init(color: Color, size: Size) {
-        let brightness = color.perceivedBrightness
-        
-        self.opacities = (1 - brightness, brightness)
+    init(color: Color?, size: Size) {
+        if let color = color {
+            let brightness = color.perceivedBrightness
+            self.opacities = (1 - brightness, brightness)
+        } else {
+            self.opacities = Self.noOpacity
+        }
         self.distance = size.distance
         self.radius = size.rawValue
     }
@@ -32,11 +35,17 @@ struct Neumorph: ViewModifier {
     
     func body(content: Content) -> some View {
         ZStack {
-        content
-            .shadow(color: Color.black.opacity(opacities.black), radius: radius, x: distance, y: distance)
-            .shadow(color: Color.white.opacity(opacities.white), radius: radius, x: -distance, y: -distance)
+            if opacities == Self.noOpacity {
+                content
+            } else {
+                content
+                    .shadow(color: Color.black.opacity(opacities.black), radius: radius, x: distance, y: distance)
+                    .shadow(color: Color.white.opacity(opacities.white), radius: radius, x: -distance, y: -distance)
+            }
         }
     }
+    
+    static private let noOpacity = (Double.zero, Double.zero)
 }
 
 // MARK: - Preview

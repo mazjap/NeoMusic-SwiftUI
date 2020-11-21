@@ -44,28 +44,6 @@ class SettingsController: ObservableObject {
         feedbackEnabled = bool
     }
     
-    func addUserColorScheme() {
-        var arr = fetchUserColorSchemes()
-        
-        if !arr.contains(colorScheme) {
-            arr.append(colorScheme)
-            
-            let data = try? encoder.encode(arr)
-            userDefaults.set(data, forKey: Self.keys.userSavedColorSchemes)
-        }
-    }
-    
-    func removeUserColorScheme(_ cs: JCColorScheme) {
-        var arr = fetchUserColorSchemes()
-        
-        if let index = arr.firstIndex(of: cs) {
-            arr.remove(at: index)
-            
-            let data = try? encoder.encode(arr)
-            userDefaults.set(data, forKey: Self.keys.userSavedColorSchemes)
-        }
-    }
-    
     private func fetchCurrentColorScheme() -> JCColorScheme {
         if let data = userDefaults.object(forKey: Self.keys.colorSchemeKey) as? Data, let scheme = try? decoder.decode(JCColorScheme.self, from: data) {
             return scheme
@@ -76,15 +54,6 @@ class SettingsController: ObservableObject {
     
     private func fetchFeedbackEnabled() -> Bool {
         return userDefaults.value(forKey: Self.keys.feedbackEnabledKey) as? Bool ?? true
-    }
-    
-    func fetchUserColorSchemes() -> [JCColorScheme] {
-        var userSchemes = [JCColorScheme]()
-        if let data = userDefaults.value(forKey: Self.keys.userSavedColorSchemes) as? Data, let schemes = try? decoder.decode([JCColorScheme].self, from: data) {
-            userSchemes = schemes
-        }
-        
-        return userSchemes
     }
     
     // MARK: - Static Variables

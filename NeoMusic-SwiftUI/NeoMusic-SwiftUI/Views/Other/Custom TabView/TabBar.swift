@@ -124,7 +124,7 @@ struct TabBar: View {
                     .fill(settingsController.colorScheme.mainButtonColor.color)
                     .frame(width: frame.width, height: 3)
                     .offset(x: frame.minX, y: 6)
-                    .frame(maxHeight: .infinity, alignment: .bottomLeading)
+                    .frame(maxHeight: .infinity, alignment: .bottom)
             }
         }
     }

@@ -69,13 +69,7 @@ struct Album: Identifiable, Equatable {
     // Static Functions
     
     static func createAlbum(for id: UInt64) -> Album? {
-        if let temp = cache.value(for: id) {
-            return temp
-        } else if let temp = Album(id: id) {
-            return temp
-        }
-        
-        return nil
+        return cache.value(for: id) ?? Album(id: id)
     }
     
     // Static Variables

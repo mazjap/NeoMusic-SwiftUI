@@ -89,12 +89,6 @@ struct SearchView: View {
     
     // Extract Section View to function to avoid repeated code
     private func getSection(with type: SectionType, backgroundColor: Color, textColor: Color) -> some View  {
-        let media: [Any]
-        
-        let badSection: AnyView = Section {}
-            .frame(width: 0, height: 0)
-            .asAny()
-        
         return Section(header: Text(type.text).customHeader(backgroundColor: backgroundColor, textColor: textColor)) {
             switch type {
             case .title:
@@ -152,9 +146,9 @@ extension SearchView {
             case .title:
                 return "Songs"
             case .album:
-                return "Album"
+                return "Albums"
             case .artist:
-                return "Artist"
+                return "Artists"
             }
         }
     }

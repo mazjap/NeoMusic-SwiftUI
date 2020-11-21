@@ -24,6 +24,7 @@ struct MusicPlayer: View {
     @State private var currentTime: Double = 0
     @State private var totalTime: Double = 0
     
+    @State private var upNextViewOpen: Bool = false
     @State private var rotation: Double = 0
     @Namespace private var nspace
     
@@ -34,7 +35,7 @@ struct MusicPlayer: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             if isOpen { // MARK: - isOpen
-                OpenPlayer(namespace: nspace, isOpen: $isOpen, rotation: $rotation, start: $startTime, end: $totalTime, current: $currentTime)
+                OpenPlayer(namespace: nspace, isOpen: $isOpen, rotation: $rotation, start: $startTime, end: $totalTime, current: $currentTime, showUpNext: $upNextViewOpen)
             } else { // MARK: - isClosed
                 ClosedPlayer(namespace: nspace, isOpen: $isOpen, rotation: $rotation)
             }
@@ -56,6 +57,7 @@ struct MusicPlayer: View {
     
     
     static let musicPlayerHeightOffset: CGFloat = 100
+    static let upNextViewWidth: CGFloat = 200
 }
 
 // MARK: - OpenPlayer
@@ -69,6 +71,8 @@ struct OpenPlayer: View {
     @EnvironmentObject private var settingsController: SettingsController
     
     @State private var offset: CGFloat = 0
+    @Binding private var showUpNextView: Bool
+    @State private var upNextDragOffset: CGFloat = 0
     
     @Binding private var isOpen: Bool
     @Binding private var rotation: Double
@@ -85,23 +89,24 @@ struct OpenPlayer: View {
     
     // MARK: - Initializer
     
-    init(namespace: Namespace.ID, isOpen: Binding<Bool>, rotation: Binding<Double>, start: Binding<Double>, end: Binding<Double>, current: Binding<Double>) {
+    init(namespace: Namespace.ID, isOpen: Binding<Bool>, rotation: Binding<Double>, start: Binding<Double>, end: Binding<Double>, current: Binding<Double>, showUpNext: Binding<Bool>) {
         self.nspace = namespace
         self._isOpen = isOpen
         self._rotation = rotation
         self._startTime = start
         self._totalTime = end
         self._currentTime = current
+        self._showUpNextView = showUpNext
     }
     
     // MARK: - Body
     
     var body: some View {
-        ZStack {
+        ZStack(alignment: .trailing) {
             LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.backgroundGradient.colors), startPoint: .top, endPoint: .bottom)
                 .edgesIgnoringSafeArea(.top)
                 .matchedGeometryEffect(id: MusicPlayer.backgroundKey, in: nspace, isSource: !isOpen)
-                .transition(.scale)
+                .transition(.identity)
             
             VStack {
                 // Navigation Bar
@@ -121,10 +126,12 @@ struct OpenPlayer: View {
                     Spacer()
                     
                     DefaultButton(imageName: "line.horizontal.3", imageColor: settingsController.colorScheme.mainButtonColor.color, buttonColor: settingsController.colorScheme.backgroundGradient.first) {
-                        // TODO: - Toggle up next view
+                        withAnimation {
+                            showUpNextView.toggle()
+                        }
+                        
                         feedbackGenerator.impactOccurred()
                     }
-                    .matchedGeometryEffect(id: "Test", in: nspace, isSource: !isOpen)
                 }
                 .spacing([.top, .leading, .trailing])
                 
@@ -199,6 +206,36 @@ struct OpenPlayer: View {
                     .transition(.scale)
                 }
             }
+            
+            if showUpNextView {
+                UpNextView(colorScheme: settingsController.colorScheme)
+                    .frame(width: MusicPlayer.upNextViewWidth)
+                    .offset(x: upNextDragOffset)
+                    .gesture(
+                        DragGesture()
+                            .onChanged { value in
+                                upNextDragOffset = max(min(value.translation.width, MusicPlayer.upNextViewWidth), 0)
+                            }
+                            .onEnded { value in
+                                if upNextDragOffset > MusicPlayer.upNextViewWidth / 3 {
+                                    withAnimation {
+                                        showUpNextView.toggle()
+                                    }
+                                }
+                                
+                                withAnimation {
+                                    upNextDragOffset = 0
+                                }
+                            }
+                    )
+                    .matchedGeometryEffect(id: "test", in: nspace)
+            } else {
+                Rectangle()
+                    .foregroundColor(settingsController.colorScheme.backgroundGradient.last)
+                    .frame(width: MusicPlayer.upNextViewWidth)
+                    .offset(x: MusicPlayer.upNextViewWidth)
+                    .matchedGeometryEffect(id: "test", in: nspace)
+            }
         }
         .offset(y: isOpen ? offset : 0)
         .gesture(
@@ -262,7 +299,7 @@ struct ClosedPlayer: View {
             LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.backgroundGradient.colors), startPoint: .top, endPoint: .bottom)
                 .edgesIgnoringSafeArea(.top)
                 .matchedGeometryEffect(id: MusicPlayer.backgroundKey, in: nspace, isSource: isOpen)
-                .transition(.scale)
+                .transition(.identity)
             
             HStack {
                 MusicArtwork(colorScheme: settingsController.colorScheme, image: musicController.currentSong.image, rotation: $rotation, size: .button)

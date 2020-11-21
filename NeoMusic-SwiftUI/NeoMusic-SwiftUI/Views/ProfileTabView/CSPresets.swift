@@ -13,32 +13,42 @@ struct CSPresets: View {
     
     @EnvironmentObject private var settingsController: SettingsController
     
+    @Environment(\.managedObjectContext) private var context
+    @FetchRequest(entity: CDColorScheme.entity(), sortDescriptors: []) var colorSchemes: FetchedResults<CDColorScheme>
+    
     @State private var isEditing = false
     
     // MARK: - Body
     
     var body: some View {
+        let schemes = colorSchemes.compactMap { $0.jc }
+        
         ZStack {
             LinearGradient(gradient: settingsController.colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea(edges: .top)
             // TODO: - Use ScrollView
             VStack {
+                let selectedScheme = Binding<JCColorScheme>(get: { return .default }, set: { newVal in
+                    settingsController.setCurrentColorScheme(newVal)
+                })
+                
                 HStack {
-                    CSButton(colorScheme: Constants.defaultColorScheme, title: "Default", isEditing: $isEditing)
+                    CSButton(colorScheme: Constants.defaultColorScheme, title: "Default", selectedScheme: selectedScheme, isEditing: $isEditing)
                     
-                    CSButton(colorScheme: Constants.lightColorScheme, title: "White", isEditing: $isEditing)
+                    CSButton(colorScheme: Constants.lightColorScheme, title: "White", selectedScheme: selectedScheme, isEditing: $isEditing)
                     
-                    CSButton(colorScheme: Constants.darkColorScheme, title: "Black", isEditing: $isEditing)
+                    CSButton(colorScheme: Constants.darkColorScheme, title: "Black", selectedScheme: selectedScheme, isEditing: $isEditing)
                 }
                 .frame(height: 100)
                 .spacing(.horizontal)
                 
-                let arrs = settingsController.fetchUserColorSchemes().arrs
+                let arrs = schemes.arrs
                 
                 ForEach(0..<arrs.count) { i in
+                    let arr = arrs[i]
                     HStack {
-                        ForEach(arrs[i]) { cs in
-                            CSButton(colorScheme: cs, title: "Saved", isEditing: $isEditing)
+                        ForEach(arr) { cs in
+                            CSButton(colorScheme: cs, title: "Saved", selectedScheme: selectedScheme, isEditing: $isEditing)
                         }
                     }
                     .frame(height: 100)
@@ -48,10 +58,12 @@ struct CSPresets: View {
                 Spacer()
             }
         }
-        .navigationBarItems(trailing: BarButton(title: "Save", buttonColor: settingsController.colorScheme.mainButtonColor.color) {
-                settingsController.addUserColorScheme()
-            }
-        )
+        .if(!(schemes + Constants.defaults).contains(settingsController.colorScheme)) {
+            $0.navigationBarItems(trailing: BarButton(title: "Save", buttonColor: settingsController.colorScheme.mainButtonColor.color) {
+                _ = CDColorScheme(settingsController.colorScheme, context: context)
+                CoreDataStack.shared.save(context: context)
+            })
+        }
     }
 }
 

@@ -29,6 +29,7 @@ struct NeoMusic_SwiftUIApp: App {
                                 .environmentObject(settingsController)
                                 .environmentObject(musicController)
                                 .environmentObject(feedbackGenerator)
+                                .environment(\.managedObjectContext, CoreDataStack.shared.mainContext)
                                 .asAny(),
                         animate: true,
                         from: LinearGradient(gradient: gradient, startPoint: .top, endPoint: .bottom)

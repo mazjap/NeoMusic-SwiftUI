@@ -12,11 +12,10 @@ import SwiftUI
 
 // MARK: - JCColorScheme
 
-struct JCColorScheme: Codable, Equatable, Identifiable {
+struct JCColorScheme: Codable, Equatable, Identifiable, Hashable {
     var id: String {
-        "BG:\(backgroundGradient), SG:\(sliderGradient), TC:\(textColor), MBC:\(mainButtonColor), SBC:\(secondaryButtonColor)"
+        "\(backgroundGradient),\(sliderGradient),\(textColor),\(mainButtonColor),\(secondaryButtonColor)"
     }
-    
     
     // MARK: - Variables
     
@@ -27,37 +26,54 @@ struct JCColorScheme: Codable, Equatable, Identifiable {
     var mainButtonColor: EasyColor
     var secondaryButtonColor: EasyColor
     
+    var dateAdded: Date
+    
     // MARK: - Initializer
     
     init(backgroundGradient: EasyGradient,
          sliderGradient: EasyGradient,
          textColor: Color,
          mainButtonColor: Color,
-         secondaryButtonColor: Color) {
+         secondaryButtonColor: Color,
+         dateAdded: Date = Date()) {
+        self.init(backgroundGradient: backgroundGradient, sliderGradient: sliderGradient, textColor: EasyColor(textColor), mainButtonColor: EasyColor(mainButtonColor), secondaryButtonColor: EasyColor(secondaryButtonColor), dateAdded: dateAdded)
+    }
+    
+    init(backgroundGradient: EasyGradient,
+         sliderGradient: EasyGradient,
+         textColor: EasyColor,
+         mainButtonColor: EasyColor,
+         secondaryButtonColor: EasyColor,
+         dateAdded: Date = Date()) {
+        
         self.backgroundGradient = backgroundGradient
         self.sliderGradient = sliderGradient
-        
-        self.textColor = EasyColor(textColor)
-        self.mainButtonColor = EasyColor(mainButtonColor)
-        self.secondaryButtonColor = EasyColor(secondaryButtonColor)
+        self.textColor = textColor
+        self.mainButtonColor = mainButtonColor
+        self.secondaryButtonColor = secondaryButtonColor
+        self.dateAdded = dateAdded
     }
     
     // MARK: - Static Variables
     
     static var `default` = Constants.defaultColorScheme
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.id == rhs.id
+    }
 }
 
 // MARK: - EasyGradient
 
-struct EasyGradient: Codable, Equatable, CustomStringConvertible {
+struct EasyGradient: Codable, Equatable, Hashable, CustomStringConvertible {
     
     // MARK: - Variables
     
     var description: String {
-        "\(colors)"
+        "\(easyColors)"
     }
     
-    private var easyColors: [EasyColor]
+    private(set) var easyColors: [EasyColor]
     
     var count: Int {
         easyColors.count
@@ -82,11 +98,23 @@ struct EasyGradient: Codable, Equatable, CustomStringConvertible {
     // MARK: - Initializer
     
     init(_ colors: [Color]) {
-        if colors.count == 0 {
-            self.easyColors = [EasyColor.none]
-        } else {
-            self.easyColors = colors.map { EasyColor($0) }
+        var items = [EasyColor.none]
+        
+        if colors.count > 0 {
+            items = colors.map { EasyColor($0) }
         }
+        
+        self.init(items)
+    }
+    
+    init(_ colors: [EasyColor]) {
+        var items = [EasyColor.none]
+        
+        if colors.count > 0 {
+            items = colors
+        }
+        
+        self.easyColors = items
     }
     
     // MARK: - Functions
@@ -141,11 +169,13 @@ struct EasyGradient: Codable, Equatable, CustomStringConvertible {
         
         return ezclr.color
     }
+    
+    static let none = EasyGradient([EasyColor.clear])
 }
 
 // MARK: - EasyColor
 
-struct EasyColor: Codable, Equatable, CustomStringConvertible {
+struct EasyColor: Codable, Equatable, Hashable, CustomStringConvertible {
     
     // MARK: - Variables
     
@@ -187,6 +217,8 @@ struct EasyColor: Codable, Equatable, CustomStringConvertible {
     
     // Validate user-provided hex string, return nil if bad input
     init?(_ hex: String) {
+        guard hex.count > 0 else { return nil }
+        
         var formattedHex = hex.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if formattedHex[formattedHex.startIndex] == String.Element("#") {
@@ -249,4 +281,5 @@ extension EasyColor {
     static let red = EasyColor(.red)
     static let black = EasyColor(.black)
     static let blue = EasyColor(.blue)
+    static let clear = EasyColor(.clear)
 }

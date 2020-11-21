@@ -30,7 +30,7 @@ struct MusicSlider: View {
     
     let action: (Double) -> Void
     
-    let lineHeight: CGFloat = 5
+    let lineHeight: CGFloat = 6.5
     let sliderSize = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height) / 14
     let colorScheme: JCColorScheme
     

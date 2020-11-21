@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="20B29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CDColorScheme" representedClassName="CDColorScheme" syncable="YES" codeGenerationType="class">
+        <attribute name="dateAdded" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="backgroundGradient" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDEasyGradient" inverseName="bgColorScheme" inverseEntity="CDEasyGradient"/>
+        <relationship name="mainButtonColor" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDEasyColor" inverseName="buttonColorScheme" inverseEntity="CDEasyColor"/>
+        <relationship name="secondaryButtonColor" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDEasyColor" inverseName="secondColorScheme" inverseEntity="CDEasyColor"/>
+        <relationship name="sliderGradient" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDEasyGradient" inverseName="sliderColorScheme" inverseEntity="CDEasyGradient"/>
+        <relationship name="textColor" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDEasyColor" inverseName="textColorScheme" inverseEntity="CDEasyColor"/>
+    </entity>
+    <entity name="CDEasyColor" representedClassName="CDEasyColor" syncable="YES" codeGenerationType="class">
+        <attribute name="b" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="g" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="r" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="buttonColorScheme" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDColorScheme" inverseName="mainButtonColor" inverseEntity="CDColorScheme"/>
+        <relationship name="easyGradient" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDEasyGradient" inverseName="easyColors" inverseEntity="CDEasyGradient"/>
+        <relationship name="secondColorScheme" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDColorScheme" inverseName="secondaryButtonColor" inverseEntity="CDColorScheme"/>
+        <relationship name="textColorScheme" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDColorScheme" inverseName="textColor" inverseEntity="CDColorScheme"/>
+    </entity>
+    <entity name="CDEasyGradient" representedClassName="CDEasyGradient" syncable="YES" codeGenerationType="class">
+        <relationship name="bgColorScheme" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDColorScheme" inverseName="backgroundGradient" inverseEntity="CDColorScheme"/>
+        <relationship name="easyColors" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CDEasyColor" inverseName="easyGradient" inverseEntity="CDEasyColor"/>
+        <relationship name="sliderColorScheme" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDColorScheme" inverseName="sliderGradient" inverseEntity="CDColorScheme"/>
+    </entity>
+    <elements>
+        <element name="CDColorScheme" positionX="-32.63671875" positionY="-250.4672698974609" width="128" height="119"/>
+        <element name="CDEasyColor" positionX="-179.1319580078125" positionY="4.0245361328125" width="128" height="134"/>
+        <element name="CDEasyGradient" positionX="254.913818359375" positionY="-67.5621337890625" width="128" height="74"/>
+    </elements>
+</model>

@@ -10,6 +10,62 @@
 
 import SwiftUI
 
+extension UIColor {
+    var hsb: (h: CGFloat, s: CGFloat, b: CGFloat) {
+        var h: CGFloat = 0
+        var s: CGFloat = 0
+        var b: CGFloat = 0
+        
+        guard getHue(&h, saturation: &s, brightness: &b, alpha: nil) else {
+            return (-1, -1, -1)
+        }
+        
+        return (h, s, b)
+    }
+    
+    var rgb: (r: CGFloat, g: CGFloat, b: CGFloat) {
+        var r: CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        
+        guard getRed(&r, green: &g, blue: &b, alpha: nil) else {
+            return (-1, -1, -1)
+        }
+
+        return (r, g, b)
+    }
+    
+    var offsetColors: [UIColor] {
+        var h: CGFloat = 0
+        var s: CGFloat = 0
+        var b: CGFloat = 0
+        
+        self.getHue(&h, saturation: &s, brightness: &b, alpha: nil)
+        
+        // If colors brightness is greater than 0.9 or less than 0.1
+        //     Use self as one of the offsets and offset the other color's brightness by 0.2
+        // Else
+        //     offset the color's brightness by 0.1 in both directions
+        
+        if b - 0.1 < 0 {
+            return [
+                UIColor(hue: h, saturation: s, brightness: 0, alpha: 1),
+                UIColor(hue: h, saturation: s, brightness: 0.1, alpha: 1)
+            ]
+        } else if b + 0.1 > 1 {
+            return [
+                UIColor(hue: h, saturation: s, brightness: 0.9, alpha: 1),
+                UIColor(hue: h, saturation: s, brightness: 1, alpha: 1)
+            ]
+        } else {
+            return [
+                UIColor(hue: h, saturation: s, brightness: b - 0.1, alpha: 1),
+                UIColor(hue: h, saturation: s, brightness: b + 0.1, alpha: 1)
+            ]
+        }
+    }
+}
+
 extension Color {
     static let defaultGradientTop = Color("DefaultGradientTop")
     static let defaultGradientBottom = Color("DefaultGradientBottom")
@@ -26,39 +82,13 @@ extension Color {
     static let lightGray = Color(UIColor.lightGray)
     
     var rgb: (r: Double, g: Double, b: Double) {
-        #if canImport(UIKit)
-        typealias NativeColor = UIColor
-        #elseif canImport(AppKit)
-        typealias NativeColor = NSColor
-        #endif
-
-        var r: CGFloat = 0
-        var g: CGFloat = 0
-        var b: CGFloat = 0
-        
-        guard NativeColor(self).getRed(&r, green: &g, blue: &b, alpha: nil) else {
-            return (-1, -1, -1)
-        }
-
-        return (Double(r), Double(g), Double(b))
+        let vals = uiColor.rgb
+        return (Double(vals.r), Double(vals.g), Double(vals.b))
     }
     
     var hsb: (h: Double, s: Double, b: Double) {
-        #if canImport(UIKit)
-        typealias NativeColor = UIColor
-        #elseif canImport(AppKit)
-        typealias NativeColor = NSColor
-        #endif
-        
-        var h: CGFloat = 0
-        var s: CGFloat = 0
-        var b: CGFloat = 0
-        
-        guard NativeColor(self).getHue(&h, saturation: &s, brightness: &b, alpha: nil) else {
-            return (-1, -1, -1)
-        }
-        
-        return (Double(h), Double(s), Double(b))
+        let vals = uiColor.hsb
+        return (Double(vals.h), Double(vals.s), Double(vals.b))
     }
     
     // Credit to Darel Rex Finley: http://alienryderflex.com/hsp.html
@@ -73,40 +103,18 @@ extension Color {
         return UIColor(self)
     }
     
+    var offsetColors: [Color] {
+        uiColor.offsetColors.map { Color($0) }
+    }
+    
+    var offsetGradient: Gradient {
+        Gradient(colors: offsetColors)
+    }
+    
     func average(to color: Color, at percent: Double = 0.5) -> Color {
         let c1 = rgb
         let c2 = color.rgb
         
         return Color(red: c1.r + percent * (c2.r - c1.r), green: c1.g + percent * (c2.g - c1.g), blue:  c1.b + percent * (c2.b - c1.b))
-    }
-    
-    var offsetColors: [Color] {
-        let vals = hsb
-        
-        // If colors brightness is greater than 0.9 or less than 0.1
-        //     Use self as one of the offsets and offset the other color's brightness by 0.2
-        // Else
-        //     offset the color's brightness by 0.1 in both directions
-        
-        if vals.b - 0.1 < 0 {
-            return [
-                self,
-                Color(hue: vals.h, saturation: vals.s, brightness: vals.b + 0.2)
-            ]
-        } else if vals.b + 0.1 > 1 {
-            return [
-                Color(hue: vals.h, saturation: vals.s, brightness: vals.b - 0.2),
-                self
-            ]
-        } else {
-            return [
-                Color(hue: vals.h, saturation: vals.s, brightness: vals.b - 0.1),
-                Color(hue: vals.h, saturation: vals.s, brightness: vals.b + 0.1)
-            ]
-        }
-    }
-    
-    var offsetGradient: Gradient {
-        Gradient(colors: offsetColors)
     }
 }

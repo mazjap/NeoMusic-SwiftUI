@@ -11,8 +11,10 @@ import MediaPlayer
 @testable import NeoMusic_SwiftUI
 
 class NeoMusic_SwiftUITests: XCTestCase {
-    var settingsController = SettingsController()
+    var settingsController = SettingsController.shared
     var musicController = MusicPlayerController()
+    var searchController = SongSearchController()
+        
     var queue = Queue([1, 2, 3, 4, 5])
     
     var originalColorScheme: JCColorScheme!
@@ -24,7 +26,7 @@ class NeoMusic_SwiftUITests: XCTestCase {
 
     override func tearDownWithError() throws {
         // Restore original colorScheme
-        settingsController.setColorScheme(originalColorScheme)
+        settingsController.setCurrentColorScheme(originalColorScheme)
     }
 
     // Test if gradient is saved to userdefaults
@@ -38,7 +40,7 @@ class NeoMusic_SwiftUITests: XCTestCase {
             XCTAssertNotEqual(originalColorScheme, tempColorScheme)
             XCTAssertNotEqual(settingsController.colorScheme, tempColorScheme)
             
-            settingsController.setColorScheme(tempColorScheme)
+            settingsController.setCurrentColorScheme(tempColorScheme)
             XCTAssertEqual(settingsController.colorScheme, tempColorScheme)
         }
     }

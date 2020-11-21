@@ -60,7 +60,6 @@ struct NeoAlbumRow: View {
                 }
                 .padding(.vertical, SearchView.cellHeight / 2)
                 .padding(.horizontal, Constants.spacing / 2)
-                
             }
         }
         .listRowBackground(LinearGradient(gradient: Gradient(colors: backgroundColor.offsetColors), startPoint: .top, endPoint: .bottom)
