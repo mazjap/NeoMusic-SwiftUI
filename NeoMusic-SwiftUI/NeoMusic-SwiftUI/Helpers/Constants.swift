@@ -43,7 +43,7 @@ struct Constants {
     static let noAlbum = "No Album Found"
     static let noSong = "No Song Found"
     
-    static let coreDataModelName = "Models"
+    static let coreDataUserModelName = "User"
     
     static var cacheCount = 0
     

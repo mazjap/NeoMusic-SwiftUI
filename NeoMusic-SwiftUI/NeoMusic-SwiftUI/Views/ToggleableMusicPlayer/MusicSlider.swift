@@ -15,6 +15,7 @@ struct MusicSlider: View {
     // MARK: - State
     
     @EnvironmentObject private var feedbackGenerator: FeedbackGenerator
+    @Environment(\.isEnabled) var isEnabled: Bool
     
     @GestureState private var dragOffset: CGFloat = 0
     
@@ -34,7 +35,7 @@ struct MusicSlider: View {
     let sliderSize = min(UIScreen.main.bounds.width, UIScreen.main.bounds.height) / 14
     let colorScheme: JCColorScheme
     
-    init(colorScheme: JCColorScheme, min: Binding<Double>, max: Binding<Double>, current: Binding<Double>, onChange action: @escaping (Double) -> Void) {
+    init(colorScheme: JCColorScheme, min: Binding<Double> = Binding<Double>(get: { return 0 }, set: { _ in }), max: Binding<Double> = Binding<Double>(get: { return 1 }, set: { _ in }), current: Binding<Double> = Binding<Double>(get: { return 0.5 }, set: { _ in }), onChange action: @escaping (Double) -> Void) {
         self.colorScheme = colorScheme
         self._minimum = min
         self._maximum = max
@@ -45,21 +46,25 @@ struct MusicSlider: View {
     // MARK: - Body
     
     var body: some View {
+        let font: Font = .subheadline
+        
         VStack {
-            HStack {
-                Text(format(current))
-                    .font(.subheadline)
-                    .foregroundColor(colorScheme.textColor.color)
-                    .padding(.leading, sliderSize / 2)
-                    .offset(y: sideToPop == .left ? -10 : 0)
-                
-                Spacer()
-                
-                Text(format(maximum))
-                    .font(.subheadline)
-                    .foregroundColor(colorScheme.textColor.color)
-                    .padding(.trailing, sliderSize / 2)
-                    .offset(y: sideToPop == .right ? -10 : 0)
+            if isEnabled {
+                HStack {
+                    Text(format(current))
+                        .font(font)
+                        .foregroundColor(colorScheme.textColor.color)
+                        .padding(.leading, sliderSize / 2)
+                        .offset(y: sideToPop == .left ? -10 : 0)
+                    
+                    Spacer()
+                    
+                    Text(format(maximum))
+                        .font(font)
+                        .foregroundColor(colorScheme.textColor.color)
+                        .padding(.trailing, sliderSize / 2)
+                        .offset(y: sideToPop == .right ? -10 : 0)
+                }
             }
             
             GeometryReader { geometry in
@@ -73,14 +78,14 @@ struct MusicSlider: View {
                 let songDuration = Double(verifiedDistance / totalDistance) * maximum
                 
                 ZStack(alignment: .leading) {
-                    RoundedRectangle(cornerRadius: lineHeight / 2)
-                        .fill(LinearGradient(gradient: colorScheme.backgroundGradient.last.offsetGradient, startPoint: .top, endPoint: .bottom))
+                    LinearGradient(gradient: colorScheme.backgroundGradient.last.offsetGradient, startPoint: .top, endPoint: .bottom)
                         .frame(height: lineHeight)
+                        .cornerRadius(lineHeight / 2)
                         .padding(.horizontal, sliderSize / 2)
                     
-                    RoundedRectangle(cornerRadius: (lineHeight - 2) / 2)
-                        .fill(LinearGradient(gradient: colorScheme.sliderGradient.gradient, startPoint: .top, endPoint: .bottom))
+                    LinearGradient(gradient: colorScheme.sliderGradient.gradient, startPoint: .top, endPoint: .bottom)
                         .frame(width: verifiedDistance, height: lineHeight - 2)
+                        .cornerRadius((lineHeight - 2) / 2)
                         .padding(.horizontal, sliderSize / 2)
                     
                     Circle()
@@ -126,16 +131,18 @@ struct MusicSlider: View {
                                 }
                         )
                     
+                    if isEnabled {
                     Text(format(songDuration))
                         .foregroundColor(colorScheme.textColor.color)
                         .font(.caption)
                         .offset(x: verifiedDistance, y: -sliderSize / 2 - 10)
                         .opacity(isSeeking ? 1 : 0)
+                    }
                 }
             }
             
         }
-        .frame(height: 75)
+        .frame(height: sliderSize + (isEnabled ? font.size : 0))
     }
     
     // MARK: - Functions
@@ -184,7 +191,7 @@ struct MusicSlider_Previews: PreviewProvider {
                 .ignoresSafeArea()
             
             MusicSlider(colorScheme: Constants.defaultColorScheme, min: $zero, max: $five, current: $two, onChange: {_ in})
-                .environmentObject(MusicPlayerController())
+                .environmentObject(FeedbackGenerator(feedbackEnabled: false))
         }
     }
 }

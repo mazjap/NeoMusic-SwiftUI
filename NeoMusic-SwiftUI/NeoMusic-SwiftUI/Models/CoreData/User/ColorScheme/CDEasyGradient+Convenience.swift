@@ -7,12 +7,6 @@
 
 import CoreData
 
-extension Array where Element == CDEasyColor {
-    var easies: [EasyColor] {
-        return map { $0.easy }
-    }
-}
-
 extension CDEasyGradient {
     convenience init(_ easyGradient: EasyGradient, context: NSManagedObjectContext) {
         self.init(context: context)
@@ -23,10 +17,12 @@ extension CDEasyGradient {
         "\(easyColors ?? [])"
     }
     
-    var easy: EasyGradient? {
-        guard let cdColors = easyColors?.array as? [CDEasyColor] else { return nil }
-        
-        return EasyGradient(cdColors.easies)
+    var easy: EasyGradient {
+        if let ezColors = easyColors?.array as? [CDEasyColor] {
+            return EasyGradient(ezColors.map { $0.easy })
+        } else {
+            return EasyGradient([EasyColor.clear])
+        }
     }
     
     static func == (lhs: CDEasyGradient, rhs: EasyGradient) -> Bool {

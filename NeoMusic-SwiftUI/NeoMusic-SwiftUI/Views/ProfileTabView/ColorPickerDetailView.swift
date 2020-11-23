@@ -24,7 +24,7 @@ struct ColorPickerDetailView: View {
     
     let type: JCColorScheme.ColorType
     
-    // MARK: - Initializer
+    // MARK: - Initializers
     
     init(type: JCColorScheme.ColorType) {
         let sc = SettingsController.shared
@@ -115,8 +115,9 @@ struct ColorPickerDetailView: View {
                 GeometryReader { geometry in
                     HStack {
                         ZStack {
-                            RoundedRectangle(cornerRadius: 20)
-                                .foregroundColor((colorOption == 0 ? color1 : color2).color)
+                            (colorOption == 0 ? color1 : color2).color
+                                .cornerRadius(20)
+                            
                             TextField("", text: Binding<String>(get: { return hex }, set: { newHex in
                                                                     hex = newHex
                                                                     if colorOption == 0 {

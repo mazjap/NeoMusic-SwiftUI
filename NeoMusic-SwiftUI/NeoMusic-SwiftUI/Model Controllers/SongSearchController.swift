@@ -68,7 +68,7 @@ class SongSearchController: ObservableObject {
         return songs.isEmpty && albums.isEmpty && artists.isEmpty
     }
     
-    // MARK: - Initializer
+    // MARK: - Initializers
     
     init(search term: String = "", searchType: SearchType = .library, lastPlayed: [Song] = []) {
         self.songs = []

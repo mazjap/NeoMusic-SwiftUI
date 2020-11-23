@@ -15,7 +15,7 @@ public struct CustomListHeader: ViewModifier {
     private let textColor: Color
     private let spacing: CGFloat = 20
     
-    // MARK: - Initializer
+    // MARK: - Initializers
     
     init(backgroundColor: Color, textColor: Color) {
         self.backgroundColor = backgroundColor

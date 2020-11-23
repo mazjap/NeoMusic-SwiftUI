@@ -19,7 +19,7 @@ struct TabItem: View {
     let image: Image
     let content: AnyView
     
-    // MARK: - Initializer
+    // MARK: - Initializers
     
     init<Content>(title: String, imageName: String, @ViewBuilder _ content: () -> Content) where Content: View {
         self.title = Text(title)

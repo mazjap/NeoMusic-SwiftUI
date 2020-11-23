@@ -27,7 +27,7 @@ struct MusicArtwork: View {
     private let image: Image
     private let size: Neumorph.Size
     
-    // MARK: - Initializer
+    // MARK: - Initializers
     
     init(colorScheme: JCColorScheme, image: Image, rotation: Binding<Double>, size: Neumorph.Size = .artwork) {
         self._previousRotation = rotation

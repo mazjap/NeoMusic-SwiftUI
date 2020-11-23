@@ -25,7 +25,7 @@ struct TabBar: View {
     
     private let items: [TabItem]
     
-    // MARK: - Initializer
+    // MARK: - Initializers
     
     init(startIndex: Int = 0, @TabBuilder _ items: () -> [TabItem]) {
         self.items = items()
@@ -120,8 +120,8 @@ struct TabBar: View {
         GeometryReader { geometry in
             let frame = geometry[bounds!]
             if bounds != nil {
-                RoundedRectangle(cornerRadius: 3)
-                    .fill(settingsController.colorScheme.mainButtonColor.color)
+                settingsController.colorScheme.mainButtonColor.color
+                    .cornerRadius(3)
                     .frame(width: frame.width, height: 3)
                     .offset(x: frame.minX, y: 6)
                     .frame(maxHeight: .infinity, alignment: .bottom)

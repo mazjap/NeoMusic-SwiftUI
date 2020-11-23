@@ -34,12 +34,12 @@ struct ColorSlider: View {
     
     var body: some View {
         GeometryReader { geometry in
-            RoundedRectangle(cornerRadius: Self.width / 2)
-                    .foregroundColor(settingsController.colorScheme.textColor.color)
-                    .overlay(
+            settingsController.colorScheme.textColor.color
+                .cornerRadius(Self.width / 2)
+                .overlay(
                 LinearGradient(gradient: Gradient(colors: colors()), startPoint: .top, endPoint: .bottom)
                     .frame(width: Self.width - offsetRadius, height: geometry.size.height - offsetRadius)
-                    .clipShape(RoundedRectangle(cornerRadius: (Self.width - offsetRadius) / 2))
+                    .cornerRadius((Self.width - offsetRadius) / 2)
             )
                 .frame(width: Self.width)
             .gesture(

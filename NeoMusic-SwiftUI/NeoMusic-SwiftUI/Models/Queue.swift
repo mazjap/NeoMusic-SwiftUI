@@ -64,7 +64,7 @@ struct Queue<Type>: CustomStringConvertible {
     
     private var head: Node<Type>?
     
-    // MARK: - Initializer
+    // MARK: - Initializers
     
     init(_ vals: [Type]? = nil) {
         if let vals = vals, !vals.isEmpty {

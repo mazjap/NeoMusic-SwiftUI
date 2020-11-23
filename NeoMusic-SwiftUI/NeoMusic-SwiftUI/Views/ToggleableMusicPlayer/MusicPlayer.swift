@@ -87,7 +87,7 @@ struct OpenPlayer: View {
     
     let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
     
-    // MARK: - Initializer
+    // MARK: - Initializers
     
     init(namespace: Namespace.ID, isOpen: Binding<Bool>, rotation: Binding<Double>, start: Binding<Double>, end: Binding<Double>, current: Binding<Double>, showUpNext: Binding<Bool>) {
         self.nspace = namespace
@@ -284,7 +284,7 @@ struct ClosedPlayer: View {
     
     private let nspace: Namespace.ID
     
-    // MARK: - Initializer
+    // MARK: - Initializers
     
     init(namespace: Namespace.ID, isOpen: Binding<Bool>, rotation: Binding<Double>) {
         nspace = namespace

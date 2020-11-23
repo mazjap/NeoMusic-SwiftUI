@@ -27,11 +27,15 @@ struct CSButton: View {
             UIApplication.shared.setNeedsStatusBarAppearanceUpdate()
         } label: {
             ZStack {
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(LinearGradient(gradient: colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom))
+                LinearGradient(gradient: colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
+                    .cornerRadius(10)
+                
                 VStack {
                     Text(title)
                         .foregroundColor(colorScheme.textColor.color)
+                    
+                    MusicSlider(colorScheme: colorScheme) { _ in }
+                        .environment(\.isEnabled, false)
                 }
             }
         }

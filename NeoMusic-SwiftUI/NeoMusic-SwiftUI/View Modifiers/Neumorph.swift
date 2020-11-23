@@ -18,7 +18,7 @@ struct Neumorph: ViewModifier {
     private let distance: CGFloat
     private let radius: CGFloat
     
-    // MARK: - Initializer
+    // MARK: - Initializers
     
     init(color: Color?, size: Size) {
         if let color = color {

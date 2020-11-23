@@ -32,14 +32,15 @@ struct SegmentedControl: View {
     
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: Self.height / 2)
-                .fill(color)
+            color
+                .cornerRadius(Self.height / 2)
+            
             HStack {
                 Spacer()
                 ForEach(0..<options.count) { i in
                     ZStack {
-                        RoundedRectangle(cornerRadius: Self.height / 2)
-                            .fill(LinearGradient(gradient: color.offsetGradient, startPoint: .top, endPoint: .bottom))
+                        LinearGradient(gradient: color.offsetGradient, startPoint: .top, endPoint: .bottom)
+                            .cornerRadius(Self.height)
                             .opacity(selectedIndex == i ? 1 : 0)
                             .neumorph(color: nil, size: .button)
                             .matchedGeometryEffect(id: Self.selectedID, in: nspace, isSource: i == selectedIndex)

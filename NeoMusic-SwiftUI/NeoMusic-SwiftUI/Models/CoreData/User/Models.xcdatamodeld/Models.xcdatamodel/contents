@@ -3,6 +3,7 @@
     <entity name="CDColorScheme" representedClassName="CDColorScheme" syncable="YES" codeGenerationType="class">
         <attribute name="dateAdded" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="backgroundGradient" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDEasyGradient" inverseName="bgColorScheme" inverseEntity="CDEasyGradient"/>
+        <relationship name="favorites" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDSettings" inverseName="colorSchemes" inverseEntity="CDSettings"/>
         <relationship name="mainButtonColor" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDEasyColor" inverseName="buttonColorScheme" inverseEntity="CDEasyColor"/>
         <relationship name="secondaryButtonColor" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDEasyColor" inverseName="secondColorScheme" inverseEntity="CDEasyColor"/>
         <relationship name="sliderGradient" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDEasyGradient" inverseName="sliderColorScheme" inverseEntity="CDEasyGradient"/>
@@ -22,9 +23,22 @@
         <relationship name="easyColors" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CDEasyColor" inverseName="easyGradient" inverseEntity="CDEasyColor"/>
         <relationship name="sliderColorScheme" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDColorScheme" inverseName="sliderGradient" inverseEntity="CDColorScheme"/>
     </entity>
+    <entity name="CDSettings" representedClassName="CDSettings" syncable="YES" codeGenerationType="class">
+        <relationship name="colorSchemes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDColorScheme" inverseName="favorites" inverseEntity="CDColorScheme"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDUser" inverseName="favorites" inverseEntity="CDUser"/>
+    </entity>
+    <entity name="CDUser" representedClassName="CDUser" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="username" optional="YES" attributeType="String"/>
+        <relationship name="currentUser" optional="YES" maxCount="1" deletionRule="Nullify"/>
+        <relationship name="favorites" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDSettings" inverseName="user" inverseEntity="CDSettings"/>
+        <relationship name="users" optional="YES" maxCount="1" deletionRule="Nullify"/>
+    </entity>
     <elements>
-        <element name="CDColorScheme" positionX="-32.63671875" positionY="-250.4672698974609" width="128" height="119"/>
+        <element name="CDColorScheme" positionX="-32.63671875" positionY="-250.4672698974609" width="128" height="134"/>
         <element name="CDEasyColor" positionX="-179.1319580078125" positionY="4.0245361328125" width="128" height="134"/>
         <element name="CDEasyGradient" positionX="254.913818359375" positionY="-67.5621337890625" width="128" height="74"/>
+        <element name="CDSettings" positionX="36" positionY="-81" width="128" height="59"/>
+        <element name="CDUser" positionX="27" positionY="-90" width="128" height="104"/>
     </elements>
 </model>

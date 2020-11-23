@@ -21,10 +21,10 @@ struct Album: Identifiable, Equatable {
         items.map { Song($0) }
     }
     
-    lazy var artist: Artist? = {
+    var artist: Artist? {
         guard let id = items.first?.artistPersistentID, let art = Artist.createArtist(for: id) else { return nil }
         return art
-    }()
+    }
     
     // MARK: - Initializers
     

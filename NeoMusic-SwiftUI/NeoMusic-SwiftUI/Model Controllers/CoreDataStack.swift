@@ -8,13 +8,15 @@
 import CoreData
 
 class CoreDataStack {
-    static let shared = CoreDataStack()
     
-    private init() {
+    // MARK: - Variables
+    
+    var userContext: NSManagedObjectContext {
+        return userContainer.viewContext
     }
     
-    lazy var container: NSPersistentCloudKitContainer = {
-        let container = NSPersistentCloudKitContainer(name: Constants.coreDataModelName)
+    lazy var userContainer: NSPersistentCloudKitContainer = {
+        let container = NSPersistentCloudKitContainer(name: Constants.coreDataUserModelName)
         container.loadPersistentStores(completionHandler: { _, error in
             if let error = error {
                 fatalError("Unable to load persistent store! Error: \(error)")
@@ -24,11 +26,13 @@ class CoreDataStack {
         return container
     }()
     
-    var mainContext: NSManagedObjectContext {
-        return container.viewContext
-    }
+    // MARK: - Initializers
     
-    func save(context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
+    private init() {}
+    
+    // MARK: - Functions
+    
+    func save(context: NSManagedObjectContext) {
         context.performAndWait {
             do {
                 try context.save()
@@ -38,4 +42,8 @@ class CoreDataStack {
             }
         }
     }
+    
+    // MARK: - Static Variables
+    
+    static let shared = CoreDataStack()
 }

@@ -53,8 +53,8 @@ struct DefaultButton: View {
                     LinearGradient(gradient: Gradient(colors: buttonColor.offsetColors), startPoint: .topLeading, endPoint: .bottomTrailing)
                         .clipShape(Circle())
                 } else {
-                    RoundedRectangle(cornerRadius: cornerRadius)
-                        .fill(buttonColor)
+                    buttonColor
+                        .cornerRadius(cornerRadius)
                         .neumorph(color: buttonColor, size: neoSize)
                 }
                     

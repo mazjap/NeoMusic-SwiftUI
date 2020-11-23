@@ -7,14 +7,6 @@
 
 import CoreData
 
-extension EasyColor {
-    init(red: Double, green: Double, blue: Double) {
-        self.r = red
-        self.g = green
-        self.b = blue
-    }
-}
-
 extension CDEasyColor {
     convenience init(_ easyColor: EasyColor, context: NSManagedObjectContext) {
         self.init(context: context)

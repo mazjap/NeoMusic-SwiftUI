@@ -25,6 +25,7 @@ struct Song: TimelineEntry, Identifiable, Equatable {
     let isExplicit: Bool
     let persistentID: UInt64
     let storeID: String
+    
     var date: Date
     
     var image: Image {
@@ -47,7 +48,7 @@ struct Song: TimelineEntry, Identifiable, Equatable {
         return Album.createAlbum(for: id)
     }()
     
-    // MARK: - Initializer
+    // MARK: - Initializers
     
     init(_ song: MPMediaItem?, date: Date = Date()) {
         let defaultTitle = Constants.noSong
