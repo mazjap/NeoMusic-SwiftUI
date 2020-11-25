@@ -29,7 +29,7 @@ struct Provider: TimelineProvider {
             refreshDate = refresh
         }
         
-        let timeline = Timeline(entries: [controller.getSong(with: refresh) ?? WidgetSong.noSong(date: refresh)], policy: .atEnd)
+        let timeline = Timeline(entries: [controller.getSong(with: refresh) ?? WidgetSong.noSong(date: refresh)], policy: .after(refreshDate))
         completion(timeline)
     }
 }
@@ -78,7 +78,7 @@ struct NeoWidget: Widget {
         StaticConfiguration(kind: Self.kind, provider: Provider()) { entry in
             NeoWidgetEntryView()
         }
-        .configurationDisplayName(Self.kind)
+        .configurationDisplayName(controller.getSong()?.artistName ?? Self.kind)
         .description("Music.")
     }
 }

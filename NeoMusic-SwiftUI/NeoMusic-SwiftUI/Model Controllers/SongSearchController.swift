@@ -226,19 +226,19 @@ class SongSearchController: ObservableObject {
                             let albums = try JSONSerialization.data(withJSONObject: albumsJson)
                             let artists = try JSONSerialization.data(withJSONObject: artistJson)
                             
-//                            let songArray: [Song] = try JSONDecoder().decode([Song].self, from: songs)
+                            let songArray: [Song] = try JSONDecoder().decode([Song].self, from: songs)
+                            let albumArray: [Album] = try JSONDecoder().decode([Album].self, from: albums)
+                            let artistArray: [Artist] = try JSONDecoder().decode([Artist].self, from: artists)
                             
-                            DispatchQueue.main.async { //[weak self] in
-//                                guard let self = self else { return }
-//                                self.songs = ()
-                                print(songs)
-                                print(albums)
-                                print(artists)
+                            DispatchQueue.main.async { [weak self] in
+                                guard let self = self else { return }
+                                self.songs = songArray
+                                self.albums = albumArray
+                                self.artists = artistArray
                             }
                         } catch {
                             NSLog("f:\(#file)l:\(#line) Error: \(error)")
                         }
-                        
                     }.resume()
                 }
             } else {

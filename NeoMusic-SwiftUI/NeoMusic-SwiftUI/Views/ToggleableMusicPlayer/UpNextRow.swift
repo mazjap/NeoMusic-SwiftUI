@@ -32,7 +32,7 @@ struct UpNextRow: View {
             }
             .spacing(.vertical)
         }
-        .listRowBackground(colorScheme.backgroundGradient.last)
+        .listRowBackground(colorScheme.backgroundGradient.first)
         .frame(height: Self.rowHeight)
     }
     

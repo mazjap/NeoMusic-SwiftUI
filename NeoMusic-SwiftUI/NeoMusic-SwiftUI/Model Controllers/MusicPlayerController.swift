@@ -36,6 +36,18 @@ class MusicPlayerController: ObservableObject {
     
     private var dynamicPlayer: Dynamic
     
+    private var needsUpdate: Bool = true {
+        didSet {
+            if needsUpdate {
+                DispatchQueue.global(qos: .background).async {
+                    _ = self.upNextSongs
+                }
+            }
+        }
+    }
+    
+    private(set) var upNext: [Song] = []
+    
     var currentPlaybackTime: TimeInterval {
         player.currentPlaybackTime
     }
@@ -61,18 +73,25 @@ class MusicPlayerController: ObservableObject {
             if oldValue.persistentID != 0 {
                 delegate?.songChanged(previousSong: oldValue)
             }
+            
+            if upNext.count > 0, currentSong == upNext[1] {
+                upNext.remove(at: 0)
+            } else {
+                needsUpdate = true
+            }
         }
     }
     
     @Published var isPlaying: Bool = false
     
-    // MARK: - Initializer
+    // MARK: - Initializers
 
     init() {
         dynamicPlayer = Dynamic(player)
         checkAuthorized()
-        
-        print(upNextSongs.map { $0.title })
+        for song in upNextSongs {
+            print("\(song.title), \(song.storeID)")
+        }
     }
     
     // MARK: - Private Functions
@@ -89,6 +108,21 @@ class MusicPlayerController: ObservableObject {
         
         playbackStatusChanged()
         songChanged()
+        
+        print("\n\nMPMediaQuery\n\n")
+        Hidden.printMethodNames(for: MPMediaQuery.self)
+        
+        print("\n\nMPMusicPlayerQueueDescriptor\n\n")
+        Hidden.printMethodNames(for: MPMusicPlayerQueueDescriptor.self)
+        
+        print("\n\nMPMediaItemCollection\n\n")
+        Hidden.printMethodNames(for: MPMediaItemCollection.self)
+        
+        print("\n\nMPMediaItem\n\n")
+        Hidden.printMethodNames(for: MPMediaItem.self)
+        
+        print("\n\nMPMusicPlayerController\n\n")
+        Hidden.printMethodNames(for: MPMusicPlayerController.self)
     }
     
     private func checkAuthorized() {
@@ -266,29 +300,50 @@ class MusicPlayerController: ObservableObject {
 // MARK: - MusicPlayerController Extension: Dynamic Player
 
 extension MusicPlayerController {
-    private var songCount: Int {
+    var songCount: Int {
         return dynamicPlayer.numberOfItems.unwrapped() ?? 0
     }
     
-    private var currentIndex: Int {
+    var currentIndex: Int {
         return player.indexOfNowPlayingItem
     }
     
     var upNextSongs: [Song] {
         guard songCount > currentIndex else { return [] }
         
-        var temp = [Song]()
-        
-        for i in currentIndex..<songCount {
-            if let media = item(at: i) {
-                temp.append(Song(media))
+        if needsUpdate {
+            var temp = [MPMediaItem]()
+            
+            if let query: MPMediaQuery = dynamicPlayer.queueAsQuery.unwrapped(), let items = query.items {
+                temp = items
+                print("From query: \(items)")
+            } else {
+                for i in currentIndex..<songCount {
+                    if let media = item(at: i) {
+                        temp.append(media)
+                    }
+                }
             }
+            
+            needsUpdate = false
+            
+            upNext = temp.map { Song($0) }
         }
         
-        return temp
+        return upNext
     }
     
-    private func item(at index: Int) -> MPMediaItem? {
+    func changeCurrentIndex(to item: Song) {
+        if let media = item.media {
+            changeCurrentIndex(to: media)
+        }
+    }
+    
+    func changeCurrentIndex(to item: MPMediaItem) {
+        dynamicPlayer.set(nowPlayingItem: item)
+    }
+    
+    func item(at index: Int) -> MPMediaItem? {
         if let item: MPMediaItem = dynamicPlayer.nowPlayingItemAt(index: index).unwrapped() {
             return item
         }
@@ -296,5 +351,3 @@ extension MusicPlayerController {
         return nil
     }
 }
-
-

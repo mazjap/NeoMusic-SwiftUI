@@ -28,7 +28,9 @@ class CoreDataStack {
     
     // MARK: - Initializers
     
-    private init() {}
+    private init() {
+        
+    }
     
     // MARK: - Functions
     

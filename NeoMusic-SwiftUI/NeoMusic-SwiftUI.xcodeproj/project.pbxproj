@@ -270,9 +270,6 @@
 				0EE12DE325686AD900F46D88 /* CDColorScheme+Convenience.swift */,
 				0EE12DED25686C1E00F46D88 /* CDEasyGradient+Convenience.swift */,
 				0EE12DE825686B7500F46D88 /* CDEasyColor+Convenience.swift */,
-				0E2C908224F5D5A400AB950D /* JCColorScheme.swift */,
-				0E284E262569A8C300686E55 /* EasyGradient.swift */,
-				0E284E212569A86200686E55 /* EasyColor.swift */,
 			);
 			path = ColorScheme;
 			sourceTree = "<group>";
@@ -316,6 +313,12 @@
 			isa = PBXGroup;
 			children = (
 				0EFC09C92568E50700AA0F28 /* CoreData */,
+				0E8B8B4A24F5C1990029B27D /* Song.swift */,
+				0E3738E52564B86A002F5A3C /* Album.swift */,
+				0E3738EA2564B873002F5A3C /* Artist.swift */,
+				0E2C908224F5D5A400AB950D /* JCColorScheme.swift */,
+				0E284E262569A8C300686E55 /* EasyGradient.swift */,
+				0E284E212569A86200686E55 /* EasyColor.swift */,
 				0E7BBE8B254F3D18005E035D /* Cache.swift */,
 				0EF3F73A254F49A3002AD607 /* Media.swift */,
 				0E886F482554C954006D75F7 /* Queue.swift */,
@@ -353,9 +356,6 @@
 				0E9218C82569889F00589B0D /* CDSong+Convenience.swift */,
 				0E284DDF25698AAB00686E55 /* CDAlbum+Convenience.swift */,
 				0E284DE425698EDC00686E55 /* CDArtist+Convenience.swift */,
-				0E8B8B4A24F5C1990029B27D /* Song.swift */,
-				0E3738E52564B86A002F5A3C /* Album.swift */,
-				0E3738EA2564B873002F5A3C /* Artist.swift */,
 			);
 			path = Music;
 			sourceTree = "<group>";

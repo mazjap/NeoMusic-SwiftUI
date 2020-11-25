@@ -5,7 +5,7 @@
 //  Created by Jordan Christensen on 11/21/20.
 //
 
-import CoreData
+import SwiftUI
 
 struct User {
     var id: UUID

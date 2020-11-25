@@ -50,16 +50,19 @@ struct SearchView: View {
                 VStack {
                     SegmentedControl(index: $segmentedIndex, textColor: settingsController.colorScheme.textColor.color, background: settingsController.colorScheme.backgroundGradient.first)
                         .options(["Library", "Apple Music"])
-                    .spacing([.top, .leading, .trailing])
+                        .onChange(of: segmentedIndex) { newVal in
+                            searchController.searchType = newVal == 0 ? .library : .applemusic
+                        }
+                        .spacing([.top, .leading, .trailing])
                     
-                    SearchBar(searchText: Binding<String>(get: { return text }, set: { newVal in
-                        text = newVal
-                        searchController.searchTerm = text
-                    }), font: nil, colorScheme: settingsController.colorScheme,
+                    SearchBar(searchText: $text, font: nil, colorScheme: settingsController.colorScheme,
                     onEditingChanged: { isEditing in }, onCommit: {})
                         .resignsFirstResponderOnDrag()
+                        .onChange(of: text) { newVal in
+                            searchController.searchTerm = newVal
+                        }
                         .frame(height: 50)
-                    .spacing(.horizontal)
+                        .spacing(.horizontal)
                     
                     List {
                         let backgroundColor = settingsController.colorScheme.backgroundGradient.first

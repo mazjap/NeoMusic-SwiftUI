@@ -34,6 +34,7 @@ struct SegmentedControl: View {
         ZStack {
             color
                 .cornerRadius(Self.height / 2)
+                .neumorph(color: color, size: .button)
             
             HStack {
                 Spacer()
@@ -42,7 +43,6 @@ struct SegmentedControl: View {
                         LinearGradient(gradient: color.offsetGradient, startPoint: .top, endPoint: .bottom)
                             .cornerRadius(Self.height)
                             .opacity(selectedIndex == i ? 1 : 0)
-                            .neumorph(color: nil, size: .button)
                             .matchedGeometryEffect(id: Self.selectedID, in: nspace, isSource: i == selectedIndex)
                         
                         Button(options[i]) {
@@ -57,7 +57,6 @@ struct SegmentedControl: View {
             }
         }
         .frame(height: Self.height)
-        .neumorph(color: color, size: .button)
     }
     
     private func changeIndex(to index: Int) {
