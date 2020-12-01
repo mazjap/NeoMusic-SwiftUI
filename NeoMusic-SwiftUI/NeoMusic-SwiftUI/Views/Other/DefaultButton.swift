@@ -20,7 +20,7 @@ struct DefaultButton: View {
     private let buttonColor: Color
     private let size: CGFloat
     private let type: ButtonType
-    private let neoSize: Neumorph.Size
+    private let neoSize: NeumorphSize
     private let action: () -> Void
     
     var cornerRadius: CGFloat {
@@ -29,7 +29,7 @@ struct DefaultButton: View {
     
     // MARK: - Initializers
     
-    init(image: Image, imageColor: Color, buttonColor: Color, type: ButtonType = .circle, neoSize: Neumorph.Size = .button, mult: CGFloat = 1, isSelected: Bool = false, action: @escaping () -> Void) {
+    init(image: Image, imageColor: Color, buttonColor: Color, type: ButtonType = .circle, neoSize: NeumorphSize = .button, mult: CGFloat = 1, isSelected: Bool = false, action: @escaping () -> Void) {
         self.image = image
         self.imageColor = imageColor
         self.buttonColor = buttonColor
@@ -40,7 +40,7 @@ struct DefaultButton: View {
         self.action = action
     }
     
-    init(imageName: String, imageColor: Color, buttonColor: Color, type: ButtonType = .circle, neoSize: Neumorph.Size = .button, mult: CGFloat = 1, isSelected: Bool = false, action: @escaping () -> Void) {
+    init(imageName: String, imageColor: Color, buttonColor: Color, type: ButtonType = .circle, neoSize: NeumorphSize = .button, mult: CGFloat = 1, isSelected: Bool = false, action: @escaping () -> Void) {
         self.init(image: Image(systemName: imageName), imageColor: imageColor, buttonColor: buttonColor, type: type, mult: mult, isSelected: isSelected, action: action)
     }
     

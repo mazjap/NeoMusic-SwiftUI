@@ -31,7 +31,8 @@ struct NeoArtistRow: View {
     
     var body: some View {
         ZStack {
-            Color.clear
+            LinearGradient(gradient: Gradient(colors: backgroundColor.offsetColors), startPoint: .top, endPoint: .bottom)
+                .cornerRadius(20)
             
             HStack {
 //                Image(uiImage: artist.image)
@@ -62,12 +63,8 @@ struct NeoArtistRow: View {
                 .padding(.horizontal, Constants.spacing / 2)
                 
             }
+            .padding(.horizontal, Constants.spacing / 2)
         }
-        .listRowBackground(LinearGradient(gradient: Gradient(colors: backgroundColor.offsetColors), startPoint: .top, endPoint: .bottom)
-                            .clipped()
-                            .cornerRadius(20)
-                            .padding(.horizontal, 5)
-                            .gesture(gesture))
         .frame(height: SearchView.cellHeight)
         .gesture(gesture)
     }

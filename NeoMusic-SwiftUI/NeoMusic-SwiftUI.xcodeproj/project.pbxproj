@@ -33,7 +33,7 @@
 		0E49677425299E97000D166C /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E49676F25299E97000D166C /* SearchView.swift */; };
 		0E49677525299E97000D166C /* NeoSongRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E49677025299E97000D166C /* NeoSongRow.swift */; };
 		0E49677E2529A384000D166C /* ResignFirstResponderOnDrag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E49677D2529A383000D166C /* ResignFirstResponderOnDrag.swift */; };
-		0E50083C2532A47700B3BFAE /* CustomListHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E50083B2532A47700B3BFAE /* CustomListHeader.swift */; };
+		0E4C28FF256E0DD500EB8EF6 /* Binding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4C28FE256E0DD500EB8EF6 /* Binding+Extension.swift */; };
 		0E6290C32565955600EBA222 /* NeoAlbumRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6290C22565955600EBA222 /* NeoAlbumRow.swift */; };
 		0E6290C82565968A00EBA222 /* NeoAristRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6290C72565968A00EBA222 /* NeoAristRow.swift */; };
 		0E6290CD2565D5B700EBA222 /* UpNextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6290CC2565D5B700EBA222 /* UpNextView.swift */; };
@@ -62,17 +62,17 @@
 		0E9218C92569889F00589B0D /* CDSong+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9218C82569889F00589B0D /* CDSong+Convenience.swift */; };
 		0E9CCA482556220C009AACA7 /* Hidden.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9CCA472556220C009AACA7 /* Hidden.swift */; };
 		0E9CCA4D255632E0009AACA7 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9CCA4C255632E0009AACA7 /* HTTPMethod.swift */; };
+		0E9CDB02257589F600B03489 /* Table.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9CDB01257589F600B03489 /* Table.swift */; };
+		0E9CDB0A2575954900B03489 /* TableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9CDB092575954900B03489 /* TableSection.swift */; };
 		0E9D434B253515C00025B3FD /* FeedbackGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9D434A253515C00025B3FD /* FeedbackGenerator.swift */; };
 		0E9D98C52559BC9800343261 /* View+Neumorph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9D98C42559BC9800343261 /* View+Neumorph.swift */; };
 		0E9D98EC2559D82500343261 /* View+Neumorph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9D98C42559BC9800343261 /* View+Neumorph.swift */; };
-		0E9D98F02559D83700343261 /* Neumorph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE2D1251FB01000752EDE /* Neumorph.swift */; };
 		0E9D98F52559D9DB00343261 /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9D98F42559D9DB00343261 /* Font+Extension.swift */; };
 		0E9D98F92559D9DD00343261 /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9D98F42559D9DB00343261 /* Font+Extension.swift */; };
 		0E9D98FE2559E32800343261 /* UIImageColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9D98FD2559E32800343261 /* UIImageColor.swift */; };
 		0EA1848424FB1EBD00111B84 /* Notification.Name+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA1848324FB1EBC00111B84 /* Notification.Name+Extension.swift */; };
 		0EA9BABE25674AFE00C732FA /* UpNextRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA9BABD25674AFE00C732FA /* UpNextRow.swift */; };
 		0EB0EFEC255C541C00CEDF50 /* UIDevice+Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB0EFEB255C541C00CEDF50 /* UIDevice+Network.swift */; };
-		0EBAE2D2251FB01000752EDE /* Neumorph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE2D1251FB01000752EDE /* Neumorph.swift */; };
 		0EBAE2DF251FB22600752EDE /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE2DE251FB22600752EDE /* View+Extension.swift */; };
 		0EDE700E24F465D300E72D0C /* NeoMusic_SwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE700D24F465D300E72D0C /* NeoMusic_SwiftUIApp.swift */; };
 		0EDE701024F465D300E72D0C /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE700F24F465D300E72D0C /* MusicPlayer.swift */; };
@@ -170,7 +170,7 @@
 		0E49676F25299E97000D166C /* SearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		0E49677025299E97000D166C /* NeoSongRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeoSongRow.swift; sourceTree = "<group>"; };
 		0E49677D2529A383000D166C /* ResignFirstResponderOnDrag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResignFirstResponderOnDrag.swift; sourceTree = "<group>"; };
-		0E50083B2532A47700B3BFAE /* CustomListHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomListHeader.swift; sourceTree = "<group>"; };
+		0E4C28FE256E0DD500EB8EF6 /* Binding+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Extension.swift"; sourceTree = "<group>"; };
 		0E6290C22565955600EBA222 /* NeoAlbumRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeoAlbumRow.swift; sourceTree = "<group>"; };
 		0E6290C72565968A00EBA222 /* NeoAristRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeoAristRow.swift; sourceTree = "<group>"; };
 		0E6290CC2565D5B700EBA222 /* UpNextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpNextView.swift; sourceTree = "<group>"; };
@@ -198,6 +198,8 @@
 		0E9218C82569889F00589B0D /* CDSong+Convenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDSong+Convenience.swift"; sourceTree = "<group>"; };
 		0E9CCA472556220C009AACA7 /* Hidden.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hidden.swift; sourceTree = "<group>"; };
 		0E9CCA4C255632E0009AACA7 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
+		0E9CDB01257589F600B03489 /* Table.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Table.swift; sourceTree = "<group>"; };
+		0E9CDB092575954900B03489 /* TableSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableSection.swift; sourceTree = "<group>"; };
 		0E9D434A253515C00025B3FD /* FeedbackGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackGenerator.swift; sourceTree = "<group>"; };
 		0E9D98C42559BC9800343261 /* View+Neumorph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Neumorph.swift"; sourceTree = "<group>"; };
 		0E9D98F42559D9DB00343261 /* Font+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Extension.swift"; sourceTree = "<group>"; };
@@ -205,7 +207,6 @@
 		0EA1848324FB1EBC00111B84 /* Notification.Name+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+Extension.swift"; sourceTree = "<group>"; };
 		0EA9BABD25674AFE00C732FA /* UpNextRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpNextRow.swift; sourceTree = "<group>"; };
 		0EB0EFEB255C541C00CEDF50 /* UIDevice+Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Network.swift"; sourceTree = "<group>"; };
-		0EBAE2D1251FB01000752EDE /* Neumorph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Neumorph.swift; sourceTree = "<group>"; };
 		0EBAE2DE251FB22600752EDE /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		0EDE700824F465D300E72D0C /* NeoMusic-SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NeoMusic-SwiftUI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EDE700D24F465D300E72D0C /* NeoMusic_SwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeoMusic_SwiftUIApp.swift; sourceTree = "<group>"; };
@@ -291,6 +292,7 @@
 				0E9D98FD2559E32800343261 /* UIImageColor.swift */,
 				0EB0EFEB255C541C00CEDF50 /* UIDevice+Network.swift */,
 				0E6DF4E8255DFD07007DD831 /* UIImage+Extension.swift */,
+				0E4C28FE256E0DD500EB8EF6 /* Binding+Extension.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -334,6 +336,7 @@
 				0E7AB5992547A0C800CA1B40 /* BarButton.swift */,
 				0E3738DD25649B3D002F5A3C /* SegmentedControl.swift */,
 				0EF517962563085400A1B214 /* NavController.swift */,
+				0E9CDB112575AC6000B03489 /* Custom Table */,
 				0EBAE2D6251FB20200752EDE /* Custom TabView */,
 			);
 			path = Other;
@@ -358,6 +361,15 @@
 				0E284DE425698EDC00686E55 /* CDArtist+Convenience.swift */,
 			);
 			path = Music;
+			sourceTree = "<group>";
+		};
+		0E9CDB112575AC6000B03489 /* Custom Table */ = {
+			isa = PBXGroup;
+			children = (
+				0E9CDB01257589F600B03489 /* Table.swift */,
+				0E9CDB092575954900B03489 /* TableSection.swift */,
+			);
+			path = "Custom Table";
 			sourceTree = "<group>";
 		};
 		0EB28FE52537EEAC00EBB6F2 /* ToggleableMusicPlayer */ = {
@@ -396,11 +408,9 @@
 		0EBAE2DA251FB21400752EDE /* View Modifiers */ = {
 			isa = PBXGroup;
 			children = (
-				0EBAE2D1251FB01000752EDE /* Neumorph.swift */,
 				0E49677D2529A383000D166C /* ResignFirstResponderOnDrag.swift */,
 				0EBAE2DE251FB22600752EDE /* View+Extension.swift */,
 				0E9D98C42559BC9800343261 /* View+Neumorph.swift */,
-				0E50083B2532A47700B3BFAE /* CustomListHeader.swift */,
 			);
 			path = "View Modifiers";
 			sourceTree = "<group>";
@@ -685,6 +695,7 @@
 				0EA9BABE25674AFE00C732FA /* UpNextRow.swift in Sources */,
 				49E153542515705000767842 /* TabBar.swift in Sources */,
 				0EBAE2DF251FB22600752EDE /* View+Extension.swift in Sources */,
+				0E4C28FF256E0DD500EB8EF6 /* Binding+Extension.swift in Sources */,
 				0EE12DE925686B7500F46D88 /* CDEasyColor+Convenience.swift in Sources */,
 				0E6DF4D4255DA384007DD831 /* CSPresets.swift in Sources */,
 				0E49677E2529A384000D166C /* ResignFirstResponderOnDrag.swift in Sources */,
@@ -705,18 +716,19 @@
 				0EF3F73B254F49A3002AD607 /* Media.swift in Sources */,
 				49E1535C251570A500767842 /* TabItem.swift in Sources */,
 				0E7073F425534F2700E11397 /* Dynamic.swift in Sources */,
-				0EBAE2D2251FB01000752EDE /* Neumorph.swift in Sources */,
 				0EF517972563085400A1B214 /* NavController.swift in Sources */,
 				0E6290C82565968A00EBA222 /* NeoAristRow.swift in Sources */,
 				0E284E272569A8C300686E55 /* EasyGradient.swift in Sources */,
 				0E8EFA22252D367500B78F3E /* SongSearchController.swift in Sources */,
 				0E07DFEB252724F8006DDFF6 /* String+Extension.swift in Sources */,
 				0E49677425299E97000D166C /* SearchView.swift in Sources */,
+				0E9CDB0A2575954900B03489 /* TableSection.swift in Sources */,
 				0EDE700E24F465D300E72D0C /* NeoMusic_SwiftUIApp.swift in Sources */,
 				0E284DE525698EDC00686E55 /* CDArtist+Convenience.swift in Sources */,
 				0EF4DC4F25424E120006108F /* ProfileView.swift in Sources */,
 				0EFC09A0256899A200AA0F28 /* CoreDataStack.swift in Sources */,
 				0E9D98C52559BC9800343261 /* View+Neumorph.swift in Sources */,
+				0E9CDB02257589F600B03489 /* Table.swift in Sources */,
 				0E7BBE8C254F3D18005E035D /* Cache.swift in Sources */,
 				0E7AB59525479F8400CA1B40 /* SettingsView.swift in Sources */,
 				0E49677225299E97000D166C /* UIApplication+Extension.swift in Sources */,
@@ -729,7 +741,6 @@
 				0E3738EB2564B873002F5A3C /* Artist.swift in Sources */,
 				0EDE701024F465D300E72D0C /* MusicPlayer.swift in Sources */,
 				0EE12DE425686ADA00F46D88 /* CDColorScheme+Convenience.swift in Sources */,
-				0E50083C2532A47700B3BFAE /* CustomListHeader.swift in Sources */,
 				0E9218C92569889F00589B0D /* CDSong+Convenience.swift in Sources */,
 				0E8B8B4E24F5C71E0029B27D /* RootView.swift in Sources */,
 				0E2C908324F5D5A400AB950D /* JCColorScheme.swift in Sources */,
@@ -761,7 +772,6 @@
 				0EF3F73F254F49BE002AD607 /* Media.swift in Sources */,
 				4960889825158392003F1089 /* Controller.swift in Sources */,
 				0E9D98EC2559D82500343261 /* View+Neumorph.swift in Sources */,
-				0E9D98F02559D83700343261 /* Neumorph.swift in Sources */,
 				4960889725158392003F1089 /* WidgetArtwork.swift in Sources */,
 				496088B0251583E3003F1089 /* Image+Extension.swift in Sources */,
 				0E37390525651772002F5A3C /* WidgetSong.swift in Sources */,

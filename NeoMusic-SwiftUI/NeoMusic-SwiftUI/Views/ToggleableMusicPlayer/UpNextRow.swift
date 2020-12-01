@@ -14,25 +14,31 @@ struct UpNextRow: View {
     let colorScheme: JCColorScheme
     
     var body: some View {
-        HStack(spacing: 7) {
-            Image(uiImage: song.artwork)
-                .resizable()
-                .scaledToFit()
-                .clipShape(Circle())
-                .spacing(.vertical)
+        ZStack {
+            colorScheme.backgroundGradient.last
             
-            VStack(alignment: .leading) {
-                Text(song.title)
-                    .font(.body)
-                    .foregroundColor(colorScheme.textColor.color)
-                    
-                Text(song.artistName)
-                    .font(.caption)
-                    .foregroundColor(colorScheme.textColor.color)
+            HStack(spacing: 7) {
+                Image(uiImage: song.artwork)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: Self.rowHeight - 5, height: Self.rowHeight - 5)
+                    .clipShape(Circle())
+                    .spacing(.leading)
+                
+                VStack(alignment: .leading) {
+                    Text(song.title)
+                        .font(.body)
+                        .foregroundColor(colorScheme.textColor.color)
+                        
+                    Text(song.artistName)
+                        .font(.caption)
+                        .foregroundColor(colorScheme.textColor.color)
+                }
+                .spacing(.vertical)
+                
+                Spacer()
             }
-            .spacing(.vertical)
         }
-        .listRowBackground(colorScheme.backgroundGradient.first)
         .frame(height: Self.rowHeight)
     }
     

@@ -100,7 +100,6 @@ struct SegmentedPreferenceKey: PreferenceKey {
     static func reduce(value: inout Anchor<CGRect>?, nextValue: () -> Anchor<CGRect>?) {
         value = value ?? nextValue()
     }
-    
 }
 
 extension SegmentedControl {

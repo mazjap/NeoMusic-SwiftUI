@@ -25,11 +25,11 @@ struct MusicArtwork: View {
     // MARK: - Variables
     private let colorScheme: JCColorScheme
     private let image: Image
-    private let size: Neumorph.Size
+    private let size: NeumorphSize
     
     // MARK: - Initializers
     
-    init(colorScheme: JCColorScheme, image: Image, rotation: Binding<Double>, size: Neumorph.Size = .artwork) {
+    init(colorScheme: JCColorScheme, image: Image, rotation: Binding<Double>, size: NeumorphSize = .artwork) {
         self._previousRotation = rotation
         self.colorScheme = colorScheme
         self.image = image
@@ -47,7 +47,7 @@ struct MusicArtwork: View {
                 .overlay(
             image
                 .resizable()
-                .scaledToFill()
+                .aspectRatio(contentMode: .fit)
                 .frame(width: geometry.size.width * 0.975, height: geometry.size.height * 0.975)
                 .clipShape(Circle())
                 .contentShape(Circle())

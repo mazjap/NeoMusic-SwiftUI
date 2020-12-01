@@ -45,6 +45,7 @@ extension UIApplication {
             hostingController = HostingController(rootView: view.asAny())
         }
         
+        
         keyWindow?.rootViewController = hostingController
         Self.hostingVC = hostingController
     }

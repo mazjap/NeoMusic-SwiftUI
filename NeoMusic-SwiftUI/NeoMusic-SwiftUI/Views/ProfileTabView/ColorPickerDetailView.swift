@@ -13,12 +13,15 @@ struct ColorPickerDetailView: View {
     
     @EnvironmentObject private var settingsController: SettingsController
     
+    @Namespace private var nspace
+    
     @State private var colorOption: Int = 0
     @State private var brightness: Double = 0
-    @State private var hex: String = ""
+    @State private var hex1: String
+    @State private var hex2: String
     
-    @Binding private var color1: EasyColor
-    @Binding private var color2: EasyColor
+    @State private var color1: EasyColor
+    @State private var color2: EasyColor
     
     // MARK: - Variables
     
@@ -31,68 +34,31 @@ struct ColorPickerDetailView: View {
         
         self.type = type
         
-        self._color1 = .init(get: {
-            switch type {
-            case .backgroundGradient:
-                return sc.colorScheme.backgroundGradient[0]
-            case .sliderGradient:
-                return sc.colorScheme.sliderGradient[0]
-            case .textColor:
-                return sc.colorScheme.textColor
-            case .buttonColor:
-                return sc.colorScheme.mainButtonColor
-            case .secondaryButtonColor:
-                return sc.colorScheme.secondaryButtonColor
-            }
-        }, set: { color in
-            switch type {
-            case .backgroundGradient:
-                sc.colorScheme.backgroundGradient.removeColor(at: 0)
-                sc.colorScheme.backgroundGradient.addColor(color, at: 0)
-            case .sliderGradient:
-                sc.colorScheme.sliderGradient.removeColor(at: 0)
-                sc.colorScheme.sliderGradient.addColor(color, at: 0)
-            case .textColor:
-                sc.colorScheme.textColor = color
-            case .buttonColor:
-                sc.colorScheme.mainButtonColor = color
-            case .secondaryButtonColor:
-                sc.colorScheme.secondaryButtonColor = color
-            }
-            sc.setCurrentColorScheme(sc.colorScheme)
-            UIApplication.shared.setNeedsStatusBarAppearanceUpdate()
-        })
+        let c1: State<EasyColor>
+        let c2: State<EasyColor>
         
-        self._color2 = .init(get: {
-            switch type {
-            case .backgroundGradient:
-                return sc.colorScheme.backgroundGradient[1]
-            case .sliderGradient:
-                return sc.colorScheme.sliderGradient[1]
-            case .textColor:
-                return sc.colorScheme.textColor
-            case .buttonColor:
-                return sc.colorScheme.mainButtonColor
-            case .secondaryButtonColor:
-                return sc.colorScheme.secondaryButtonColor
-            }
-        }, set: { color in
-            switch type {
-            case .backgroundGradient:
-                sc.colorScheme.backgroundGradient.removeColor(at: 1)
-                sc.colorScheme.backgroundGradient.addColor(color, at: 1)
-            case .sliderGradient:
-                sc.colorScheme.sliderGradient.removeColor(at: 1)
-                sc.colorScheme.sliderGradient.addColor(color, at: 1)
-            default:
-                return
-            }
-            
-            sc.setCurrentColorScheme(sc.colorScheme)
-            UIApplication.shared.setNeedsStatusBarAppearanceUpdate()
-        })
+        switch type {
+        case .backgroundGradient:
+            c1 = State(wrappedValue: sc.colorScheme.backgroundGradient[0])
+            c2 = State(wrappedValue: sc.colorScheme.backgroundGradient[1])
+        case .sliderGradient:
+            c1 = State(wrappedValue: sc.colorScheme.sliderGradient[0])
+            c2 = State(wrappedValue: sc.colorScheme.sliderGradient[1])
+        case .textColor:
+            c1 = State(wrappedValue: sc.colorScheme.textColor)
+            c2 = State(wrappedValue: sc.colorScheme.textColor)
+        case .buttonColor:
+            c1 = State(wrappedValue: sc.colorScheme.mainButtonColor)
+            c2 = State(wrappedValue: sc.colorScheme.mainButtonColor)
+        case .secondaryButtonColor:
+            c1 = State(wrappedValue: sc.colorScheme.secondaryButtonColor)
+            c2 = State(wrappedValue: sc.colorScheme.secondaryButtonColor)
+        }
         
-        hex = color1.hex
+        self._color1 = c1
+        self._color2 = c2
+        self._hex1 = .init(initialValue: c1.wrappedValue.hex)
+        self._hex2 = .init(initialValue: c2.wrappedValue.hex)
     }
     
     // MARK: - Body
@@ -104,52 +70,117 @@ struct ColorPickerDetailView: View {
             
             VStack(spacing: 20) {
                 if type.isGradient {
-                    Picker("Select Color", selection: $colorOption) {
-                        Text("Top Color").tag(0)
-                        Text("Bottom Color").tag(1)
-                    }
-                    .pickerStyle(SegmentedPickerStyle())
-                    .spacing()
+                    SegmentedControl(index: $colorOption, textColor: settingsController.colorScheme.textColor.color, background: settingsController.colorScheme.backgroundGradient.first)
+                        .options(["Top Color", "Bottom Color"])
+                        .spacing()
                 }
                 
                 GeometryReader { geometry in
-                    HStack {
-                        ZStack {
-                            (colorOption == 0 ? color1 : color2).color
-                                .cornerRadius(20)
+                    VStack {
+                        HStack {
+                            ZStack {
+                                color1.color
+                                    .cornerRadius(20)
+                                
+                                if colorOption == 0 {
+                                TextField("", text: $hex1.onChanged(userChangedColor1Hex(to:)))
+                                    .multilineTextAlignment(.center)
+                                    .font(.title2)
+                                    .foregroundColor(settingsController.colorScheme.textColor.color)
+                                } else {
+                                    Text(hex1)
+                                        .font(.title2)
+                                        .foregroundColor(settingsController.colorScheme.textColor.color)
+                                }
+                            }
+                            .frame(height: 100)
                             
-                            TextField("", text: Binding<String>(get: { return hex }, set: { newHex in
-                                                                    hex = newHex
-                                                                    if colorOption == 0 {
-                                                                        color1 = EasyColor(hex) ?? color1
-                                                                    } else {
-                                                                        color2 = EasyColor(hex) ?? color2
-                                                                    }}))
-                                .multilineTextAlignment(.center)
-                                .font(.title2)
-                                .foregroundColor(settingsController.colorScheme.textColor.color)
-                                .frame(width: geometry.size.width / 2)
+                            if colorOption == 0 {
+                                ColorSlider(($color1).onChanged(sliderChangedColor(to:)), size: CGSize(width: geometry.size.width, height: 100))
+                                    .frame(height: 100)
+                                    .spacing(.leading)
+                                    .matchedGeometryEffect(id: Self.sliderKey, in: nspace)
+                            }
                         }
-                            .frame(height: 100)
-                            .spacing(.horizontal)
+                        .spacing(.horizontal)
                         
-                        ColorSlider(Binding<EasyColor>(get: {return .red}, set:
-                                                        { newColor in
-                                                            hex = newColor.hex
-                                                            if (colorOption == 0) {
-                                                                color1 = newColor
-                                                            } else {
-                                                                color2 = newColor
-                                                            }
-                                                            
-                                                        }), size: CGSize(width: geometry.size.width, height: 100))
-                            .frame(height: 100)
-                            .padding()
+                        if type.isGradient {
+                            HStack {
+                                ZStack {
+                                    color2.color
+                                        .cornerRadius(20)
+                                    
+                                    if colorOption == 1 {
+                                    TextField("", text: $hex2.onChanged(userChangedColor2Hex(to:)))
+                                        .multilineTextAlignment(.center)
+                                        .font(.title2)
+                                        .foregroundColor(settingsController.colorScheme.textColor.color)
+                                    } else {
+                                        Text(hex2)
+                                            .font(.title2)
+                                            .foregroundColor(settingsController.colorScheme.textColor.color)
+                                    }
+                                }
+                                .frame(height: 100)
+                                
+                                if colorOption == 1 {
+                                    ColorSlider(($color2).onChanged(sliderChangedColor(to:)), size: CGSize(width: geometry.size.width, height: 100))
+                                        .frame(height: 100)
+                                        .spacing(.leading)
+                                        .matchedGeometryEffect(id: Self.sliderKey, in: nspace)
+                                }
+                            }
+                            .spacing(.horizontal)
+                        }
                     }
                 }
             }
         }
     }
+    
+    func userChangedColor1Hex(to newVal: String) {
+        color1 = EasyColor(newVal) ?? color1
+        sliderChangedColor(to: color1)
+    }
+    
+    func userChangedColor2Hex(to newVal: String) {
+        color2 = EasyColor(newVal) ?? color2
+        sliderChangedColor(to: color2)
+    }
+    
+    func sliderChangedColor(to color: EasyColor) {
+        var cs = settingsController.colorScheme
+        
+        switch type {
+        case .backgroundGradient:
+            cs.backgroundGradient.removeColor(at: colorOption)
+            cs.backgroundGradient.addColor(color, at: colorOption)
+        case .sliderGradient:
+            cs.sliderGradient.removeColor(at: colorOption)
+            cs.sliderGradient.addColor(color, at: colorOption)
+        case .textColor:
+            cs.textColor = color
+        case .buttonColor:
+            cs.mainButtonColor = color
+        case .secondaryButtonColor:
+            cs.secondaryButtonColor = color
+        }
+        
+        if colorOption == 0 {
+            hex1 = color.hex
+        } else {
+            hex2 = color.hex
+        }
+        
+        settingsController.setCurrentColorScheme(cs)
+        UIApplication.shared.setNeedsStatusBarAppearanceUpdate()
+    }
+    
+    // MARK: - Static Variables
+    
+    static private let base = "ColorPickerDetailView."
+    
+    static let sliderKey = base + "ColorSlider"
 }
 
 // MARK: - Preview

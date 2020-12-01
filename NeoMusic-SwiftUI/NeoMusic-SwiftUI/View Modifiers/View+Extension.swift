@@ -18,11 +18,6 @@ extension View {
         AnyView(self)
     }
     
-    func customHeader(backgroundColor: Color, textColor: Color) -> some View {
-        self
-            .modifier(CustomListHeader(backgroundColor: backgroundColor, textColor: textColor))
-    }
-    
     func spacing(_ edges: Edge.Set = .all) -> some View {
         self
             .padding(edges, Constants.spacing)

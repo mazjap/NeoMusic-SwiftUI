@@ -17,15 +17,18 @@ struct UpNextView: View {
     
     var body: some View {
         ScrollViewReader { reader in
-            List {
+            Table {
                 ForEach(musicController.upNextSongs) { song in
-                    UpNextRow(selectedSong: Binding<Song>(get: { return selectedSong }, set: { newValue in
-                        selectedSong = newValue
-                        musicController.changeCurrentIndex(to: song)
-                    }), song: song, colorScheme: colorScheme)
+                    UpNextRow(selectedSong: $selectedSong.onChanged(selectionChanged(_:)), song: song, colorScheme: colorScheme)
                 }
             }
+            .foregroundColor(colorScheme.textColor.color)
+            .background(colorScheme.backgroundGradient.last)
         }
+    }
+    
+    private func selectionChanged(_ newVal: Song) {
+        musicController.changeCurrentIndex(to: newVal)
     }
 }
 

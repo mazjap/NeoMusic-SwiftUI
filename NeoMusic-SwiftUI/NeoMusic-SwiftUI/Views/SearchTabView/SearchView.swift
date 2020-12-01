@@ -53,7 +53,7 @@ struct SearchView: View {
                         .onChange(of: segmentedIndex) { newVal in
                             searchController.searchType = newVal == 0 ? .library : .applemusic
                         }
-                        .spacing([.top, .leading, .trailing])
+                        .spacing()
                     
                     SearchBar(searchText: $text, font: nil, colorScheme: settingsController.colorScheme,
                     onEditingChanged: { isEditing in }, onCommit: {})
@@ -64,21 +64,53 @@ struct SearchView: View {
                         .frame(height: 50)
                         .spacing(.horizontal)
                     
-                    List {
+                    Table {
                         let backgroundColor = settingsController.colorScheme.backgroundGradient.first
                         let textColor = settingsController.colorScheme.textColor.color
                         
-                        getSection(with: .title, backgroundColor: backgroundColor, textColor: textColor)
+                        TableSection(title: "Songs") {
+                            let selectedSong = Binding<Optional<Song>> { return nil } set: { song in
+                                if let song = song {
+                                    musicController.addToUpNext(song)
+                                }
+                            }
+                            
+                            ForEach(searchController.songs) { song in
+                                NeoSongRow(selectedSong: selectedSong, backgroundColor: backgroundColor, textColor: textColor, song: song)
+                            }
+                        }
                         
-                        getSection(with: .album, backgroundColor: backgroundColor, textColor: textColor)
+                        TableSection(title: "Albums") {
+                            let selectedAlbum = Binding<Optional<Album>> { return nil } set: { album in
+                                if let album = album {
+                                    musicController.addToUpNext(album)
+                                }
+                            }
+                            
+                            ForEach(searchController.albums) { album in
+                                NeoAlbumRow(selectedAlbum: selectedAlbum, backgroundColor: backgroundColor, textColor: textColor, album: album)
+                            }
+                        }
                         
-                        getSection(with: .artist, backgroundColor: backgroundColor, textColor: textColor)
+                        TableSection(title: "Artists") {
+                            let selectedArtist = Binding<Optional<Artist>> { return nil } set: { artist in
+                                if let artist = artist {
+                                    musicController.addToUpNext(artist)
+                                }
+                            }
+                            
+                            ForEach(searchController.artists) { artist in
+                                NeoArtistRow(selectedArtist: selectedArtist, backgroundColor: backgroundColor, textColor: textColor, artist: artist)
+                            }
+                        }
                         
-                        Spacer()
-                            .frame(height: 100)
-                            .listRowBackground(backgroundColor)
+                        TableSection {
+                            backgroundColor
+                                .frame(height: 100)
+                        }
                     }
-                    .cornerRadius(20)
+                    .foregroundColor(settingsController.colorScheme.textColor.color)
+                    .background(settingsController.colorScheme.backgroundGradient.first.cornerRadius(20))
                     .opacity(searchController.searchTerm.isEmpty || searchController.isEmpty ? 0 : 1)
                     .spacing()
                     .offset(y: offsetHeight / 2)
@@ -86,48 +118,6 @@ struct SearchView: View {
                 }
             }
         }
-    }
-    
-    // MARK: - Functions
-    
-    // Extract Section View to function to avoid repeated code
-    private func getSection(with type: SectionType, backgroundColor: Color, textColor: Color) -> some View  {
-        return Section(header: Text(type.text).customHeader(backgroundColor: backgroundColor, textColor: textColor)) {
-            switch type {
-            case .title:
-                let selectedSong = Binding<Optional<Song>> { return nil } set: { song in
-                    if let song = song {
-                        musicController.addToUpNext(song)
-                    }
-                }
-                
-                ForEach(searchController.songs) { song in
-                        NeoSongRow(selectedSong: selectedSong, backgroundColor: backgroundColor, textColor: textColor, song: song)
-                    Spacer()
-                        .listRowBackground(backgroundColor)
-                }
-            case .album:
-                let selectedAlbum = Binding<Optional<Album>> { return nil } set: { album in
-                    if let album = album {
-                        musicController.addToUpNext(album)
-                    }
-                }
-                
-                ForEach(searchController.albums) { album in
-                    NeoAlbumRow(selectedAlbum: selectedAlbum, backgroundColor: backgroundColor, textColor: textColor, album: album)
-                }
-            case .artist:
-                let selectedArtist = Binding<Optional<Artist>> { return nil } set: { artist in
-                    if let artist = artist {
-                        musicController.addToUpNext(artist)
-                    }
-                }
-                
-                ForEach(searchController.artists) { artist in
-                    NeoArtistRow(selectedArtist: selectedArtist, backgroundColor: backgroundColor, textColor: textColor, artist: artist)
-                }
-            }
-        }.asAny()
     }
     
     // MARK: - Static Variables

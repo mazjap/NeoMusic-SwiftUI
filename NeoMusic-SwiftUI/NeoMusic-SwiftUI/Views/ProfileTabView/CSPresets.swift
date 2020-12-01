@@ -29,25 +29,28 @@ struct CSPresets: View {
             LinearGradient(gradient: settingsController.colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea(edges: .top)
             // TODO: - Use ScrollView
-            VStack {
-                let arrs = schemes.arrs
-                
-                ForEach(0..<arrs.count) { i in
-                    let arr = arrs[i]
-                    HStack {
-                        ForEach(arr) { cs in
-                            CSButton(colorScheme: cs, title: cs.name ?? "Saved", selectedScheme: $selectedScheme, isEditing: $isEditing)
-                                .onChange(of: selectedScheme, perform: { newVal in
-                                    feedbackGenerator.impactOccurred()
-                                    settingsController.setCurrentColorScheme(newVal)
-                                })
+            ScrollView {
+                VStack {
+                    let arrs = schemes.arrs
+                    
+                    ForEach(0..<arrs.count) { i in
+                        let arr = arrs[i]
+                        HStack {
+                            ForEach(arr, id: \.id) { cs in
+                                CSButton(colorScheme: cs, title: cs.name ?? "Saved", selectedScheme: $selectedScheme, isEditing: $isEditing)
+                                    .onChange(of: selectedScheme, perform: { newVal in
+                                        feedbackGenerator.impactOccurred()
+                                        settingsController.setCurrentColorScheme(newVal)
+                                    })
+                            }
                         }
+                        .frame(height: 100)
+                        .spacing(.horizontal)
                     }
-                    .frame(height: 100)
-                    .spacing(.horizontal)
+                    
+                    Spacer()
+                        .frame(height: TabBar.height + MusicPlayer.musicPlayerHeightOffset)
                 }
-                
-                Spacer()
             }
         }
         .if(!schemes.doesContain(settingsController.colorScheme)) {

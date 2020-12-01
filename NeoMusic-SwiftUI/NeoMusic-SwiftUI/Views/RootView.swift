@@ -60,9 +60,9 @@ struct RootView: View {
                     let size = CGSize(width: UIScreen.main.bounds.width * 0.45, height: UIScreen.main.bounds.height * 0.15)
                     
                     ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(settingsController.colorScheme.backgroundGradient.first.opacity(0.75))
+                        settingsController.colorScheme.backgroundGradient.first.opacity(0.75)
                             .frame(size: size)
+                            .cornerRadius(10)
                         
                         Text(message.value)
                             .foregroundColor(message.type.color)
