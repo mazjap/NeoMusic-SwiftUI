@@ -11,6 +11,7 @@ NeoMusic is an iOS music player app designed to connect many music streaming ser
 [![License][license-image]][license-url]
 [![GitHub Pull Requests][pr-image]][pr-url]
 
+<!-- [![Project File Size][project-size-image]][no-link] -->
 <!-- [![Download-iOS][appstore-image]][appstore-url] -->
 
 <!-- Project Images -->
@@ -52,14 +53,22 @@ Connect device or select simulator from drop down and run project
 
 ## Features
 
-- [x] Apple Music support
-- [x] Spinnable artwork
-- [x] iOS 14 Widget
-- [x] Music searching/filtering (Partial support)
-- [x] Toggleable music player view
-- [ ] Spotify support
+- Apple Music support
+- Spinnable artwork
+- iOS 14 Widget
+- Changeable color scheme
+- Music searching (local)
+- Toggleable music player view
 
 ---
+
+## TODO
+
+- [ ] Apple music searching
+- [ ] Profile View/Login
+- [ ] Music View
+- [ ] Settings
+- [ ] Spotify support
 
 ## Documentation
 
@@ -114,6 +123,7 @@ This project is licensed under the MIT License
 
 [objc-image]: https://img.shields.io/badge/objc-2.0-blue "Objective-C"
 [swift-image]: https://img.shields.io/badge/Swift-5.2-green "Swift"
+[project-size-image]: https://img.badgesize.io/mazjap/NeoMusic-SwiftUI/master/NeoMusic-SwiftUI
 
 <!-- URL's -->
 [no-link]: #
