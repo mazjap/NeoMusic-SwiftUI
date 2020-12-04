@@ -15,8 +15,8 @@ struct DefaultButton: View {
     // MARK: - Variables
     
     private let isSelected: Bool
-    private let image: Image
-    private let imageColor: Color
+    private let content: (Image?, String?)
+    private let contentColor: Color
     private let buttonColor: Color
     private let size: CGFloat
     private let type: ButtonType
@@ -30,8 +30,19 @@ struct DefaultButton: View {
     // MARK: - Initializers
     
     init(image: Image, imageColor: Color, buttonColor: Color, type: ButtonType = .circle, neoSize: NeumorphSize = .button, mult: CGFloat = 1, isSelected: Bool = false, action: @escaping () -> Void) {
-        self.image = image
-        self.imageColor = imageColor
+        self.content = (image, nil)
+        self.contentColor = imageColor
+        self.buttonColor = buttonColor
+        self.size = (UIScreen.main.bounds.width < UIScreen.main.bounds.height ? UIScreen.main.bounds.width : UIScreen.main.bounds.height) / 6 * mult
+        self.type = type
+        self.neoSize = neoSize
+        self.isSelected = isSelected
+        self.action = action
+    }
+    
+    init(text: String, textColor: Color, buttonColor: Color, type: ButtonType = .circle, neoSize: NeumorphSize = .button, mult: CGFloat = 1, isSelected: Bool = false, action: @escaping () -> Void) {
+        self.content = (nil, text)
+        self.contentColor = textColor
         self.buttonColor = buttonColor
         self.size = (UIScreen.main.bounds.width < UIScreen.main.bounds.height ? UIScreen.main.bounds.width : UIScreen.main.bounds.height) / 6 * mult
         self.type = type
@@ -57,13 +68,18 @@ struct DefaultButton: View {
                         .cornerRadius(cornerRadius)
                         .neumorph(color: buttonColor, size: neoSize)
                 }
-                    
                 
-                image
-                    .resizable()
-                    .scaledToFit()
-                    .foregroundColor(imageColor)
-                    .frame(width: size * 0.35, height: size * 0.35)
+                if let image = content.0 {
+                    image
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundColor(contentColor)
+                        .frame(width: size * 0.35, height: size * 0.35)
+                } else if let text = content.1 {
+                    Text(text)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(contentColor)
+                }
             }
             .frame(width: size, height: size)
         }

@@ -14,9 +14,10 @@ class SettingsController: ObservableObject {
     
     // MARK: - Variables
     
-    @Published var colorScheme: JCColorScheme = JCColorScheme.default
-    @Published var feedbackEnabled: Bool = true
+    @Published private(set) var colorScheme: JCColorScheme = JCColorScheme.default
+    @Published private(set) var feedbackEnabled: Bool = true
     
+    private let queue = DispatchQueue(label: "com.mazjap.NeoMusic-SwiftUI.SettingsController.settingsQueue", attributes: .concurrent)
     private let userDefaults = UserDefaults.standard
     private let decoder = JSONDecoder()
     private let encoder = JSONEncoder()
@@ -33,15 +34,26 @@ class SettingsController: ObservableObject {
     func setCurrentColorScheme(_ scheme: JCColorScheme) {
         let data = try? encoder.encode(scheme)
         
-        userDefaults.set(data, forKey: Self.keys.colorSchemeKey)
-        
-        colorScheme = scheme
+        queue.async(flags: .barrier) { [weak self] in
+            guard let self = self else { return }
+            self.userDefaults.set(data, forKey: Self.keys.colorSchemeKey)
+            
+            DispatchQueue.main.async {
+                self.colorScheme = scheme
+            }
+        }
     }
     
     func setFeedbackEnabled(_ bool: Bool) {
-        userDefaults.set(bool, forKey: Self.keys.feedbackEnabledKey)
         
-        feedbackEnabled = bool
+        queue.async(flags: .barrier) { [weak self] in
+            guard let self = self else { return }
+            self.userDefaults.set(bool, forKey: Self.keys.feedbackEnabledKey)
+            
+            DispatchQueue.main.async {
+                self.feedbackEnabled = bool
+            }
+        }
     }
     
     private func fetchCurrentColorScheme() -> JCColorScheme {

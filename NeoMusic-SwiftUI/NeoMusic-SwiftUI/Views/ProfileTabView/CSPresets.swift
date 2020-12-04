@@ -24,11 +24,19 @@ struct CSPresets: View {
     
     var body: some View {
         let schemes = (Constants.defaults + colorSchemes.compactMap { $0.jc })
-        
-        ZStack {
-            LinearGradient(gradient: settingsController.colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
-                .ignoresSafeArea(edges: .top)
-            // TODO: - Use ScrollView
+        VStack {
+            HStack {
+                Spacer()
+                if !schemes.contains(settingsController.colorScheme) {
+                    Button("Save") {
+                        _ = CDColorScheme(settingsController.colorScheme, context: context)
+                        CoreDataStack.shared.save(context: context)
+                    }
+                    .spacing(.trailing)
+                    .foregroundColor(settingsController.colorScheme.textColor.color)
+                }
+            }
+            
             ScrollView {
                 VStack {
                     let arrs = schemes.arrs
@@ -52,12 +60,6 @@ struct CSPresets: View {
                         .frame(height: TabBar.height + MusicPlayer.musicPlayerHeightOffset)
                 }
             }
-        }
-        .if(!schemes.doesContain(settingsController.colorScheme)) {
-            $0.navigationBarItems(trailing: BarButton(title: "Save", buttonColor: settingsController.colorScheme.mainButtonColor.color) {
-                _ = CDColorScheme(settingsController.colorScheme, context: context)
-                CoreDataStack.shared.save(context: context)
-            })
         }
     }
 }

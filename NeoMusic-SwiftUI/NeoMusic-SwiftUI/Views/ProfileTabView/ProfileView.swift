@@ -14,43 +14,32 @@ struct ProfileView: View {
     @EnvironmentObject private var settingsController: SettingsController
     @EnvironmentObject private var musicController: MusicPlayerController
     
-    @State private var showSettingsView: Bool = false
+    @State private var showSettingsBar: Bool = false
+    
+    @Namespace private var nspace
     
     // MARK: - Body
     
     var body: some View {
-        GeometryReader { geometry in
-            NavigationView {
-                ZStack {
-                    LinearGradient(gradient: settingsController.colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
-                        .edgesIgnoringSafeArea(.top)
-                        .frame(height: geometry.size.height + MusicPlayer.musicPlayerHeightOffset - TabBar.height)
-                        .offset(y: -TabBar.height / 2)
-
-                    VStack {
-                        HStack {
-                            Spacer()
-                            NavigationLink("", destination: SettingsView(), isActive: $showSettingsView)
-                        }
-                        .spacing()
-                        
-                        Spacer()
-                    }
-                }
-                .background(NavController { navController in
-                    let textColor = settingsController.colorScheme.textColor.color.uiColor
+        VStack {
+            HStack {
+                if showSettingsBar {
+                    SettingsBar(backgroundColor: settingsController.colorScheme.backgroundGradient.first, namespace: nspace, isOpen: $showSettingsBar)
+                        .padding(.horizontal, Constants.spacing / 2)
+                } else {
+                    Spacer()
                     
-                    navController.navigationBar.largeTitleTextAttributes = [.foregroundColor : textColor]
-                    navController.navigationBar.titleTextAttributes = [.foregroundColor : textColor]
-                    navController.navigationBar.barTintColor = .clear
-                })
-                .navigationViewStyle(StackNavigationViewStyle())
-                .navigationBarItems(trailing:
-                    BarButton(systemImageName: "gearshape.fill", buttonColor: settingsController.colorScheme.mainButtonColor.color) {
-                        showSettingsView = true
+                    BarButton(systemImageName: "gearshape.fill", buttonColor: settingsController.colorScheme.textColor.color) {
+                        withAnimation {
+                            showSettingsBar = true
+                        }
                     }
-                )
+                    .spacing(.trailing)
+                    .matchedGeometryEffect(id: "BarButton", in: nspace)
+                }
             }
+            
+            Spacer()
         }
     }
 }

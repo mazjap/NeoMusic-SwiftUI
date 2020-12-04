@@ -189,7 +189,9 @@ struct OpenPlayer: View {
                         Spacer()
                         
                         DefaultButton(imageName: musicController.isPlaying ? "pause.fill" : "play.fill", imageColor: settingsController.colorScheme.mainButtonColor.color, buttonColor: settingsController.colorScheme.backgroundGradient.last, neoSize: .tinyButton, mult: 1.25, isSelected: musicController.isPlaying) {
-                            musicController.toggle()
+                            withAnimation {
+                                musicController.toggle()
+                            }
                             feedbackGenerator.warningFeedback()
                         }
                          .matchedGeometryEffect(id: MusicPlayer.pauseButtonKey, in: nspace, isSource: !isOpen)
@@ -345,7 +347,10 @@ struct ClosedPlayer: View {
                      .matchedGeometryEffect(id: MusicPlayer.backButtonKey, in: nspace, isSource: isOpen)
                     
                     DefaultButton(imageName: musicController.isPlaying ? "pause.fill" : "play.fill", imageColor: settingsController.colorScheme.mainButtonColor.color, buttonColor: background, neoSize: .tinyButton, mult: 0.5, isSelected: musicController.isPlaying) {
-                        musicController.toggle()
+                        withAnimation {
+                            musicController.toggle()
+                        }
+                        
                         feedbackGenerator.warningFeedback()
                     }
                      .matchedGeometryEffect(id: MusicPlayer.pauseButtonKey, in: nspace, isSource: isOpen)

@@ -100,6 +100,15 @@ struct EasyGradient: Codable, Equatable, Hashable, CustomStringConvertible {
         return ezclr
     }
     
+    mutating func replaceColor(at index: Int, with color: EasyColor) {
+        removeColor(at: index)
+        addColor(color, at: index)
+    }
+    
+    mutating func replaceColor(at index: Int, with color: Color) {
+        replaceColor(at: index, with: EasyColor(color))
+    }
+    
     func color(at index: Int) -> Color {
         let ezclr: EasyColor
         
