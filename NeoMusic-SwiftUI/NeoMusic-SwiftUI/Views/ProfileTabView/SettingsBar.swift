@@ -49,7 +49,7 @@ struct SettingsBar: View {
 
             if showingColorSchemeEditor {
                 ColorSchemeView(backgroundColor: backgroundColor)
-            } else /* if { //other cases */ {
+            } else { // if (other cases) {
 
             }
         }

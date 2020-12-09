@@ -20,7 +20,7 @@ struct WidgetArtwork: View {
                 
                 image
                     .resizable()
-                    .scaledToFill()
+                    .scaledToFit()
                     .frame(width: geometry.size.width * 0.95, height: geometry.size.height * 0.95)
                     .clipShape(Circle())
             }

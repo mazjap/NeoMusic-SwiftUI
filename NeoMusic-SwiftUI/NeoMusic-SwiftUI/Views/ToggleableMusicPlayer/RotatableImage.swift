@@ -1,5 +1,5 @@
 //
-//  MusicArtwork.swift
+//  RotatableImage.swift
 //  NeoMusic-SwiftUI
 //
 //  Created by Jordan Christensen on 8/25/20.
@@ -10,7 +10,7 @@
 
 import SwiftUI
 
-struct MusicArtwork: View {
+struct RotatableImage: View {
     
     // MARK: - State
     
@@ -109,7 +109,7 @@ struct Artwork_Previews: PreviewProvider {
     @State static var rotation: Double = 0
     
     static var previews: some View {
-        MusicArtwork(colorScheme: .default, image: .placeholder, rotation: $rotation)
+        RotatableImage(colorScheme: .default, image: .placeholder, rotation: $rotation)
             .spacing()
             .previewLayout(.fixed(width: 400, height: 400))
     }

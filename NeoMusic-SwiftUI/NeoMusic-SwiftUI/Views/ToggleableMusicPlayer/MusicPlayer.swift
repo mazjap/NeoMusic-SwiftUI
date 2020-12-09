@@ -137,7 +137,7 @@ struct OpenPlayer: View {
                 
                 Spacer()
                 
-                MusicArtwork(colorScheme: settingsController.colorScheme, image: musicController.currentSong.image, rotation: $rotation)
+                RotatableImage(colorScheme: settingsController.colorScheme, image: musicController.currentSong.image, rotation: $rotation)
                     .spacing(.horizontal)
                     .matchedGeometryEffect(id: MusicPlayer.artworkKey, in: nspace, isSource: !isOpen)
                 
@@ -305,7 +305,7 @@ struct ClosedPlayer: View {
                 .transition(.identity)
             
             HStack {
-                MusicArtwork(colorScheme: settingsController.colorScheme, image: musicController.currentSong.image, rotation: $rotation, size: .button)
+                RotatableImage(colorScheme: settingsController.colorScheme, image: musicController.currentSong.image, rotation: $rotation, size: .button)
                     .frame(width: MusicPlayer.musicPlayerHeightOffset - Constants.spacing * 2, height: MusicPlayer.musicPlayerHeightOffset - Constants.spacing * 2)
                     .spacing()
                     .matchedGeometryEffect(id: MusicPlayer.artworkKey, in: nspace, isSource: isOpen)
