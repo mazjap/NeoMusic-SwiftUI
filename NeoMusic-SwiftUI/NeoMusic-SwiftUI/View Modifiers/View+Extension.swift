@@ -30,10 +30,10 @@ extension View {
     
     // Conditionally modify view
     @ViewBuilder
-    func `if`<Content>(_ condition: Bool,
-                       trueModification: (Self) -> Content,
-                       else falseModification: ((Self) -> Content)? = nil) ->
-                       some View where Content: View {
+    func `if`<TrueContent, FalseContent>(_ condition: Bool,
+                       trueModification: (Self) -> TrueContent,
+                       else falseModification: ((Self) -> FalseContent)? = nil) ->
+                       some View where TrueContent: View, FalseContent: View {
         if condition {
             trueModification(self)
         } else if let falseModification = falseModification {

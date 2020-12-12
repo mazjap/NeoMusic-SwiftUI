@@ -28,11 +28,18 @@ struct SettingsBar: View {
                 backgroundColor
                     .cornerRadius(20)
                 HStack {
-                    DefaultButton(image: Image("colorscheme_icon"), imageColor: settingsController.colorScheme.textColor.color, buttonColor: backgroundColor, isSelected: showingColorSchemeEditor) {
+                    Button(action: {
                         withAnimation {
                             showingColorSchemeEditor.toggle()
                         }
+                    }) {
+                        Image("colorscheme_icon")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .foregroundColor(settingsController.colorScheme.mainButtonColor.color)
                     }
+                    .buttonStyle(DefaultButtonStyle(color: backgroundColor, padding: Constants.buttonPadding - 10))
+                    .frame(width: Constants.buttonSize - 20, height: Constants.buttonSize - 20)
                     
                     Spacer()
                     

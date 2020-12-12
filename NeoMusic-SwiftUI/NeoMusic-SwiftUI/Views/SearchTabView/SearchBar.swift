@@ -28,7 +28,7 @@ struct SearchBar: View {
             ZStack {
                 Capsule()
                     .foregroundColor(colorScheme.backgroundGradient.first)
-                    .neumorph(color: colorScheme.backgroundGradient.first, size: .button)
+                    .neumorph(color: colorScheme.backgroundGradient.first, size: .button, cornerRadius: geometry.size.height / 2, isConcave: false)
                 
                 HStack {
                     Image(systemName: "magnifyingglass")

@@ -77,6 +77,8 @@ struct SearchView: View {
                             
                             ForEach(searchController.songs) { song in
                                 NeoSongRow(selectedSong: selectedSong, backgroundColor: backgroundColor, textColor: textColor, song: song)
+                                    .neumorph(color: settingsController.colorScheme.backgroundGradient.first, size: .button, cornerRadius: 20, isConcave: true)
+                                    .padding(10)
                             }
                         }
                         
@@ -110,11 +112,10 @@ struct SearchView: View {
                         }
                     }
                     .foregroundColor(settingsController.colorScheme.textColor.color)
-                    .background(settingsController.colorScheme.backgroundGradient.first.cornerRadius(20))
+                    .neumorph(color: settingsController.colorScheme.backgroundGradient.first, size: .list, cornerRadius: 20, isConcave: false)
                     .opacity(searchController.searchTerm.isEmpty || searchController.isEmpty ? 0 : 1)
                     .spacing()
                     .offset(y: offsetHeight / 2)
-                    .neumorph(color: settingsController.colorScheme.backgroundGradient.first.average(to: settingsController.colorScheme.backgroundGradient.last), size: .list)
                 }
             }
         }

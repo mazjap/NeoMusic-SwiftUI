@@ -30,47 +30,40 @@ struct NeoSongRow: View {
     // MARK: - Body
     
     var body: some View {
-        ZStack {
-            LinearGradient(gradient: Gradient(colors: backgroundColor.offsetColors), startPoint: .top, endPoint: .bottom)
-                .cornerRadius(20)
+        HStack {
+            song.image
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .clipShape(Circle())
+                .padding(.vertical, Constants.spacing / 2)
             
-            HStack {
-                song.image
+            VStack(alignment: .leading) {
+                Text(song.title)
+                    .lineLimit(1)
+                    .font(.callout)
+                    .foregroundColor(textColor)
+                
+                Text(song.artistName)
+                    .lineLimit(1)
+                    .font(.caption)
+                    .foregroundColor(textColor)
+            }
+            
+            Spacer()
+            
+            Button(action: {
+                // TODO: Add/Remove song to/from favorites
+            }) {
+                Image(systemName: song.isFavorite ?? false ? "heart.fill" : "heart")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .clipShape(Circle())
-                    .padding(.vertical, Constants.spacing / 2)
-                
-                VStack(alignment: .leading) {
-                    Text(song.title)
-                        .lineLimit(1)
-                        .font(.callout)
-                        .foregroundColor(textColor)
-                    
-                    Text(song.artistName)
-                        .lineLimit(1)
-                        .font(.caption)
-                        .foregroundColor(textColor)
-                }
-                
-                Spacer()
-                
-                Button(action: {
-                    // TODO: Add/Remove song to/from favorites
-                }) {
-                    Image(systemName: song.isFavorite ?? false ? "heart.fill" : "heart")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .foregroundColor(song.isFavorite ?? false ? Color.red : textColor)
-                }
-                .padding(.vertical, SearchView.cellHeight / 3)
-                .padding(.horizontal, Constants.spacing / 2)
-                
+                    .foregroundColor(song.isFavorite ?? false ? Color.red : textColor)
             }
+            .padding(.vertical, SearchView.cellHeight / 3)
             .padding(.horizontal, Constants.spacing / 2)
+            
         }
         .frame(height: SearchView.cellHeight)
-        .padding(.bottom, 10)
         .gesture(gesture)
     }
 }

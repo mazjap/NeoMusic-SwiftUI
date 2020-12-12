@@ -34,7 +34,7 @@ struct SegmentedControl: View {
         ZStack {
             color
                 .cornerRadius(Self.height / 2)
-                .neumorph(color: color, size: .button)
+                .neumorph(color: color, size: .button, cornerRadius: Self.height / 2, isConcave: false)
             
             HStack {
                 Spacer()

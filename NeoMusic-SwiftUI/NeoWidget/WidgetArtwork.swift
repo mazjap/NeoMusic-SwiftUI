@@ -16,7 +16,7 @@ struct WidgetArtwork: View {
             ZStack {
                 Circle()
                     .fill(LinearGradient(gradient: Gradient(colors: colorScheme.backgroundGradient.colors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
-                    .neumorph(color: colorScheme.backgroundGradient.first.average(to: colorScheme.backgroundGradient.last), size: .button)
+                    .neumorph(color: colorScheme.backgroundGradient.first.average(to: colorScheme.backgroundGradient.last), size: .button, cornerRadius: geometry.size.width / 2, isConcave: false)
                 
                 image
                     .resizable()

@@ -25,15 +25,17 @@ struct RotatableImage: View {
     // MARK: - Variables
     private let colorScheme: JCColorScheme
     private let image: Image
-    private let size: NeumorphSize
+    private let size: Neumorph.Size
+    private let imagePadding: CGFloat
     
     // MARK: - Initializers
     
-    init(colorScheme: JCColorScheme, image: Image, rotation: Binding<Double>, size: NeumorphSize = .artwork) {
+    init(colorScheme: JCColorScheme, image: Image, rotation: Binding<Double>, size: Neumorph.Size = .artwork, imagePadding: CGFloat = 3) {
         self._previousRotation = rotation
         self.colorScheme = colorScheme
         self.image = image
         self.size = size
+        self.imagePadding = imagePadding
     }
     
     // MARK: - Body
@@ -43,14 +45,14 @@ struct RotatableImage: View {
             Circle()
                 .fill(LinearGradient(gradient: Gradient(colors: colorScheme.backgroundGradient.colors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
                 .clipShape(Circle())
-                .neumorph(color: colorScheme.backgroundGradient.first.average(to: colorScheme.backgroundGradient.last), size: size)
+                .neumorph(color: colorScheme.backgroundGradient.first.average(to: colorScheme.backgroundGradient.last), size: size, cornerRadius: .infinity, isConcave: false)
                 .overlay(
             image
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: geometry.size.width * 0.975, height: geometry.size.height * 0.975)
                 .clipShape(Circle())
                 .contentShape(Circle())
+                .padding(imagePadding)
                 .rotationEffect(.radians(isDragging ? rotation : previousRotation))
                 .gesture(
                     DragGesture()

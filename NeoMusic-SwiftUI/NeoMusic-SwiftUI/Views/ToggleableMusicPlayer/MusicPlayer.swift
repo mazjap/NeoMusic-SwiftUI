@@ -111,12 +111,20 @@ struct OpenPlayer: View {
             VStack {
                 // Navigation Bar
                 HStack {
-                    DefaultButton(imageName: "arrow.left", imageColor: settingsController.colorScheme.mainButtonColor.color, buttonColor: settingsController.colorScheme.backgroundGradient.first) {
+                    Button(action: {
                         withAnimation {
                             isOpen = false
                         }
+                        
                         feedbackGenerator.impactOccurred()
+                    }) {
+                        Image(systemName: "arrow.left")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .foregroundColor(settingsController.colorScheme.mainButtonColor.color)
                     }
+                    .buttonStyle(DefaultButtonStyle(color: settingsController.colorScheme.backgroundGradient.first))
+                    .frame(width: Constants.buttonSize, height: Constants.buttonSize)
                     
                     Spacer()
                     
@@ -125,13 +133,21 @@ struct OpenPlayer: View {
                     
                     Spacer()
                     
-                    DefaultButton(imageName: "line.horizontal.3", imageColor: settingsController.colorScheme.mainButtonColor.color, buttonColor: settingsController.colorScheme.backgroundGradient.first) {
+                    
+                    Button(action: {
                         withAnimation {
                             showUpNextView.toggle()
                         }
                         
                         feedbackGenerator.impactOccurred()
+                    }) {
+                        Image(systemName: "line.horizontal.3")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .foregroundColor(settingsController.colorScheme.mainButtonColor.color)
                     }
+                    .buttonStyle(DefaultButtonStyle(color: settingsController.colorScheme.backgroundGradient.first))
+                    .frame(width: Constants.buttonSize, height: Constants.buttonSize)
                 }
                 .spacing([.top, .leading, .trailing])
                 
@@ -180,29 +196,51 @@ struct OpenPlayer: View {
                     HStack {
                         Spacer()
                         
-                        DefaultButton(imageName: "backward.fill", imageColor: settingsController.colorScheme.mainButtonColor.color, buttonColor: settingsController.colorScheme.backgroundGradient.last, neoSize: .tinyButton, mult: 1.1) {
+                        Button(action: {
                             musicController.skipToPreviousItem()
                             feedbackGenerator.warningFeedback()
+                        }) {
+                            Image(systemName: "backward.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .foregroundColor(settingsController.colorScheme.mainButtonColor.color)
                         }
-                         .matchedGeometryEffect(id: MusicPlayer.backButtonKey, in: nspace, isSource: !isOpen)
+                        .buttonStyle(DefaultButtonStyle(color: settingsController.colorScheme.backgroundGradient.last))
+                        .matchedGeometryEffect(id: MusicPlayer.backButtonKey, in: nspace, isSource: !isOpen)
+                        .frame(width: Constants.buttonSize, height: Constants.buttonSize)
                             
                         Spacer()
                         
-                        DefaultButton(imageName: musicController.isPlaying ? "pause.fill" : "play.fill", imageColor: settingsController.colorScheme.mainButtonColor.color, buttonColor: settingsController.colorScheme.backgroundGradient.last, neoSize: .tinyButton, mult: 1.25, isSelected: musicController.isPlaying) {
+                        Button(action: {
                             withAnimation {
                                 musicController.toggle()
                             }
+                            
                             feedbackGenerator.warningFeedback()
+                        }) {
+                            Image(systemName: musicController.isPlaying ? "pause.fill" : "play.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .foregroundColor(settingsController.colorScheme.mainButtonColor.color)
                         }
-                         .matchedGeometryEffect(id: MusicPlayer.pauseButtonKey, in: nspace, isSource: !isOpen)
+                        .buttonStyle(DefaultButtonStyle(color: settingsController.colorScheme.backgroundGradient.last, padding: Constants.buttonPadding, isSelected: musicController.isPlaying))
+                        .matchedGeometryEffect(id: MusicPlayer.pauseButtonKey, in: nspace, isSource: !isOpen)
+                        .frame(width: Constants.buttonSize, height: Constants.buttonSize)
                         
                         Spacer()
                         
-                        DefaultButton(imageName: "forward.fill", imageColor: settingsController.colorScheme.mainButtonColor.color, buttonColor: settingsController.colorScheme.backgroundGradient.last, neoSize: .tinyButton, mult: 1.1) {
+                        Button(action: {
                             musicController.skipToNextItem()
                             feedbackGenerator.warningFeedback()
+                        }) {
+                            Image(systemName: "forward.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .foregroundColor(settingsController.colorScheme.mainButtonColor.color)
                         }
-                         .matchedGeometryEffect(id: MusicPlayer.skipButtonKey, in: nspace, isSource: !isOpen)
+                        .buttonStyle(DefaultButtonStyle(color: settingsController.colorScheme.backgroundGradient.last))
+                        .matchedGeometryEffect(id: MusicPlayer.skipButtonKey, in: nspace, isSource: !isOpen)
+                        .frame(width: Constants.buttonSize, height: Constants.buttonSize)
                         
                         Spacer()
                     }
@@ -305,7 +343,7 @@ struct ClosedPlayer: View {
                 .transition(.identity)
             
             HStack {
-                RotatableImage(colorScheme: settingsController.colorScheme, image: musicController.currentSong.image, rotation: $rotation, size: .button)
+                RotatableImage(colorScheme: settingsController.colorScheme, image: musicController.currentSong.image, rotation: $rotation, size: .button, imagePadding: 1)
                     .frame(width: MusicPlayer.musicPlayerHeightOffset - Constants.spacing * 2, height: MusicPlayer.musicPlayerHeightOffset - Constants.spacing * 2)
                     .spacing()
                     .matchedGeometryEffect(id: MusicPlayer.artworkKey, in: nspace, isSource: isOpen)
@@ -340,26 +378,47 @@ struct ClosedPlayer: View {
                 let background = settingsController.colorScheme.backgroundGradient.first.average(to: settingsController.colorScheme.backgroundGradient.last)
                 
                 HStack {
-                    DefaultButton(imageName: "backward.fill", imageColor: settingsController.colorScheme.mainButtonColor.color, buttonColor: background, neoSize: .tinyButton, mult: 0.44) {
+                    Button(action: {
                         musicController.skipToPreviousItem()
                         feedbackGenerator.warningFeedback()
+                    }) {
+                        Image(systemName: "backward.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .foregroundColor(settingsController.colorScheme.mainButtonColor.color)
                     }
-                     .matchedGeometryEffect(id: MusicPlayer.backButtonKey, in: nspace, isSource: isOpen)
+                    .buttonStyle(DefaultButtonStyle(color: background, padding: Constants.buttonPadding / 2.8, neoSize: .tinyButton))
+                    .matchedGeometryEffect(id: MusicPlayer.backButtonKey, in: nspace, isSource: isOpen)
+                    .frame(width: Constants.buttonSize / 3, height: Constants.buttonSize / 3)
                     
-                    DefaultButton(imageName: musicController.isPlaying ? "pause.fill" : "play.fill", imageColor: settingsController.colorScheme.mainButtonColor.color, buttonColor: background, neoSize: .tinyButton, mult: 0.5, isSelected: musicController.isPlaying) {
+                    Button(action: {
                         withAnimation {
                             musicController.toggle()
                         }
                         
                         feedbackGenerator.warningFeedback()
+                    }) {
+                        Image(systemName: musicController.isPlaying ? "pause.fill" : "play.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .foregroundColor(settingsController.colorScheme.mainButtonColor.color)
                     }
-                     .matchedGeometryEffect(id: MusicPlayer.pauseButtonKey, in: nspace, isSource: isOpen)
+                    .buttonStyle(DefaultButtonStyle(color: background, padding: Constants.buttonPadding / 2.8, isSelected: musicController.isPlaying, neoSize: .tinyButton))
+                    .matchedGeometryEffect(id: MusicPlayer.pauseButtonKey, in: nspace, isSource: isOpen)
+                    .frame(width: Constants.buttonSize / 2.8, height: Constants.buttonSize / 2.8)
                     
-                    DefaultButton(imageName: "forward.fill", imageColor: settingsController.colorScheme.mainButtonColor.color, buttonColor: background, neoSize: .tinyButton, mult: 0.44) {
+                    Button(action: {
                         musicController.skipToNextItem()
                         feedbackGenerator.warningFeedback()
+                    }) {
+                        Image(systemName: "forward.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .foregroundColor(settingsController.colorScheme.mainButtonColor.color)
                     }
-                     .matchedGeometryEffect(id: MusicPlayer.skipButtonKey, in: nspace, isSource: isOpen)
+                    .buttonStyle(DefaultButtonStyle(color: background, padding: Constants.buttonPadding / 2.8, neoSize: .tinyButton))
+                    .matchedGeometryEffect(id: MusicPlayer.skipButtonKey, in: nspace, isSource: isOpen)
+                    .frame(width: Constants.buttonSize / 3, height: Constants.buttonSize / 3)
                 }
                 .transition(.scale)
                 .spacing(.horizontal)
@@ -408,15 +467,10 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
             MusicPlayer(isOpen: $closed)
-                .environmentObject(sc)
-                .environmentObject(mc)
-                .environmentObject(fg)
-            
             MusicPlayer(isOpen: $open)
-                .environmentObject(sc)
-                .environmentObject(mc)
-                .environmentObject(fg)
-            
         }
+        .environmentObject(sc)
+        .environmentObject(mc)
+        .environmentObject(fg)
     }
 }

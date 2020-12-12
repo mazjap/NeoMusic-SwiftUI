@@ -13,6 +13,9 @@ import SwiftUI
 struct Constants {
     static let spacing: CGFloat = 16
     
+    static let buttonSize: CGFloat = 90
+    static let buttonPadding: CGFloat = 30
+    
     static let defaults = [defaultColorScheme, lightColorScheme, darkColorScheme]
     
     static let defaultColorScheme = JCColorScheme(
