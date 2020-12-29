@@ -11,11 +11,8 @@ extension CDAlbum {
     convenience init(_ album: Album, context: NSManagedObjectContext) {
         self.init(context: context)
         self.title = album.title
-        self.items = NSOrderedSet(array: album.songs.map { CDSong($0, context: context) })
-        self.artwork = album.artwork.pngData()
-        if let creator = album.artist {
-            self.artist = CDArtist(creator, context: context)
-        }
-        self.id = Int64(bitPattern: album.id)
+        self.items = NSOrderedSet(array:  album.items.map { CDSong(($0 as? AMSong)!, context: context) })
+        self.albumArtwork = album.artwork.pngData()
+        self.persistentID = Int64(bitPattern: album.persistentID)
     }
 }

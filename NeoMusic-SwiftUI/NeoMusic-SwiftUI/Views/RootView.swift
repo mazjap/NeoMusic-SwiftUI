@@ -16,13 +16,8 @@ struct RootView: View {
     
     @EnvironmentObject private var settingsController: SettingsController
     @EnvironmentObject private var feedback: FeedbackGenerator
-    @EnvironmentObject private var musicController: MusicPlayerController {
-        didSet {
-            musicController.delegate = searchController
-        }
-    }
+    @EnvironmentObject private var musicController: MusicController
     
-    @StateObject private var searchController = SongSearchController()
     @StateObject private var messageController = MessageController.shared
     @State private var musicPlayerIsOpen: Bool = true
     
@@ -39,7 +34,7 @@ struct RootView: View {
                 
                 TabBar {
                     TabItem(title: "Search", imageName: "magnifyingglass") {
-                        SearchView(searchController: searchController)
+                        SearchView()
                     }
                     
                     TabItem(title: "Music", imageName: musicController.isPlaying ? "pause.fill" : "play.fill") {
@@ -81,6 +76,7 @@ struct RootView_Previews: PreviewProvider {
     static var previews: some View {
         RootView()
             .environmentObject(SettingsController.shared)
-            .environmentObject(MusicPlayerController())
+            .environmentObject(MusicController())
+            .environmentObject(FeedbackGenerator(feedbackEnabled: false))
     }
 }

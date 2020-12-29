@@ -30,41 +30,36 @@ struct NeoArtistRow: View {
     // MARK: - Body
     
     var body: some View {
-        ZStack {
-            LinearGradient(gradient: Gradient(colors: backgroundColor.offsetColors), startPoint: .top, endPoint: .bottom)
-                .cornerRadius(20)
-            
-            HStack {
+        HStack {
 //                Image(uiImage: artist.image)
 //                    .resizable()
 //                    .aspectRatio(contentMode: .fit)
 //                    .clipShape(Circle())
 //                    .padding(.vertical, Constants.spacing / 2)
-                
-                VStack(alignment: .leading) {
-                    Text(artist.name)
-                        .lineLimit(1)
-                        .font(.callout)
-                        .foregroundColor(textColor)
-                    
-                }
-                
-                Spacer()
-                
-                Button(action: {
-                    // TODO: Add/Remove song to/from favorites
-                }) {
-                    Image(systemName: "heart")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .foregroundColor(textColor)
-                }
-                .padding(.vertical, SearchView.cellHeight / 2)
-                .padding(.horizontal, Constants.spacing / 2)
+            
+            VStack(alignment: .leading) {
+                Text(artist.name)
+                    .lineLimit(1)
+                    .font(.callout)
+                    .foregroundColor(textColor)
                 
             }
+            
+            Spacer()
+            
+            Button(action: {
+                // TODO: Add/Remove song to/from favorites
+            }) {
+                Image(systemName: "heart")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .foregroundColor(textColor)
+            }
+            .padding(.vertical, SearchView.cellHeight / 2)
             .padding(.horizontal, Constants.spacing / 2)
+            
         }
+        .spacing(.horizontal)
         .frame(height: SearchView.cellHeight)
         .gesture(gesture)
     }

@@ -52,6 +52,7 @@ struct DropDownView: View {
         VStack {
             HStack {
                 Text(items[selectedItem].text)
+                    .foregroundColor(textColor)
                     .font(isOpen ? .body : font)
                     .spacing(.horizontal)
                     .onTapGesture {
@@ -64,10 +65,12 @@ struct DropDownView: View {
             }
         
             if isOpen {
-                Table(selectedIndexPath: $selectedIndex.onChanged(indexChanged(to:))) {
-                    ForEach(0..<items.count) { i in
-                        items[i]
-                            .foregroundColor(cellColor)
+                Table {
+                    TableSection(title: nil, selectedIndex: $selectedIndex.onChanged(indexChanged(to:))) {
+                        ForEach(0..<items.count) { i in
+                            items[i]
+                                .foregroundColor(cellColor)
+                        }
                     }
                 }
                 .usesSeperator(usesSeperator)

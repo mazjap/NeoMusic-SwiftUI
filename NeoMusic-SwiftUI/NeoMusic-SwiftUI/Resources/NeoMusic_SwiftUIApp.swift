@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct NeoMusic_SwiftUIApp: App {
     
-    @StateObject private var musicController = MusicPlayerController()
+    @StateObject private var musicController = MusicController()
     @StateObject private var feedbackGenerator = FeedbackGenerator(feedbackEnabled: SettingsController.shared.feedbackEnabled)
     
     @State private var gradient = JCColorScheme.default.backgroundGradient.gradient

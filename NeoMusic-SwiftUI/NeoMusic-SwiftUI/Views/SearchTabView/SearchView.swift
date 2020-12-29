@@ -10,10 +10,8 @@ import SwiftUI
 struct SearchView: View {
     // MARK: - State
     @EnvironmentObject private var settingsController: SettingsController
-    @EnvironmentObject private var musicController: MusicPlayerController
+    @EnvironmentObject private var musicController: MusicController
     @EnvironmentObject private var feedbackGenerator: FeedbackGenerator
-    
-    @ObservedObject private var searchController: SongSearchController
     
     @State private var text: String = ""
     @State private var segmentedIndex: Int = 0
@@ -24,9 +22,7 @@ struct SearchView: View {
     
     // MARK: - Initializers
     
-    init(searchController: SongSearchController) {
-        self.searchController = searchController
-        self.text = searchController.searchTerm
+    init() {
         
         let backgroundColor = SettingsController.shared.colorScheme.backgroundGradient.first.uiColor
         let tableAppearance = UITableView.appearance()
@@ -51,15 +47,19 @@ struct SearchView: View {
                     SegmentedControl(index: $segmentedIndex, textColor: settingsController.colorScheme.textColor.color, background: settingsController.colorScheme.backgroundGradient.first)
                         .options(["Library", "Apple Music"])
                         .onChange(of: segmentedIndex) { newVal in
-                            searchController.searchType = newVal == 0 ? .library : .applemusic
+                            musicController.searchType = (newVal == 0 ? .library : .applemusic)
                         }
                         .spacing()
                     
-                    SearchBar(searchText: $text, font: nil, colorScheme: settingsController.colorScheme,
+                    let binding = Binding<String>(get: { return musicController.searchTerm }) { str in
+                        musicController.searchTerm = str
+                    }
+                    
+                    SearchBar(searchText: binding, font: nil, colorScheme: settingsController.colorScheme,
                     onEditingChanged: { isEditing in }, onCommit: {})
                         .resignsFirstResponderOnDrag()
                         .onChange(of: text) { newVal in
-                            searchController.searchTerm = newVal
+                            musicController.searchTerm = newVal
                         }
                         .frame(height: 50)
                         .spacing(.horizontal)
@@ -69,13 +69,13 @@ struct SearchView: View {
                         let textColor = settingsController.colorScheme.textColor.color
                         
                         TableSection(title: "Songs") {
-                            let selectedSong = Binding<Optional<Song>> { return nil } set: { song in
+                            let selectedSong = Binding<Optional<AMSong>> { return nil } set: { song in
                                 if let song = song {
                                     musicController.addToUpNext(song)
                                 }
                             }
                             
-                            ForEach(searchController.songs) { song in
+                            ForEach(musicController.searchResults.songs) { song in
                                 NeoSongRow(selectedSong: selectedSong, backgroundColor: backgroundColor, textColor: textColor, song: song)
                                     .neumorph(color: settingsController.colorScheme.backgroundGradient.first, size: .button, cornerRadius: 20, isConcave: true)
                                     .padding(10)
@@ -89,8 +89,10 @@ struct SearchView: View {
                                 }
                             }
                             
-                            ForEach(searchController.albums) { album in
+                            ForEach(musicController.searchResults.albums) { album in
                                 NeoAlbumRow(selectedAlbum: selectedAlbum, backgroundColor: backgroundColor, textColor: textColor, album: album)
+                                    .neumorph(color: settingsController.colorScheme.backgroundGradient.first, size: .button, cornerRadius: 20, isConcave: true)
+                                    .padding(10)
                             }
                         }
                         
@@ -101,8 +103,10 @@ struct SearchView: View {
                                 }
                             }
                             
-                            ForEach(searchController.artists) { artist in
+                            ForEach(musicController.searchResults.artists) { artist in
                                 NeoArtistRow(selectedArtist: selectedArtist, backgroundColor: backgroundColor, textColor: textColor, artist: artist)
+                                    .neumorph(color: settingsController.colorScheme.backgroundGradient.first, size: .button, cornerRadius: 20, isConcave: true)
+                                    .padding(10)
                             }
                         }
                         
@@ -113,7 +117,7 @@ struct SearchView: View {
                     }
                     .foregroundColor(settingsController.colorScheme.textColor.color)
                     .neumorph(color: settingsController.colorScheme.backgroundGradient.first, size: .list, cornerRadius: 20, isConcave: false)
-                    .opacity(searchController.searchTerm.isEmpty || searchController.isEmpty ? 0 : 1)
+                    .opacity(musicController.searchTerm.isEmpty || musicController.isEmpty ? 0 : 1)
                     .spacing()
                     .offset(y: offsetHeight / 2)
                 }
@@ -152,8 +156,9 @@ extension SearchView {
 
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchView(searchController: SongSearchController())
+        SearchView()
             .environmentObject(SettingsController.shared)
-            .environmentObject(MusicPlayerController())
+            .environmentObject(MusicController())
+            .environmentObject(FeedbackGenerator(feedbackEnabled: false))
     }
 }

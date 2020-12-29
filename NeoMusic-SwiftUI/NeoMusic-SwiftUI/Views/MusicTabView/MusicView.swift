@@ -12,7 +12,7 @@ struct MusicView: View {
     // MARK: - State
     
     @EnvironmentObject private var settingsController: SettingsController
-    @EnvironmentObject private var musicController: MusicPlayerController
+    @EnvironmentObject private var musicController: MusicController
     
     // MARK: - Body
     
@@ -37,6 +37,6 @@ struct MusicView_Previews: PreviewProvider {
     static var previews: some View {
         MusicView()
             .environmentObject(SettingsController.shared)
-            .environmentObject(MusicPlayerController())
+            .environmentObject(MusicController())
     }
 }

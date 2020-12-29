@@ -11,13 +11,15 @@ struct NeoSongRow: View {
     
     // MARK: - State
     
-    @Binding var selectedSong: Song?
+    @EnvironmentObject private var musicController: MusicController
+    
+    @Binding var selectedSong: AMSong?
     
     // MARK: - Variables
     
     let backgroundColor: Color
     let textColor: Color
-    let song: Song
+    let song: AMSong
     let cornerRadius: CGFloat = 20
     
     var gesture: some Gesture {
@@ -43,7 +45,7 @@ struct NeoSongRow: View {
                     .font(.callout)
                     .foregroundColor(textColor)
                 
-                Text(song.artistName)
+                Text(song.artist)
                     .lineLimit(1)
                     .font(.caption)
                     .foregroundColor(textColor)
@@ -54,15 +56,15 @@ struct NeoSongRow: View {
             Button(action: {
                 // TODO: Add/Remove song to/from favorites
             }) {
-                Image(systemName: song.isFavorite ?? false ? "heart.fill" : "heart")
+                // TODO: Use user controller to check if song is favorite
+                Image(systemName: false ? "heart.fill" : "heart")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .foregroundColor(song.isFavorite ?? false ? Color.red : textColor)
+                    .foregroundColor(false ? Color.red : textColor)
             }
             .padding(.vertical, SearchView.cellHeight / 3)
-            .padding(.horizontal, Constants.spacing / 2)
-            
         }
+        .spacing(.horizontal)
         .frame(height: SearchView.cellHeight)
         .gesture(gesture)
     }
@@ -73,11 +75,11 @@ struct NeoSongRow: View {
 struct NeoSongRow_Previews: PreviewProvider {
     static var previews: some View {
         List {
-            NeoSongRow(selectedSong: Binding<Optional<Song>>(get: { .noSong }, set: { _ in }), backgroundColor: JCColorScheme.default.backgroundGradient.first, textColor: JCColorScheme.default.textColor.color, song: .noSong)
+            NeoSongRow(selectedSong: Binding<Optional<AMSong>>(get: { .noSong }, set: { _ in }), backgroundColor: JCColorScheme.default.backgroundGradient.first, textColor: JCColorScheme.default.textColor.color, song: .noSong)
             
-            NeoSongRow(selectedSong: Binding<Optional<Song>>(get: { .noSong }, set: { _ in }), backgroundColor: .falseBlack, textColor: .gray, song: .noSong)
+            NeoSongRow(selectedSong: Binding<Optional<AMSong>>(get: { .noSong }, set: { _ in }), backgroundColor: .falseBlack, textColor: .gray, song: .noSong)
             
-            NeoSongRow(selectedSong: Binding<Optional<Song>>(get: { .noSong }, set: { _ in }), backgroundColor: .falseWhite, textColor: .gray, song: .noSong)
+            NeoSongRow(selectedSong: Binding<Optional<AMSong>>(get: { .noSong }, set: { _ in }), backgroundColor: .falseWhite, textColor: .gray, song: .noSong)
         }
     }
 }

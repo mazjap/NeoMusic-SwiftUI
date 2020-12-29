@@ -8,7 +8,7 @@
 import CoreData
 
 extension CDSong {
-    convenience init(_ song: Song, context: NSManagedObjectContext) {
+    convenience init(_ song: AMSong, context: NSManagedObjectContext) {
         self.init(context: context)
         self.title = song.title
         self.duration = song.duration

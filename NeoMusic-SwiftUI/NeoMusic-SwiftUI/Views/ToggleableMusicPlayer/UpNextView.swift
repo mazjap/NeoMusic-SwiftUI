@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct UpNextView: View {
-    @EnvironmentObject private var musicController: MusicPlayerController
+    @EnvironmentObject private var musicController: MusicController
     
-    @State private var selectedSong: Song = .noSong
+    @State private var selectedSong: AMSong = .noSong
     @State private var selectedIndex: IndexPath = .zero
     @State private var section: Section = .current
     
@@ -19,8 +19,8 @@ struct UpNextView: View {
     var body: some View {
         ScrollViewReader { reader in
             Table(selectedIndexPath: $selectedIndex.onChanged(selectionChanged(to:))) {
-                ForEach(musicController.upNextSongs) { song in
-                    BasicTableCell(label: song.title, detail: song.artistName, image: song.image)
+                ForEach(musicController.upNextSongs, id: \.id) { song in
+                    BasicTableCell(label: song.title, detail: song.artist, image: Image(uiImage: song.albumArtwork))
                         .foregroundColor(colorScheme.backgroundGradient.last)
                 }
             }
@@ -30,7 +30,7 @@ struct UpNextView: View {
     }
     
     private func selectionChanged(to index: IndexPath) {
-        selectedSong = Song(musicController.item(at: musicController.currentIndex + index.item))
+        selectedSong = AMSong(musicController.item(at: musicController.currentIndex + index.item))
         // TODO: - Use musicController to play selected item
     }
 }

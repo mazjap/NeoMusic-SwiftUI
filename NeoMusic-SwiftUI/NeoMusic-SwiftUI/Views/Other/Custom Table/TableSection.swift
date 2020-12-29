@@ -9,7 +9,9 @@ import SwiftUI
 
 struct TableSection: View {
     @Environment(\.cellSpacing) private var spacing: CGFloat
-    @Environment(\.action) private var action: (Int) -> Void
+    @Environment(\.section) private var section: Int
+    
+    @Binding private var indexPath: IndexPath
     
     let title: String?
     
@@ -21,23 +23,25 @@ struct TableSection: View {
     
     private let content: [AnyView]
     
-    init(title: String? = nil, @TableSectionBuilder _ content: () -> [AnyView]) {
-        self.init(title: title, children: content())
+    init(title: String? = nil, selectedIndex: Binding<IndexPath> = .init(get: {return .zero}, set: { _ in }), @TableSectionBuilder _ content: () -> [AnyView]) {
+        self.init(title: title, children: content(), selectedIndex: selectedIndex)
     }
     
-    fileprivate init(title: String?, children: [AnyView], seperator: AnyView? = nil) {
+    fileprivate init(title: String?, children: [AnyView], seperator: AnyView? = nil, selectedIndex: Binding<IndexPath> = .init(get: {return .zero}, set: { _ in })) {
         self.title = title
         self.content = children
         self.seperator = seperator
+        self._indexPath = selectedIndex
     }
     
     var body: some View {
         Group {
             ForEach(0..<content.count) { i in
                 content[i]
+                    .tag(i)
                     .padding(.bottom, spacing)
                     .onTapGesture {
-                        action(i)
+                        itemChanged(to: i)
                     }
                 
                 if let seperator = seperator {
@@ -47,6 +51,10 @@ struct TableSection: View {
                 }
             }
         }
+    }
+    
+    func itemChanged(to val: Int) {
+        indexPath = IndexPath(item: val, section: section)
     }
 }
 
@@ -73,8 +81,8 @@ extension TableBuilder {
 
 
 extension TableSection {
-    func action(_ action: @escaping (Int) -> Void) -> some View {
-        self.environment(\.action, action)
+    func section(_ section: Int) -> some View {
+        self.environment(\.section, section)
     }
     
     func seperator<Content>(_ view: Content?) -> TableSection where Content: View {
@@ -82,17 +90,17 @@ extension TableSection {
     }
 }
 
-private struct SectionAction: EnvironmentKey {
-    static let defaultValue: (Int) -> Void = { _ in }
+private struct SectionKey: EnvironmentKey {
+    static let defaultValue: Int = 0
 }
 
-private struct SectionSeperator: EnvironmentKey {
+private struct SectionSeperatorKey: EnvironmentKey {
     static let defaultValue: AnyView? = nil
 }
 
 extension EnvironmentValues {
-    var action: (Int) -> Void {
-        get { self[SectionAction.self] }
-        set { self[SectionAction.self] = newValue }
+    var section: Int {
+        get { self[SectionKey.self] }
+        set { self[SectionKey.self] = newValue }
     }
 }

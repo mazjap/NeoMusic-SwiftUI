@@ -27,7 +27,7 @@ struct ColorSchemeView: View {
                     let font: Font = .title
                     
                     VStack {
-                        DropDownView(isOpen: $isOpen, selectedItem: $selectedIndex, backgroundColor: settingsController.colorScheme.backgroundGradient.first.opacity(0.75)) {
+                        DropDownView(isOpen: $isOpen, selectedItem: $selectedIndex.onChanged(selectedIndexChanged(to:)), backgroundColor: settingsController.colorScheme.backgroundGradient.first.opacity(0.75)) {
                             DropDownItem(label: "Background Gradient", detail: nil)
                             DropDownItem(label: "Slider Gradient", detail: nil)
                             DropDownItem(label: "Text Color", detail: nil)
@@ -62,6 +62,8 @@ struct ColorSchemeView: View {
                             default:
                                 ColorPickerDetailView(type: .secondaryButtonColor)
                             }
+                            
+                            Text("\(selectedIndex)")
                         }
                     }
                     .zIndex(0)
@@ -72,6 +74,10 @@ struct ColorSchemeView: View {
             Spacer()
                 .frame(height: MusicPlayer.musicPlayerHeightOffset + TabBar.height)
         }
+    }
+    
+    func selectedIndexChanged(to index: Int) {
+        print(index)
     }
 }
 

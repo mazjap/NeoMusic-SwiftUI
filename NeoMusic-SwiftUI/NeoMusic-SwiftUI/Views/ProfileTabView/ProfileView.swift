@@ -12,7 +12,7 @@ struct ProfileView: View {
     // MARK: - State
     
     @EnvironmentObject private var settingsController: SettingsController
-    @EnvironmentObject private var musicController: MusicPlayerController
+    @EnvironmentObject private var musicController: MusicController
     
     @State private var showSettingsBar: Bool = false
     @State private var profileRoation: Double = 0
@@ -74,7 +74,7 @@ struct ProfileView_Previews: PreviewProvider {
             
             ProfileView()
                 .environmentObject(setCon)
-                .environmentObject(MusicPlayerController())
+                .environmentObject(MusicController())
         }
     }
 }

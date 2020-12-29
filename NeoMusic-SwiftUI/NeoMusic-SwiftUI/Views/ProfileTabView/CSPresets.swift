@@ -73,29 +73,3 @@ struct CSPresets_Previews: PreviewProvider {
             .environmentObject(FeedbackGenerator(feedbackEnabled: false))
     }
 }
-
-// MARK: - Extension Array: JCColorScheme
-
-extension Array where Element == JCColorScheme {
-    var arrs: [[JCColorScheme]] {
-        var tempArr: [[JCColorScheme]] = [[]]
-        for colorScheme in self {
-            if tempArr[tempArr.count - 1].count == 3 {
-                tempArr.append([colorScheme])
-            } else {
-                tempArr[tempArr.count - 1].append(colorScheme)
-            }
-        }
-        return tempArr
-    }
-    
-    func doesContain(_ element: Element) -> Bool {
-        for el in self {
-            if el == element {
-                return true
-            }
-        }
-
-        return false
-    }
-}

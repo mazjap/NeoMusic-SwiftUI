@@ -12,41 +12,70 @@ import WidgetKit
 import SwiftUI
 import MediaPlayer
 
-struct Song: TimelineEntry, Identifiable, Equatable {
+// MARK: - Generic Song
+
+protocol Song {
+    var title: String { get }
+    var artist: String { get }
+    var album: String { get }
+    var duration: TimeInterval { get }
+    var isExplicit: Bool { get }
+    
+    var albumArtwork: UIImage { get }
+    
+    var id: String { get }
+    var artistID: String { get }
+    var albumID: String { get }
+}
+
+extension Song {
+    var image: Image {
+        Image(uiImage: albumArtwork)
+    }
+}
+
+// MARK: - Apple Music Song
+
+struct AMSong: Song, TimelineEntry, Identifiable {
     
     // MARK: - Variables
     
     let title: String
     let duration: TimeInterval
-    var isFavorite: Bool?
-    var artwork: UIImage
-    let artistName: String
-    let albumTitle: String
+    var albumArtwork: UIImage
+    let artist: String
+    let album: String
     let isExplicit: Bool
-    let persistentID: UInt64
     let storeID: String
     
     var date: Date
+    var id: String
+    var artistID: String
+    var albumID: String
     
-    var image: Image {
-        Image(uiImage: artwork)
+    var persistentID: UInt64 {
+        UInt64(id) ?? 0
+    }
+    
+    var artistPersistentID: UInt64 {
+        UInt64(artistID) ?? 0
+    }
+    
+    var albumPersistentID: UInt64 {
+        UInt64(albumID) ?? 0
     }
     
     var media: MPMediaItem?
     
-    var id: UInt64 {
-        persistentID
+    #if os(watchOS)
+    var widgetSong: WidgetSong {
+        if let media = media {
+            return WidgetSong(media)
+        }
+        
+        return .noSong()
     }
-    
-    lazy var artist: Artist? = {
-        guard let id = media?.artistPersistentID else { return nil }
-        return Artist.createArtist(for: id)
-    }()
-    
-    lazy var album: Album? = {
-        guard let id = media?.id else { return nil }
-        return Album.createAlbum(for: id)
-    }()
+    #endif
     
     // MARK: - Initializers
     
@@ -58,47 +87,54 @@ struct Song: TimelineEntry, Identifiable, Equatable {
         
         self.date = date
         self.media = song
-        self.artwork = song?.artwork?.image(at: CGSize(width: 500, height: 500)) ?? .placeholder
+        self.albumArtwork = song?.artwork?.image(at: CGSize(width: 500, height: 500)) ?? .placeholder
         
         if let song = song {
             title = song.title ?? defaultTitle
-            artistName = song.artist ?? defaultArtist
-            albumTitle = song.albumTitle ?? defaultAlbum
+            artist = song.artist ?? defaultArtist
+            album = song.albumTitle ?? defaultAlbum
             duration = song.playbackDuration
             isExplicit = song.isExplicitItem
-            persistentID = song.persistentID
-            storeID = song.playbackStoreID
+            id = "\(song.persistentID)"
+            artistID = "\(song.artistPersistentID)"
+            albumID = "\(song.albumPersistentID)"
+            storeID = "\(song.playbackStoreID)"
         } else {
             title = defaultTitle
-            artistName = defaultArtist
-            albumTitle = defaultAlbum
+            artist = defaultArtist
+            album = defaultAlbum
             duration = defaultDuration
             isExplicit = false
-            persistentID = 0
+            id = ""
+            artistID = ""
+            albumID = ""
             storeID = ""
         }
     }
     
+    init(id: UInt64) {
+        self.init(MPMediaQuery(filterPredicates: [MPMediaPropertyPredicate(value: id, forProperty: MPMediaItemPropertyPersistentID, comparisonType: .equalTo)]).items?.first)
+    }
+    
     // MARK: - Static Variables
     
-    static var noSong = Song(nil)
+    static var noSong = AMSong(nil)
 }
 
-extension Song: Decodable {
+extension AMSong: Decodable {
     enum CodingKeys: String, CodingKey {
         case storeID = "id"
-        case persistentID
+        case id = "persistentID"
         case date
-        case isFavorite
         case isExplicit
         
         case attributes
     }
     
     enum AttributesCodingKeys: String, CodingKey {
-        case artistName
+        case artist = "artistName"
         case title = "name"
-        case albumTitle = "albumName"
+        case album = "albumName"
         case duration = "durationInMillis"
         
         case artwork
@@ -127,8 +163,8 @@ extension Song: Decodable {
             let artworkContainer = try attributesContainer.nestedContainer(keyedBy: ArtworkCodingKeys.self, forKey: .artwork)
             
             title = try attributesContainer.decode(String.self, forKey: .title)
-            artistName = try attributesContainer.decode(String.self, forKey: .artistName)
-            albumTitle = try attributesContainer.decode(String.self, forKey: .albumTitle)
+            artistName = try attributesContainer.decode(String.self, forKey: .artist)
+            albumTitle = try attributesContainer.decode(String.self, forKey: .album)
             duration = Double(try attributesContainer.decode(Int.self, forKey: .duration)) / 1000
             storeID = try container.decode(String.self, forKey: .storeID)
             let artworkURLString = try artworkContainer.decode(String.self, forKey: .url)
@@ -143,18 +179,17 @@ extension Song: Decodable {
             fatalError(error.localizedDescription)
         }
         
-        if let item = MPMediaQuery(filterPredicates: [MPMediaPropertyPredicate(value: storeID, forProperty: MPMediaItemPropertyPlaybackStoreID, comparisonType: .equalTo)]).items?.first {
-            isExplicit = item.isExplicitItem
-            id = item.persistentID
-        }
-        
-        self.artwork = image
+        self.albumArtwork = image
         self.title = title
-        self.albumTitle = albumTitle
-        self.artistName = artistName
+        self.album = albumTitle
+        self.artist = artistName
         self.duration = duration
         self.isExplicit = isExplicit
-        self.persistentID = id
+        self.id = "\(id)"
+        // TODO: - Fix these
+        self.artistID = "\(id)"
+        self.albumID = "\(id)"
+        //
         self.storeID = storeID
     }
 }

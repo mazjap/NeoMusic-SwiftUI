@@ -51,7 +51,7 @@ struct BasicTableCell: View {
 }
 
 struct UpNextRow_Previews: PreviewProvider {
-    @State static var selected: Song = .noSong
+    @State static var selected: AMSong = .noSong
     
     static var previews: some View {
         BasicTableCell(label: "Hello, World!", detail: "Hi, Universe!")

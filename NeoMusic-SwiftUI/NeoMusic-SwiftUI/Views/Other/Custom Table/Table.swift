@@ -11,6 +11,7 @@ struct Table: View {
     @Environment(\.cellSpacing) private var cellSpacing: CGFloat
     @Environment(\.usesSeperator) private var usesSeperator: Bool
     @Environment(\.showsScrollingIndicator) private var showsScrollingIndicator: Bool
+    @Environment(\.cornerRadius) private var cornerRadius: CGFloat
     
     
     @Binding private var indexPath: IndexPath
@@ -18,6 +19,8 @@ struct Table: View {
     private let _spacing: CGFloat?
     private let _usesSep: Bool?
     private let _showIndicator: Bool?
+    private let _tableCornerRadius: CGFloat?
+    
     
     private var seperator: AnyView = {
         Color.falseWhite
@@ -28,35 +31,27 @@ struct Table: View {
     
     private let sections: [TableSection]
     
-    private var space: CGFloat {
-        if let space = _spacing {
-            return space
-        }
-        
-        return cellSpacing
+    var space: CGFloat {
+        return _spacing ?? cellSpacing
     }
     
-    private var useSeperator: Bool {
-        if let usesSep = _usesSep {
-            return usesSep
-        }
-        
-        return usesSeperator
+    var useSeperator: Bool {
+        return _usesSep ?? usesSeperator
     }
     
-    private var showsIndicator: Bool {
-        if let showIndicator = _showIndicator {
-            return showIndicator
-        }
-        
-        return showsScrollingIndicator
+    var showsIndicator: Bool {
+        return _showIndicator ?? showsScrollingIndicator
+    }
+    
+    var tableCornerRadius: CGFloat {
+        return _tableCornerRadius ?? cornerRadius
     }
     
     init(seperatorView: AnyView? = nil, selectedIndexPath: Binding<IndexPath> = .init(get: { return .zero }, set: { _ in }), @TableBuilder _ sections: () -> [TableSection]) {
         self.init(seperatorView: seperatorView, selectedIndexPath: selectedIndexPath, sections: sections())
     }
     
-    private init(seperatorView: AnyView? = nil, selectedIndexPath: Binding<IndexPath> = .init(get: { return .zero }, set: { _ in }), sections: [TableSection], spacing: CGFloat? = nil, usesSeperator: Bool? = nil, showsScrollingIndicator: Bool? = nil) {
+    private init(seperatorView: AnyView? = nil, selectedIndexPath: Binding<IndexPath> = .init(get: { return .zero }, set: { _ in }), sections: [TableSection], spacing: CGFloat? = nil, usesSeperator: Bool? = nil, showsScrollingIndicator: Bool? = nil, cornerRadius: CGFloat? = nil) {
         self._indexPath = selectedIndexPath
         self.sections = sections
         
@@ -67,10 +62,7 @@ struct Table: View {
         self._spacing = spacing
         self._usesSep = usesSeperator
         self._showIndicator = showsScrollingIndicator
-    }
-    
-    var list: List = List {
-        Text("")
+        self._tableCornerRadius = cornerRadius
     }
     
     var body: some View {
@@ -88,9 +80,7 @@ struct Table: View {
                     
                     sections[i]
                         .seperator(usesSeperator ? seperator : nil)
-                        .action { j in
-                            self.indexPath = IndexPath(item: j, section: i)
-                        }
+                        .section(i)
                 }
             }
         }
@@ -100,7 +90,7 @@ struct Table: View {
 struct Table_Previews: PreviewProvider {
     static var previews: some View {
         Table {
-            TableSection(title: "Example") {
+            TableSection(title: "Example", selectedIndex: .init(get: { return .zero }, set: { _ in })) {
                 Text("This is a cell")
             }
         }
@@ -116,20 +106,28 @@ struct TableBuilder {
 
 extension Table {
     func cellSpacing(_ amount: CGFloat) -> Table {
-        Table(seperatorView: seperator, selectedIndexPath: $indexPath, sections: sections, spacing: amount, usesSeperator: _usesSep, showsScrollingIndicator: _showIndicator)
+        Table(seperatorView: seperator, selectedIndexPath: $indexPath, sections: sections, spacing: amount, usesSeperator: _usesSep, showsScrollingIndicator: _showIndicator, cornerRadius: _tableCornerRadius)
     }
     
     func usesSeperator(_ bool: Bool) -> Table {
-        Table(seperatorView: seperator, selectedIndexPath: $indexPath, sections: sections, spacing: _spacing, usesSeperator: bool, showsScrollingIndicator: _showIndicator)
+        Table(seperatorView: seperator, selectedIndexPath: $indexPath, sections: sections, spacing: _spacing, usesSeperator: bool, showsScrollingIndicator: _showIndicator, cornerRadius: _tableCornerRadius)
     }
     
     func showsScrollingIndicator(_ bool: Bool) -> Table {
-        Table(seperatorView: seperator, selectedIndexPath: $indexPath, sections: sections, spacing: _spacing, usesSeperator: _usesSep, showsScrollingIndicator: bool)
+        Table(seperatorView: seperator, selectedIndexPath: $indexPath, sections: sections, spacing: _spacing, usesSeperator: _usesSep, showsScrollingIndicator: bool, cornerRadius: _tableCornerRadius)
+    }
+    
+    func cornerRadius(_ radius: CGFloat) -> Table {
+        Table(seperatorView: seperator, selectedIndexPath: $indexPath, sections: sections, spacing: _spacing, usesSeperator: _usesSep, showsScrollingIndicator: _showIndicator, cornerRadius: radius)
     }
 }
 
 private struct TableSpacing: EnvironmentKey {
     static let defaultValue: CGFloat = 10
+}
+
+private struct TableCornerRadius: EnvironmentKey {
+    static let defaultValue: CGFloat = 0
 }
 
 private struct TableUsesSeperator: EnvironmentKey {
@@ -154,5 +152,10 @@ extension EnvironmentValues {
     var showsScrollingIndicator: Bool {
         get { self[TableShowsScrollingIndicator.self] }
         set { self[TableShowsScrollingIndicator.self] = newValue }
+    }
+    
+    var cornerRadius: CGFloat {
+        get { self[TableCornerRadius.self] }
+        set { self[TableCornerRadius.self] = newValue }
     }
 }

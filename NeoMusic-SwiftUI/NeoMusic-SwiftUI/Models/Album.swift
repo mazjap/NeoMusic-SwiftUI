@@ -8,48 +8,23 @@
 import MediaPlayer
 import SwiftUI
 
-struct Album: Identifiable, Equatable {
-    
+struct Album: Identifiable {
     // MARK: - Variables
     
-    var title: String
+    let title: String
+    let artist: String
     var artwork: UIImage
-    var id: UInt64
-    let items: [MPMediaItem]
+    let items: [Song]
     
-    var songs: [Song] {
-        items.map { Song($0) }
-    }
+    let id: String
     
-    var artist: Artist? {
-        guard let id = items.first?.artistPersistentID, let art = Artist.createArtist(for: id) else { return nil }
-        return art
+    var persistentID: UInt64 {
+        UInt64(id) ?? 0
     }
     
     // MARK: - Initializers
     
-    private init?(id: UInt64) {
-        if Self.cache.value(for: id) != nil {
-            return nil
-        }
-        
-        var items = [MPMediaItem]()
-        
-        let query = MPMediaQuery.albums()
-        query.addFilterPredicate(MPMediaPropertyPredicate(value: id, forProperty: MPMediaItemPropertyAlbumPersistentID, comparisonType: .equalTo))
-        
-        if let mediaList = query.items {
-            items = mediaList
-        } else {
-            items = []
-        }
-        
-        let item = items.first
-        
-        self.init(title: item?.albumTitle, artwork: item?.artwork?.image(at: CGSize(width: 500, height: 500)), items: items, id: id)
-    }
-    
-    private init(title: String? = nil, artwork: UIImage? = nil, items: [MPMediaItem] = [], id: UInt64 = 0) {
+    init(title: String? = nil, artwork: UIImage? = nil, items: [AMSong] = [], id: UInt64 = 0) {
         if let title = title {
             self.title = title
         } else {
@@ -63,30 +38,30 @@ struct Album: Identifiable, Equatable {
         }
         
         self.items = items
-        self.id = id
+        self.id = "\(id)"
+        self.artist = items.first?.artist ?? Constants.noArtist
     }
     
     // Static Functions
     
-    static func createAlbum(for id: UInt64) -> Album? {
-        return cache.value(for: id) ?? Album(id: id)
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.id == rhs.id
     }
     
     // Static Variables
     
     static let noAlbum = Album()
-    
-    private static var cache = Cache<UInt64, Album>()
 }
 
 extension Album: Decodable {
     enum CodingKeys: String, CodingKey {
         case attributes
+        case storeID = "id"
     }
     
     enum AttributesCodingKeys: String, CodingKey {
         case title = "name"
-        case id
+        case artist = "artistName"
         case items
         
         case artwork
@@ -99,8 +74,9 @@ extension Album: Decodable {
     init(from decoder: Decoder) throws {
         var title: String = Constants.noAlbum
         var image: UIImage = .placeholder
-        var id: UInt64 = 0
-        var items = [MPMediaItem]()
+        var artist: String = Constants.noArtist
+        var id: String = ""
+        var items = [Song]()
         
         do {
             let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -117,23 +93,17 @@ extension Album: Decodable {
             }
             
             title = try attributesContainer.decode(String.self, forKey: .title)
-            
-            let storeID = try attributesContainer.decode(String.self, forKey: .id)
-            
-            let query = MPMediaQuery(filterPredicates: [MPMediaPropertyPredicate(value: storeID, forProperty: MPMediaItemPropertyPlaybackStoreID, comparisonType: .equalTo)])
-            
-            if let item = query.items?.first {
-                id = item.persistentID
-                items = MPMediaQuery(filterPredicates: [MPMediaPropertyPredicate(value: item.albumPersistentID, forProperty: MPMediaItemPropertyAlbumPersistentID, comparisonType: .equalTo)]).items ?? []
-            }
+            artist = try attributesContainer.decode(String.self, forKey: .artist)
+            id = try container.decode(String.self, forKey: .storeID)
         
         } catch {
-            
+            NSLog("f:\(#file)l:\(#line) Error: \(error)")
         }
         
         self.title = title
         self.artwork = image
         self.id = id
         self.items = items
+        self.artist = artist
     }
 }

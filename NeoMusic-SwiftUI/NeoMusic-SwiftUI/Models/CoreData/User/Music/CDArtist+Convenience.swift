@@ -12,7 +12,6 @@ extension CDArtist {
         self.init(context: context)
         
         self.name = artist.name
-        self.albums = NSSet(array: artist.albums.map { CDAlbum($0, context: context) })
-        self.id = Int64(bitPattern: artist.id)
+        self.persistentID = Int64(bitPattern: artist.persistentID)
     }
 }

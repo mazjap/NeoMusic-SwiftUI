@@ -62,6 +62,20 @@ struct Queue<Type>: CustomStringConvertible {
         return tmp
     }
     
+    var count: Int {
+        if var node = head {
+            var temp = 1
+            while let next = node.next {
+                node = next
+                temp += 1
+            }
+            
+            return temp
+        } else {
+            return 0
+        }
+    }
+    
     private var head: Node<Type>?
     
     // MARK: - Initializers
@@ -79,6 +93,20 @@ struct Queue<Type>: CustomStringConvertible {
         } else {
             self.head = nil
         }
+    }
+    
+    subscript(_ index: Int) -> Type {
+        var count = 0
+        var node = head
+        
+        while count < index {
+            node = node?.next
+            count += 1
+        }
+        
+        guard let end = node else { fatalError("Error, index out of bounds") }
+        
+        return end.value
     }
     
     // MARK: - Functions
