@@ -54,6 +54,7 @@ struct MusicPlayer: View {
     static let   backButtonKey = base + "BackButton"
     static let  pauseButtonKey = base + "PauseButton"
     static let   skipButtonKey = base + "SkipButton"
+    static let   upNextViewKey = base + "UpNextView"
     
     
     static let musicPlayerHeightOffset: CGFloat = 100
@@ -123,6 +124,7 @@ struct OpenPlayer: View {
                             .aspectRatio(contentMode: .fit)
                             .foregroundColor(settingsController.colorScheme.mainButtonColor.color)
                     }
+                    .transition(.scale)
                     .frame(width: Constants.buttonSize, height: Constants.buttonSize)
                     .buttonStyle(DefaultButtonStyle(color: settingsController.colorScheme.backgroundGradient.first))
                     
@@ -146,6 +148,7 @@ struct OpenPlayer: View {
                             .aspectRatio(contentMode: .fit)
                             .foregroundColor(settingsController.colorScheme.mainButtonColor.color)
                     }
+                    .transition(.scale)
                     .frame(width: Constants.buttonSize, height: Constants.buttonSize)
                     .buttonStyle(DefaultButtonStyle(color: settingsController.colorScheme.backgroundGradient.first))
                 }
@@ -154,8 +157,8 @@ struct OpenPlayer: View {
                 Spacer()
                 
                 RotatableImage(colorScheme: settingsController.colorScheme, image: musicController.currentSong.image, rotation: $rotation)
-                    .spacing(.horizontal)
                     .matchedGeometryEffect(id: MusicPlayer.artworkKey, in: nspace, isSource: !isOpen)
+                    .spacing(.horizontal)
                 
                 HStack {
                     Text(musicController.currentSong.title)
@@ -165,8 +168,8 @@ struct OpenPlayer: View {
                         .matchedGeometryEffect(id: MusicPlayer.songTitleKey, in: nspace, isSource: !isOpen)
                     if musicController.currentSong.isExplicit {
                         Image(systemName: "e.square.fill")
-                            .foregroundColor(settingsController.colorScheme.textColor.color)
                             .matchedGeometryEffect(id: MusicPlayer.songExplicitKey, in: nspace, properties: .position, isSource: !isOpen)
+                            .foregroundColor(settingsController.colorScheme.textColor.color)
                     }
                 }
                 .spacing(.horizontal)
@@ -174,9 +177,9 @@ struct OpenPlayer: View {
                 Text(musicController.currentSong.artist)
                     .lineLimit(1)
                     .font(.subheadline)
+                    .matchedGeometryEffect(id: MusicPlayer.songArtistKey, in: nspace, properties: .position, isSource: !isOpen)
                     .foregroundColor(settingsController.colorScheme.textColor.color)
                     .spacing(.horizontal)
-                    .matchedGeometryEffect(id: MusicPlayer.songArtistKey, in: nspace, properties: .position, isSource: !isOpen)
                 
                 VStack {
                     MusicSlider(colorScheme: settingsController.colorScheme, min: $startTime, max: $totalTime, current: $currentTime) { time in
@@ -203,12 +206,13 @@ struct OpenPlayer: View {
                             Image(systemName: "backward.fill")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
+                                .transition(.scale)
                                 .foregroundColor(settingsController.colorScheme.mainButtonColor.color)
                         }
-                        .buttonStyle(DefaultButtonStyle(color: settingsController.colorScheme.backgroundGradient.last))
-                        .frame(width: Constants.buttonSize, height: Constants.buttonSize)
                         .transition(.scaleAndSlide)
                         .matchedGeometryEffect(id: MusicPlayer.backButtonKey, in: nspace, isSource: !isOpen)
+                        .buttonStyle(DefaultButtonStyle(color: settingsController.colorScheme.backgroundGradient.last))
+                        .frame(width: Constants.buttonSize, height: Constants.buttonSize)
                             
                         Spacer()
                         
@@ -222,12 +226,13 @@ struct OpenPlayer: View {
                             Image(systemName: musicController.isPlaying ? "pause.fill" : "play.fill")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
+                                .transition(.scale)
                                 .foregroundColor(settingsController.colorScheme.mainButtonColor.color)
                         }
-                        .buttonStyle(DefaultButtonStyle(color: settingsController.colorScheme.backgroundGradient.last, padding: Constants.buttonPadding, isSelected: musicController.isPlaying))
-                        .frame(width: Constants.buttonSize, height: Constants.buttonSize)
                         .transition(.scaleAndSlide)
                         .matchedGeometryEffect(id: MusicPlayer.pauseButtonKey, in: nspace, isSource: !isOpen)
+                        .buttonStyle(DefaultButtonStyle(color: settingsController.colorScheme.backgroundGradient.last, padding: Constants.buttonPadding, isSelected: musicController.isPlaying))
+                        .frame(width: Constants.buttonSize, height: Constants.buttonSize)
                         
                         Spacer()
                         
@@ -238,12 +243,13 @@ struct OpenPlayer: View {
                             Image(systemName: "forward.fill")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
+                                .transition(.scale)
                                 .foregroundColor(settingsController.colorScheme.mainButtonColor.color)
                         }
-                        .buttonStyle(DefaultButtonStyle(color: settingsController.colorScheme.backgroundGradient.last))
-                        .frame(width: Constants.buttonSize, height: Constants.buttonSize)
                         .transition(.scaleAndSlide)
                         .matchedGeometryEffect(id: MusicPlayer.skipButtonKey, in: nspace, isSource: !isOpen)
+                        .buttonStyle(DefaultButtonStyle(color: settingsController.colorScheme.backgroundGradient.last))
+                        .frame(width: Constants.buttonSize, height: Constants.buttonSize)
                         
                         Spacer()
                     }
@@ -252,6 +258,7 @@ struct OpenPlayer: View {
             
             if showUpNextView {
                 UpNextView(colorScheme: settingsController.colorScheme)
+                    .matchedGeometryEffect(id: MusicPlayer.upNextViewKey, in: nspace)
                     .frame(width: MusicPlayer.upNextViewWidth)
                     .offset(x: upNextDragOffset)
                     .gesture(
@@ -271,13 +278,12 @@ struct OpenPlayer: View {
                                 }
                             }
                     )
-                    .matchedGeometryEffect(id: "test", in: nspace)
             } else {
                 Rectangle()
+                    .matchedGeometryEffect(id: MusicPlayer.upNextViewKey, in: nspace)
                     .foregroundColor(settingsController.colorScheme.backgroundGradient.last)
                     .frame(width: MusicPlayer.upNextViewWidth)
                     .offset(x: MusicPlayer.upNextViewWidth)
-                    .matchedGeometryEffect(id: "test", in: nspace)
             }
         }
         .offset(y: isOpen ? offset : 0)
@@ -340,15 +346,15 @@ struct ClosedPlayer: View {
     var body: some View {
         ZStack {
             LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.backgroundGradient.colors), startPoint: .top, endPoint: .bottom)
-                .edgesIgnoringSafeArea(.top)
                 .transition(.scaleAndSlide)
                 .matchedGeometryEffect(id: MusicPlayer.backgroundKey, in: nspace, isSource: isOpen)
+                .edgesIgnoringSafeArea(.top)
             
             HStack {
                 RotatableImage(colorScheme: settingsController.colorScheme, image: musicController.currentSong.image, rotation: $rotation, size: .button, imagePadding: 1)
                     .frame(width: MusicPlayer.musicPlayerHeightOffset - Constants.spacing * 2, height: MusicPlayer.musicPlayerHeightOffset - Constants.spacing * 2)
-                    .spacing()
                     .matchedGeometryEffect(id: MusicPlayer.artworkKey, in: nspace, isSource: isOpen)
+                    .spacing()
                 
                 VStack(alignment: .leading) {
                     HStack {
@@ -357,22 +363,22 @@ struct ClosedPlayer: View {
                         Text(musicController.currentSong.title)
                             .lineLimit(1)
                             .font(font)
-                            .foregroundColor(settingsController.colorScheme.textColor.color)
                             .matchedGeometryEffect(id: MusicPlayer.songTitleKey, in: nspace, properties: .position, isSource: isOpen)
+                            .foregroundColor(settingsController.colorScheme.textColor.color)
                         if musicController.currentSong.isExplicit {
                             Image(systemName: "e.square.fill")
                                 .resizable()
                                 .frame(width: font.size, height: font.size)
-                                .foregroundColor(settingsController.colorScheme.textColor.color)
                                 .matchedGeometryEffect(id: MusicPlayer.songExplicitKey, in: nspace, properties: .position, isSource: isOpen)
+                                .foregroundColor(settingsController.colorScheme.textColor.color)
                         }
                     }
                 
                     Text(musicController.currentSong.artist)
                         .lineLimit(1)
                         .font(.caption)
-                        .foregroundColor(settingsController.colorScheme.textColor.color)
                         .matchedGeometryEffect(id: MusicPlayer.songArtistKey, in: nspace, isSource: isOpen)
+                        .foregroundColor(settingsController.colorScheme.textColor.color)
                 }
                 
                 Spacer()
@@ -387,12 +393,13 @@ struct ClosedPlayer: View {
                         Image(systemName: "backward.fill")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
+                            .transition(.scale)
                             .foregroundColor(settingsController.colorScheme.mainButtonColor.color)
                     }
-                    .buttonStyle(DefaultButtonStyle(color: background, padding: Constants.buttonPadding / 2.8, neoSize: .tinyButton))
-                    .frame(width: Constants.buttonSize / 3, height: Constants.buttonSize / 3)
                     .transition(.scaleAndSlide)
                     .matchedGeometryEffect(id: MusicPlayer.backButtonKey, in: nspace, isSource: isOpen)
+                    .buttonStyle(DefaultButtonStyle(color: background, padding: Constants.buttonPadding / 2.8, neoSize: .tinyButton))
+                    .frame(width: Constants.buttonSize / 3, height: Constants.buttonSize / 3)
                     
                     Button(action: {
                         withAnimation {
@@ -404,12 +411,13 @@ struct ClosedPlayer: View {
                         Image(systemName: musicController.isPlaying ? "pause.fill" : "play.fill")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
+                            .transition(.scale)
                             .foregroundColor(settingsController.colorScheme.mainButtonColor.color)
                     }
-                    .buttonStyle(DefaultButtonStyle(color: background, padding: Constants.buttonPadding / 2.8, isSelected: musicController.isPlaying, neoSize: .tinyButton))
-                    .frame(width: Constants.buttonSize / 2.8, height: Constants.buttonSize / 2.8)
                     .transition(.scaleAndSlide)
                     .matchedGeometryEffect(id: MusicPlayer.pauseButtonKey, in: nspace, isSource: isOpen)
+                    .buttonStyle(DefaultButtonStyle(color: background, padding: Constants.buttonPadding / 2.8, isSelected: musicController.isPlaying, neoSize: .tinyButton))
+                    .frame(width: Constants.buttonSize / 2.8, height: Constants.buttonSize / 2.8)
                     
                     Button(action: {
                         musicController.skipToNextItem()
@@ -418,12 +426,13 @@ struct ClosedPlayer: View {
                         Image(systemName: "forward.fill")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
+                            .transition(.scale)
                             .foregroundColor(settingsController.colorScheme.mainButtonColor.color)
                     }
-                    .buttonStyle(DefaultButtonStyle(color: background, padding: Constants.buttonPadding / 2.8, neoSize: .tinyButton))
-                    .frame(width: Constants.buttonSize / 3, height: Constants.buttonSize / 3)
                     .transition(.scaleAndSlide)
                     .matchedGeometryEffect(id: MusicPlayer.skipButtonKey, in: nspace, isSource: isOpen)
+                    .buttonStyle(DefaultButtonStyle(color: background, padding: Constants.buttonPadding / 2.8, neoSize: .tinyButton))
+                    .frame(width: Constants.buttonSize / 3, height: Constants.buttonSize / 3)
                 }
                 .spacing(.horizontal)
             }

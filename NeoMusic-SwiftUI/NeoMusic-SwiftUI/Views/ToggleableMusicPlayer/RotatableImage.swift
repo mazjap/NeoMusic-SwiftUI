@@ -52,8 +52,8 @@ struct RotatableImage: View {
                 .aspectRatio(contentMode: .fit)
                 .clipShape(Circle())
                 .contentShape(Circle())
-                .padding(imagePadding)
                 .rotationEffect(.radians(isDragging ? rotation : previousRotation))
+                .padding(imagePadding)
                 .gesture(
                     DragGesture()
                         .onChanged { value in

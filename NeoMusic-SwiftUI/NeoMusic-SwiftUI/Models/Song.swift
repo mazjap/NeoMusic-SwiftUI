@@ -36,7 +36,7 @@ extension Song {
 
 // MARK: - Apple Music Song
 
-struct AMSong: Song, TimelineEntry, Identifiable {
+struct AMSong: Song, Identifiable {
     
     // MARK: - Variables
     
@@ -66,16 +66,6 @@ struct AMSong: Song, TimelineEntry, Identifiable {
     }
     
     var media: MPMediaItem?
-    
-    #if os(watchOS)
-    var widgetSong: WidgetSong {
-        if let media = media {
-            return WidgetSong(media)
-        }
-        
-        return .noSong()
-    }
-    #endif
     
     // MARK: - Initializers
     

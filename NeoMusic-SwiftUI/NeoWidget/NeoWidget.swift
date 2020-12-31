@@ -8,84 +8,130 @@
 import WidgetKit
 import SwiftUI
 
-let controller = Controller()
-var refreshDate = Date()
-
 struct Provider: TimelineProvider {
-    func placeholder(in context: Context) -> WidgetSong {
-        .noSong(date: refreshDate)
+    let controller: MusicController
+    
+    func placeholder(in context: Context) -> NeoTimelineEntry {
+        .noEntry
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (WidgetSong) -> ()) {
-        let entry = controller.getSong()
-        completion(entry ?? .noSong(date: refreshDate))
+    func getSnapshot(in context: Context, completion: @escaping (NeoTimelineEntry) -> ()) {
+        let entry = controller.getEntry()
+        completion(entry.entry)
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<WidgetSong>) -> ()) {
-        let now = Date()
-        let refresh = now.addingTimeInterval(10)
+    func getTimeline(in context: Context, completion: @escaping (Timeline<NeoTimelineEntry>) -> ()) {
+        let firstEntry: Entry
+        let isPlaying: Bool
         
-        if now >= refreshDate {
-            refreshDate = refresh
+        (firstEntry, isPlaying) = controller.getEntry(size: context.family)
+        
+        var entries: [NeoTimelineEntry] = [firstEntry.changeDate(to: Date())]
+        
+        if isPlaying {
+            entries.append(controller.getEntry(at: 1, with: entries[0].date.addingTimeInterval(entries[0].duration - controller.currentPlaybackTime), size: context.family).entry)
+            entries.append(controller.getEntry(at: 2, with: entries[1].date.addingTimeInterval(entries[1].duration), size: context.family).entry)
         }
         
-        let timeline = Timeline(entries: [controller.getSong(with: refresh) ?? WidgetSong.noSong(date: refresh)], policy: .after(refreshDate))
+        let timeline = Timeline(entries: entries, policy: .atEnd)
         completion(timeline)
     }
 }
 
-struct NeoWidgetEntryView : View {
-    let spacing: CGFloat = 7.5
+struct NeoWidgetEntryView: View {
     let font: Font = .footnote
+    private let entry: NeoTimelineEntry
+    private let controller: MusicController
+    private let colorScheme: JCColorScheme
+    
+    init(entry: NeoTimelineEntry = .noEntry, controller: MusicController = .init(), colorScheme: JCColorScheme = .default) {
+        self.entry = entry
+        self.controller = controller
+        self.colorScheme = colorScheme
+    }
     
     var body: some View {
-        let song = controller.getSong() ?? .noSong()
-        
         ZStack {
-            LinearGradient(gradient: controller.colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
+            LinearGradient(gradient: colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
             
-            VStack {
-                // Title
-                HStack {
-                    Text(song.title)
-                        .font(font)
-                        .lineLimit(1)
-                        .foregroundColor(controller.colorScheme.textColor.color)
-                    
-                    if song.isExplicit {
-                        Image(systemName: "e.square.fill")
-                            .resizable()
-                            .foregroundColor(controller.colorScheme.textColor.color)
-                            .frame(width: font.size, height: font.size)
+            HStack {
+                if entry.songs.count > 1 {
+                    VStack {
+                        Spacer()
+                        
+                        ForEach(1..<entry.songs.count) { i in
+                            let song = entry.songs[i]
                             
+                            BasicTableCell(label: song.title, detail: song.artist, image: Image(uiImage: song.albumArtwork))
+                                .foregroundColor(colorScheme.textColor.color)
+                            
+                            if i != entry.songs.count - 1 {
+                                Spacer()
+                                
+                                divider
+                            }
+                            
+                            Spacer()
+                        }
                     }
                 }
-                .padding([.leading, .top, .trailing], spacing)
-                
-                // Artwork
-                WidgetArtwork(colorScheme: controller.colorScheme, image: Image(uiImage: song.artwork))
-                    .padding(.bottom, spacing)
+            
+                VStack {
+                    // Title
+                    HStack {
+                        Text(entry.song.title)
+                            .font(font)
+                            .lineLimit(1)
+                            .foregroundColor(colorScheme.textColor.color)
+                        
+                        if entry.song.isExplicit {
+                            Image(systemName: "e.square.fill")
+                                .resizable()
+                                .foregroundColor(colorScheme.textColor.color)
+                                .frame(width: font.size, height: font.size)
+                                
+                        }
+                    }
+                    
+                    // Artwork
+                    WidgetArtwork(colorScheme: colorScheme, image: Image(uiImage: entry.song.albumArtwork))
+                }
             }
+            .padding(Constants.spacing / 2)
         }
+    }
+    
+    private var divider: some View {
+        colorScheme.textColor.color
+            .frame(height: 1)
     }
 }
 
 @main
 struct NeoWidget: Widget {
-    static let kind: String = "NeoWidget"
+    private let kind: String = "NeoWidget"
+    private let controller = MusicController()
 
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: Self.kind, provider: Provider()) { entry in
-            NeoWidgetEntryView()
+        StaticConfiguration(kind: kind, provider: Provider(controller: controller)) { entry in
+            NeoWidgetEntryView(entry: entry, controller: controller)
         }
-        .configurationDisplayName(controller.getSong()?.artistName ?? Self.kind)
+        .configurationDisplayName("NeoWidget")
         .description("Music.")
     }
 }
 
 struct NeoWidget_Previews: PreviewProvider {
+    private static let controller = MusicController()
+    
     static var previews: some View {
-        NeoWidgetEntryView()
+        NeoWidgetEntryView(colorScheme: .default)
             .previewContext(WidgetPreviewContext(family: .systemSmall))
+        
+        NeoWidgetEntryView(colorScheme: .default)
+            .previewContext(WidgetPreviewContext(family: .systemMedium))
+        
+        NeoWidgetEntryView(colorScheme: .default)
+            .previewContext(WidgetPreviewContext(family: .systemLarge))
     }
 }

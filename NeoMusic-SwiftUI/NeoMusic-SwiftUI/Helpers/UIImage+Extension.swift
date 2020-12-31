@@ -33,6 +33,6 @@ extension UIImage {
     }
     
     static var placeholder: UIImage {
-        placeholders[Int.random(in: 0..<placeholders.count)]
+        return placeholders[Int(Date().timeIntervalSince1970) % 1000 / 1000 * placeholders.count]
     }
 }

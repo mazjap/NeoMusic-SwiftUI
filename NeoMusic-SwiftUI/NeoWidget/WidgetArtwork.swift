@@ -10,22 +10,23 @@ import SwiftUI
 struct WidgetArtwork: View {
     let colorScheme: JCColorScheme
     let image: Image
+    let padding: CGFloat = 2
     
     var body: some View {
         GeometryReader { geometry in
-            ZStack {
                 Circle()
                     .fill(LinearGradient(gradient: Gradient(colors: colorScheme.backgroundGradient.colors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
-                    .neumorph(color: colorScheme.backgroundGradient.first.average(to: colorScheme.backgroundGradient.last), size: .button, cornerRadius: geometry.size.width / 2, isConcave: false)
-                
-                image
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: geometry.size.width * 0.95, height: geometry.size.height * 0.95)
-                    .clipShape(Circle())
-            }
+                    .overlay(
+                        image
+                            .resizable()
+                            .scaledToFit()
+                            .clipShape(Circle())
+                            .padding(padding)
+                    )
+                    .neumorph(color: colorScheme.backgroundGradient.first.average(to: colorScheme.backgroundGradient.last), size: .button, cornerRadius: .infinity, isConcave: false)
         }
     }
+    
 }
 
 struct WidgetArtwork_Previews: PreviewProvider {

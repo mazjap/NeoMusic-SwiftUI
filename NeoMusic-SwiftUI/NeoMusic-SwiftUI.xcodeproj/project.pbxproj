@@ -28,7 +28,6 @@
 		0E3738DE25649B3D002F5A3C /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3738DD25649B3D002F5A3C /* SegmentedControl.swift */; };
 		0E3738E62564B86A002F5A3C /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3738E52564B86A002F5A3C /* Album.swift */; };
 		0E3738EB2564B873002F5A3C /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3738EA2564B873002F5A3C /* Artist.swift */; };
-		0E37390525651772002F5A3C /* WidgetSong.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3738FD25651472002F5A3C /* WidgetSong.swift */; };
 		0E42F9F724F4EC9200901C89 /* DefaultButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E42F9F624F4EC9200901C89 /* DefaultButtonStyle.swift */; };
 		0E42F9F924F4F63B00901C89 /* RotatableImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E42F9F824F4F63B00901C89 /* RotatableImage.swift */; };
 		0E49677225299E97000D166C /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E49676D25299E96000D166C /* UIApplication+Extension.swift */; };
@@ -37,11 +36,23 @@
 		0E49677525299E97000D166C /* NeoSongRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E49677025299E97000D166C /* NeoSongRow.swift */; };
 		0E49677E2529A384000D166C /* ResignFirstResponderOnDrag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E49677D2529A383000D166C /* ResignFirstResponderOnDrag.swift */; };
 		0E4C28FF256E0DD500EB8EF6 /* Binding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4C28FE256E0DD500EB8EF6 /* Binding+Extension.swift */; };
+		0E592775259D2F99003E4CA3 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8B8B4A24F5C1990029B27D /* Song.swift */; };
+		0E59278A259D313D003E4CA3 /* Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7073F325534F2700E11397 /* Dynamic.swift */; };
+		0E592796259D3672003E4CA3 /* NeoTimelineEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E59278E259D354B003E4CA3 /* NeoTimelineEntry.swift */; };
+		0E59279A259D41F5003E4CA3 /* BasicTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA9BABD25674AFE00C732FA /* BasicTableCell.swift */; };
+		0E59279E259D4222003E4CA3 /* Invocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0FE7A32553800F002FB781 /* Invocation.swift */; };
+		0E5927A2259D4B02003E4CA3 /* MusicController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8B8B4824F5C1480029B27D /* MusicController.swift */; };
+		0E5927A6259D4B18003E4CA3 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E886F482554C954006D75F7 /* Queue.swift */; };
+		0E5927AA259D4B2E003E4CA3 /* Hidden.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9CCA472556220C009AACA7 /* Hidden.swift */; };
+		0E5927AE259D4B4B003E4CA3 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3738E52564B86A002F5A3C /* Album.swift */; };
+		0E5927B2259D4B4D003E4CA3 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3738EA2564B873002F5A3C /* Artist.swift */; };
+		0E5927BB259D5148003E4CA3 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E107E2D2599D07900399EC1 /* Array+Extension.swift */; };
+		0E5927BF259D5159003E4CA3 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9CCA4C255632E0009AACA7 /* HTTPMethod.swift */; };
+		0E5927C3259D5188003E4CA3 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7BBE8B254F3D18005E035D /* Cache.swift */; };
+		0E5927C7259D54A6003E4CA3 /* NeoTimelineEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E59278E259D354B003E4CA3 /* NeoTimelineEntry.swift */; };
 		0E6290C32565955600EBA222 /* NeoAlbumRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6290C22565955600EBA222 /* NeoAlbumRow.swift */; };
 		0E6290C82565968A00EBA222 /* NeoAristRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6290C72565968A00EBA222 /* NeoAristRow.swift */; };
 		0E6290CD2565D5B700EBA222 /* UpNextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6290CC2565D5B700EBA222 /* UpNextView.swift */; };
-		0E6290D22565E1D600EBA222 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0E6290D12565E1D600EBA222 /* GoogleService-Info.plist */; };
-		0E62C4722587FB73000A5487 /* WidgetSong.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3738FD25651472002F5A3C /* WidgetSong.swift */; };
 		0E6DF4D4255DA384007DD831 /* CSPresets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6DF4D3255DA384007DD831 /* CSPresets.swift */; };
 		0E6DF4D9255DAFDE007DD831 /* CSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6DF4D8255DAFDE007DD831 /* CSButton.swift */; };
 		0E6DF4E9255DFD07007DD831 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6DF4E8255DFD07007DD831 /* UIImage+Extension.swift */; };
@@ -104,7 +115,6 @@
 		4960888625158331003F1089 /* NeoWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4960887B2515832E003F1089 /* NeoWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4960889125158368003F1089 /* NeoWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4960889025158368003F1089 /* NeoWidget.swift */; };
 		4960889725158392003F1089 /* WidgetArtwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4960889525158392003F1089 /* WidgetArtwork.swift */; };
-		4960889825158392003F1089 /* Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4960889625158392003F1089 /* Controller.swift */; };
 		4960889C251583B6003F1089 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E2C908024F5CF2600AB950D /* Constants.swift */; };
 		496088A8251583D3003F1089 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8B8B4524F5A0B10029B27D /* SettingsController.swift */; };
 		496088AC251583E0003F1089 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8B8B4224F5A04D0029B27D /* Color+Extension.swift */; };
@@ -182,7 +192,6 @@
 		0E3738DD25649B3D002F5A3C /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		0E3738E52564B86A002F5A3C /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
 		0E3738EA2564B873002F5A3C /* Artist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
-		0E3738FD25651472002F5A3C /* WidgetSong.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetSong.swift; sourceTree = "<group>"; };
 		0E42F9F624F4EC9200901C89 /* DefaultButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultButtonStyle.swift; sourceTree = "<group>"; };
 		0E42F9F824F4F63B00901C89 /* RotatableImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotatableImage.swift; sourceTree = "<group>"; };
 		0E49676D25299E96000D166C /* UIApplication+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extension.swift"; sourceTree = "<group>"; };
@@ -191,10 +200,10 @@
 		0E49677025299E97000D166C /* NeoSongRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeoSongRow.swift; sourceTree = "<group>"; };
 		0E49677D2529A383000D166C /* ResignFirstResponderOnDrag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResignFirstResponderOnDrag.swift; sourceTree = "<group>"; };
 		0E4C28FE256E0DD500EB8EF6 /* Binding+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Extension.swift"; sourceTree = "<group>"; };
+		0E59278E259D354B003E4CA3 /* NeoTimelineEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeoTimelineEntry.swift; sourceTree = "<group>"; };
 		0E6290C22565955600EBA222 /* NeoAlbumRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeoAlbumRow.swift; sourceTree = "<group>"; };
 		0E6290C72565968A00EBA222 /* NeoAristRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeoAristRow.swift; sourceTree = "<group>"; };
 		0E6290CC2565D5B700EBA222 /* UpNextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpNextView.swift; sourceTree = "<group>"; };
-		0E6290D12565E1D600EBA222 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0E6DF4D3255DA384007DD831 /* CSPresets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSPresets.swift; sourceTree = "<group>"; };
 		0E6DF4D8255DAFDE007DD831 /* CSButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSButton.swift; sourceTree = "<group>"; };
 		0E6DF4E8255DFD07007DD831 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
@@ -256,7 +265,6 @@
 		4960888325158331003F1089 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4960889025158368003F1089 /* NeoWidget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeoWidget.swift; sourceTree = "<group>"; };
 		4960889525158392003F1089 /* WidgetArtwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetArtwork.swift; sourceTree = "<group>"; };
-		4960889625158392003F1089 /* Controller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Controller.swift; sourceTree = "<group>"; };
 		49E153532515705000767842 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		49E1535B251570A500767842 /* TabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -369,7 +377,6 @@
 				0E42F9F624F4EC9200901C89 /* DefaultButtonStyle.swift */,
 				0E7AB5992547A0C800CA1B40 /* BarButton.swift */,
 				0E3738DD25649B3D002F5A3C /* SegmentedControl.swift */,
-				0EF517962563085400A1B214 /* NavController.swift */,
 				0E9CDB112575AC6000B03489 /* Custom Table */,
 				0EBAE2D6251FB20200752EDE /* Custom TabView */,
 				0E77148E2579BAD4008BB229 /* Custom Drop Down */,
@@ -401,6 +408,7 @@
 		0E9CDB112575AC6000B03489 /* Custom Table */ = {
 			isa = PBXGroup;
 			children = (
+				0EF517962563085400A1B214 /* NavController.swift */,
 				0E9CDB01257589F600B03489 /* Table.swift */,
 				0E9CDB092575954900B03489 /* TableSection.swift */,
 			);
@@ -508,7 +516,6 @@
 				0EDE700D24F465D300E72D0C /* NeoMusic_SwiftUIApp.swift */,
 				0EDE701124F465D600E72D0C /* Assets.xcassets */,
 				0EDE701924F465D600E72D0C /* Info.plist */,
-				0E6290D12565E1D600EBA222 /* GoogleService-Info.plist */,
 				0E8294192536783200FB131A /* HostingController.swift */,
 			);
 			path = Resources;
@@ -571,8 +578,7 @@
 			isa = PBXGroup;
 			children = (
 				4960889025158368003F1089 /* NeoWidget.swift */,
-				0E3738FD25651472002F5A3C /* WidgetSong.swift */,
-				4960889625158392003F1089 /* Controller.swift */,
+				0E59278E259D354B003E4CA3 /* NeoTimelineEntry.swift */,
 				4960889525158392003F1089 /* WidgetArtwork.swift */,
 				4960888125158331003F1089 /* Assets.xcassets */,
 				4960888325158331003F1089 /* Info.plist */,
@@ -693,7 +699,6 @@
 			files = (
 				0EDE701524F465D600E72D0C /* Preview Assets.xcassets in Resources */,
 				0EDE701224F465D600E72D0C /* Assets.xcassets in Resources */,
-				0E6290D22565E1D600EBA222 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -777,7 +782,6 @@
 				0E2C908124F5CF2600AB950D /* Constants.swift in Sources */,
 				0E6290CD2565D5B700EBA222 /* UpNextView.swift in Sources */,
 				0E3738EB2564B873002F5A3C /* Artist.swift in Sources */,
-				0E62C4722587FB73000A5487 /* WidgetSong.swift in Sources */,
 				0EDE701024F465D300E72D0C /* MusicPlayer.swift in Sources */,
 				0E7714852579B65D008BB229 /* DropDownView.swift in Sources */,
 				0EE12DE425686ADA00F46D88 /* CDColorScheme+Convenience.swift in Sources */,
@@ -796,6 +800,7 @@
 				0E49677525299E97000D166C /* NeoSongRow.swift in Sources */,
 				0E284DE025698AAB00686E55 /* CDAlbum+Convenience.swift in Sources */,
 				0E8B8B4324F5A04D0029B27D /* Color+Extension.swift in Sources */,
+				0E5927C7259D54A6003E4CA3 /* NeoTimelineEntry.swift in Sources */,
 				0E6290C32565955600EBA222 /* NeoAlbumRow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -812,22 +817,33 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E592796259D3672003E4CA3 /* NeoTimelineEntry.swift in Sources */,
 				0EF3F73F254F49BE002AD607 /* Media.swift in Sources */,
-				4960889825158392003F1089 /* Controller.swift in Sources */,
+				0E5927B2259D4B4D003E4CA3 /* Artist.swift in Sources */,
+				0E5927A2259D4B02003E4CA3 /* MusicController.swift in Sources */,
+				0E59279A259D41F5003E4CA3 /* BasicTableCell.swift in Sources */,
 				0E9D98EC2559D82500343261 /* View+Neumorph.swift in Sources */,
 				0E09F8182584E06F007F84CE /* View+Extension.swift in Sources */,
 				4960889725158392003F1089 /* WidgetArtwork.swift in Sources */,
 				496088B0251583E3003F1089 /* Image+Extension.swift in Sources */,
-				0E37390525651772002F5A3C /* WidgetSong.swift in Sources */,
 				0E284E2E2569A94F00686E55 /* JCColorScheme.swift in Sources */,
+				0E5927BB259D5148003E4CA3 /* Array+Extension.swift in Sources */,
 				4960889125158368003F1089 /* NeoWidget.swift in Sources */,
 				496088A8251583D3003F1089 /* SettingsController.swift in Sources */,
 				0EC743EF258503BE00FBD8CE /* AnyShape.swift in Sources */,
+				0E5927AE259D4B4B003E4CA3 /* Album.swift in Sources */,
+				0E5927C3259D5188003E4CA3 /* Cache.swift in Sources */,
 				4960889C251583B6003F1089 /* Constants.swift in Sources */,
+				0E5927BF259D5159003E4CA3 /* HTTPMethod.swift in Sources */,
+				0E59278A259D313D003E4CA3 /* Dynamic.swift in Sources */,
 				0E284E322569A95800686E55 /* EasyColor.swift in Sources */,
+				0E5927AA259D4B2E003E4CA3 /* Hidden.swift in Sources */,
 				0E284E362569A95C00686E55 /* EasyGradient.swift in Sources */,
+				0E592775259D2F99003E4CA3 /* Song.swift in Sources */,
 				0EE4136C25278910003890A1 /* String+Extension.swift in Sources */,
+				0E5927A6259D4B18003E4CA3 /* Queue.swift in Sources */,
 				0E6DF4ED255DFD9F007DD831 /* UIImage+Extension.swift in Sources */,
+				0E59279E259D4222003E4CA3 /* Invocation.swift in Sources */,
 				0E9D98F92559D9DD00343261 /* Font+Extension.swift in Sources */,
 				496088AC251583E0003F1089 /* Color+Extension.swift in Sources */,
 			);

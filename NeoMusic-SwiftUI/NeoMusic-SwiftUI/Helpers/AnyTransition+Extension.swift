@@ -8,5 +8,5 @@
 import SwiftUI
 
 extension AnyTransition {
-    static var scaleAndSlide = Self.move(edge: .trailing).combined(with: .scale)
+    static var scaleAndSlide = Self.slide.combined(with: .scale)
 }

@@ -10,6 +10,7 @@
 
 import MediaPlayer
 import StoreKit
+import WidgetKit
 
 // MARK: - MusicControllerDelegate
 
@@ -22,12 +23,6 @@ protocol MusicControllerDelegate: AnyObject {
 class MusicController: ObservableObject {
     
     // MARK: - Variables
-    
-    private var isLibraryAuthorized = false {
-        didSet {
-            if isLibraryAuthorized && oldValue != isLibraryAuthorized { setup() }
-        }
-    }
     
     private var isCloudAuthorized: Bool
     
@@ -76,12 +71,6 @@ class MusicController: ObservableObject {
     // MARK: - Published Variables
     
     @Published var currentSong: Song = AMSong.noSong {
-        willSet {
-            if UIApplication.shared.applicationState == .active {
-                objectWillChange.send()
-            }
-        }
-        
         didSet {
             if oldValue.id != "0" {
                 delegate?.songChanged(previousSong: oldValue)
@@ -95,6 +84,7 @@ class MusicController: ObservableObject {
         }
     }
     
+    @Published var showNoAccessMessage = false
     @Published var isPlaying: Bool = false
     @Published var lastPlayed: [AMSong]
     
@@ -133,7 +123,7 @@ class MusicController: ObservableObject {
     init(searchTerm: String = "", searchType: SearchType = .library, lastPlayed: [AMSong] = []) {
         self.lastPlayed = lastPlayed
         self.searchType = searchType
-        self.searchTerm = searchTerm
+        self.searchTerm = ""
         self.dynamicPlayer = Dynamic(player)
         
         let auth = SKCloudServiceController.authorizationStatus()
@@ -161,16 +151,11 @@ class MusicController: ObservableObject {
             self?.countryCode = code
         }
         
-        checkAuthorized()
+        self.searchTerm = searchTerm
         
-        if !searchTerm.isEmpty {
-            search()
+        if checkAuthorized() {
+            setup()
         }
-        
-        //        player.setQueue(with: ["1493829628"])
-        
-        // Subscribe to watchOS app notifications
-        //        NotificationCenter.default.addObserver(doStuff(to:), name: "Hello", object: self)
     }
     
     // MARK: - Private Functions
@@ -189,53 +174,35 @@ class MusicController: ObservableObject {
         songChanged()
     }
     
-    private func checkAuthorized() {
+    func checkAuthorized() -> Bool {
         switch MPMediaLibrary.authorizationStatus() {
         case .authorized, .restricted:
-            isLibraryAuthorized = true
+            return true
         case .notDetermined:
             MPMediaLibrary.requestAuthorization { [weak self] auth in
-                guard let self = self else { return }
-                
                 if auth == .authorized || auth == .restricted {
-                    self.isLibraryAuthorized = true
+                    self?.setup()
                 }
             }
-            if !isLibraryAuthorized {
-                fallthrough
-            }
-        case .denied:
-            fallthrough
-        @unknown default:
-            // Alert user that access hasn't been granted
-            // User is given the option to dismiss or open settings
-            let alert = UIAlertController(title: "Apple Music Access Denied", message: "To use Apple music with this app, you must allow access in settings", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Open Settings", style: .default) { _ in
-                guard let appSettingsURL = URL(string: UIApplication.openSettingsURLString),
-                      UIApplication.shared.canOpenURL(appSettingsURL) else { return }
-                
-                UIApplication.shared.open(appSettingsURL) { didOpen in
-                    if didOpen {
-                        NSLog("App settings opened successfully")
-                    } else {
-                        NSLog("Failed to open app settings @f\(#file)l\(#line)")
-                    }
-                }
-            })
-            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
-            NSLog("f:\(#file)l:\(#line) Error: Access to Apple Music is denied or unknown case")
-            UIApplication.present(alert, animated: true)
+            
+            return false
+        default:
+            
+            
+            return false
         }
     }
     
     private func pause() {
-        guard isLibraryAuthorized else { checkAuthorized(); return }
+        guard checkAuthorized() else { return }
         
         player.pause()
+        
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
     private func play() {
-        guard isLibraryAuthorized else { checkAuthorized(); return }
+        guard checkAuthorized() else { return }
         
         player.prepareToPlay { error in
             if let error = error {
@@ -246,28 +213,36 @@ class MusicController: ObservableObject {
                 self?.player.play()
             }
         }
+        
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
     private func addToUpNext(media: [MPMediaItem]) {
         let descriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: MPMediaItemCollection(items: media))
         
         player.prepend(descriptor)
+        
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
     private func addToUpLater(media: [MPMediaItem]) {
         let descriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: MPMediaItemCollection(items: media))
         
         player.append(descriptor)
+        
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
     private func setQueue(media: [MPMediaItem]) {
+        let ids = media.map { $0.playbackStoreID }
+        
         DispatchQueue.main.async {
-            let ids = media.map { $0.playbackStoreID }
-            
             self.player.setQueue(with: ids)
             self.player.prepareToPlay()
             self.player.play()
         }
+        
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
     private func fetchUserToken(completion: @escaping (String?) -> Void) {
@@ -427,19 +402,19 @@ class MusicController: ObservableObject {
     // MARK: - Music Control Functions
     
     func set(time: TimeInterval) {
-        guard isLibraryAuthorized else { checkAuthorized(); return }
+        guard checkAuthorized() else { return }
         
         player.currentPlaybackTime = time
     }
     
     func toggle() {
-        guard isLibraryAuthorized else { checkAuthorized(); return }
+        guard checkAuthorized() else { return }
         
         isPlaying ? pause() : play()
     }
     
     func skipToPreviousItem() {
-        guard isLibraryAuthorized else { checkAuthorized(); return }
+        guard checkAuthorized() else { return }
         
         if currentPlaybackTime <= 5 {
             player.skipToPreviousItem()
@@ -449,26 +424,26 @@ class MusicController: ObservableObject {
     }
     
     func skipToNextItem() {
-        guard isLibraryAuthorized else { checkAuthorized(); return }
+        guard checkAuthorized() else { return }
         
         player.skipToNextItem()
     }
     
     func setQueue(with songs: [Song]) {
-        guard isLibraryAuthorized else { checkAuthorized(); return }
+        guard checkAuthorized() else { return }
         
         queue.clear()
         queue.push(songs)
     }
     
     func setQueue(with album: Album) {
-        guard isLibraryAuthorized else { checkAuthorized(); return }
+        guard checkAuthorized() else { return }
         
         setQueue(with: album.items)
     }
     
     func setQueue(with artist: Artist) {
-        guard isLibraryAuthorized else { checkAuthorized(); return }
+        guard checkAuthorized() else { return }
         
         setQueue(with: artist.items)
     }
@@ -587,6 +562,25 @@ class MusicController: ObservableObject {
         artist(for: album.items[0])
     }
     
+    func getEntry(at offset: Int = 0, with date: Date = Date(), size: WidgetFamily = .systemSmall) -> (entry: NeoTimelineEntry, isPlaying: Bool) {
+        var media: [MPMediaItem?] = [item(at: currentIndex + offset)]
+        
+        if size != .systemSmall {
+            for i in 1...3 {
+                
+                media.append(item(at: currentIndex + offset + i))
+            }
+            
+            if size == .systemLarge {
+                
+            }
+        }
+        
+        media = media.compactMap { $0 }
+        
+        return (NeoTimelineEntry(songs: media.map { AMSong($0) }, date: date), isPlaying)
+    }
+    
     // MARK: - Objective-C Functions
     
     @objc
@@ -678,11 +672,4 @@ extension MusicController {
         case invalidInput
         case otherError(String)
     }
-}
-
-
-// MARK: - MusicController Extension: NeoWatch Updates
-
-extension MusicController {
-    
 }

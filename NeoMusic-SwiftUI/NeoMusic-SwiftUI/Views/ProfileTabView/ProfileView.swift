@@ -36,8 +36,8 @@ struct ProfileView: View {
                                 showSettingsBar = true
                             }
                         }
-                        .spacing(.trailing)
                         .matchedGeometryEffect(id: "BarButton", in: nspace)
+                        .spacing(.trailing)
                     }
                 }
                 
