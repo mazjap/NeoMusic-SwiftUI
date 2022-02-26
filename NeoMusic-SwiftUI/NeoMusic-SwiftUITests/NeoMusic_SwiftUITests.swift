@@ -9,11 +9,18 @@ import XCTest
 import SwiftUI
 import MediaPlayer
 @testable import NeoMusic_SwiftUI
+import os.signpost
+
+let log = OSLog(
+    subsystem: "com.johnsundell.app",
+    category: "RecordLoading"
+)
+
+
 
 class NeoMusic_SwiftUITests: XCTestCase {
     var settingsController = SettingsController.shared
-    var musicController = MusicPlayerController()
-    var searchController = SongSearchController()
+    var musicController = MusicController()
         
     var queue = Queue([1, 2, 3, 4, 5])
     
@@ -31,7 +38,6 @@ class NeoMusic_SwiftUITests: XCTestCase {
 
     // Test if gradient is saved to userdefaults
     func testSetColorScheme() throws {
-        
         XCTAssertEqual(originalColorScheme, settingsController.colorScheme)
         
         for _ in 1...10 {
@@ -130,6 +136,31 @@ class NeoMusic_SwiftUITests: XCTestCase {
         XCTAssertEqual(last, queue.pop())
         XCTAssertNotEqual(last, queue.read())
     }
+    
+    #if !targetEnvironment(simulator)
+    func testLibrarySongSearch() {
+        guard UIDevice.isConnectedToNetwork(), musicController.songCount > 1, let title = musicController.item(at: 0)?.title else { return }
+        musicController.searchTerm = title
+        
+        let expectation = XCTestExpectation()
+        wait(for: [expectation], timeout: 10)
+        
+        var count = 0
+        while musicController.searchResults.songs.isEmpty {
+            if count > 10000 {
+                XCTAssert(false)
+                return
+            }
+            count += 1
+        }
+        expectation.fulfill()
+    }
+    
+    func testAppleMusicSongSearch() {
+        
+    }
+    
+    #endif
     
     func testMultiQueuePop() {
         XCTAssertEqual(Array(queue.arr[0..<3]), queue.pop(3))

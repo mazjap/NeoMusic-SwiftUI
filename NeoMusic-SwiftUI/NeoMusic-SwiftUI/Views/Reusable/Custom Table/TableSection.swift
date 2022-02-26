@@ -66,7 +66,7 @@ struct TableSection_Previews: PreviewProvider {
     }
 }
 
-@_functionBuilder
+@resultBuilder
 struct TableSectionBuilder {
     static func buildBlock<Content>(_ children: Content...) -> [AnyView] where Content: View {
         children.map { $0.asAny() }
@@ -85,7 +85,7 @@ extension TableSection {
         self.environment(\.section, section)
     }
     
-    func seperator<Content>(_ view: Content?) -> TableSection where Content: View {
+    func seperator<Content>(_ view: Content?) -> some View where Content: View {
         TableSection(title: title, children: content, seperator: view.asAny())
     }
 }

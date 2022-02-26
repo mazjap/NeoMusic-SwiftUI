@@ -13,8 +13,14 @@ import SwiftUI
 struct Constants {
     static let spacing: CGFloat = 16
     
-    static let buttonSize: CGFloat = 90
-    static let buttonPadding: CGFloat = 30
+    static let buttonSize: CGFloat = 70
+    static var buttonPadding: CGFloat {
+        #if os(iOS)
+        return UIScreen.main.bounds.width / 14
+        #else
+        return 30
+        #endif
+    }
     
     static let defaults = [defaultColorScheme, lightColorScheme, darkColorScheme]
     
@@ -51,7 +57,7 @@ struct Constants {
     
     static let coreDataUserModelName = "User"
     
-    static var cacheCount = 0
+    private static var cacheCount = 0
     
     static var cacheNumber: Int {
         cacheCount += 1

@@ -18,6 +18,7 @@ struct TabBar: View {
     @EnvironmentObject private var feedbackGenerator: FeedbackGenerator
     
     @GestureState private var dragOffset: CGFloat = 0
+    @State private var otherOffset: CGFloat = 0
     
     @State private var selectedIndex: Int
     
@@ -38,12 +39,14 @@ struct TabBar: View {
     var body: some View {
         VStack {
             Spacer()
+            
             ZStack {
-                items[selectedIndex - 1 < 0 ? items.count - 1 : selectedIndex - 1]
-                    .offset(x: -UIScreen.main.bounds.width + dragOffset)
+                
+                items[selectedIndex - 1 < 0 ? items.count - 1 : selectedIndex - 1].content
+                    .offset(x: -UIScreen.main.bounds.width + dragOffset + otherOffset)
                 
                 items[selectedIndex].content
-                    .offset(x: dragOffset)
+                    .offset(x: dragOffset + otherOffset)
                     .gesture(
                         DragGesture()
                             .updating($dragOffset) { value, state, _ in
@@ -57,17 +60,25 @@ struct TabBar: View {
                                 
                                 if value.translation.width > 50 {
                                     changeIndex(to: selectedIndex == 0 ? items.count - 1 : selectedIndex - 1)
-                                } else if value.translation.width < -50 {
+                                    otherOffset = -value.translation.width
+                                } else {
                                     changeIndex(to: selectedIndex == items.count - 1 ? 0 : selectedIndex + 1)
+                                    otherOffset = -value.translation.width
+                                }
+                                
+                                withAnimation() {
+                                    otherOffset = 0
                                 }
                             }
                     )
                 
-                items[selectedIndex + 1 >= items.count ? 0 : selectedIndex + 1]
-                    .offset(x: UIScreen.main.bounds.width + dragOffset)
+                
+                items[selectedIndex + 1 >= items.count ? 0 : selectedIndex + 1].content
+                    .offset(x: UIScreen.main.bounds.width + dragOffset + otherOffset)
             }
 
             Spacer()
+            
             ZStack {
                 Rectangle()
                     .foregroundColor(settingsController.colorScheme.backgroundGradient.last)
@@ -147,7 +158,7 @@ struct TabBarPreferenceKey: PreferenceKey {
 
 // MARK: - TabBar: TabBuilder
 
-@_functionBuilder
+@resultBuilder
 struct TabBuilder {
     static func buildBlock(_ children: TabItem...) -> [TabItem] {
         children

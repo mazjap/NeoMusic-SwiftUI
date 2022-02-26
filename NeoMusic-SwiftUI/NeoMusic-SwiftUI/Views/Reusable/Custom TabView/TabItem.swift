@@ -7,11 +7,7 @@
 
 import SwiftUI
 
-struct TabItem: View {
-    
-    // MARK: - State
-    
-    @EnvironmentObject private var feedbackGenerator: FeedbackGenerator
+class TabItem {
     
     // MARK: - Variables
     
@@ -25,14 +21,6 @@ struct TabItem: View {
         self.title = Text(title)
         self.image = Image(systemName: imageName)
         self.content = content().asAny()
-    }
-    
-    // MARK: - Body
-    
-    var body: some View {
-        Button(action: {}) {
-            content
-        }
     }
 }
 

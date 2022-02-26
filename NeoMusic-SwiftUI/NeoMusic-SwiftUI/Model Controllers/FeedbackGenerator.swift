@@ -6,10 +6,19 @@
 //
 
 import SwiftUI
+import CoreHaptics
 
 class FeedbackGenerator: ObservableObject {
     
     // MARK: - Variables
+    
+    private var engine: CHHapticEngine?
+    
+    lazy var toggleHaptic: CHHapticPatternPlayer? = {
+        
+        
+        return try? engine?.makePlayer(with: CHHapticPattern(events: [], parameterCurves: []))
+    }()
     
     private var feedbackEnabled: Bool {
         didSet {
@@ -30,6 +39,10 @@ class FeedbackGenerator: ObservableObject {
         self.feedbackEnabled = false
         
         self.feedbackEnabled = feedbackEnabled
+        
+        if let e = try? CHHapticEngine() {
+            engine = e
+        }
     }
     
     // MARK: - Functions
@@ -60,40 +73,5 @@ class FeedbackGenerator: ObservableObject {
         guard feedbackEnabled else { return }
         
         nfg.notificationOccurred(.warning)
-    }
-    
-    func perform(_ type: FeedbackType) {
-        switch type {
-        case .s:
-            successFeedback()
-        case .e:
-            errorFeedback()
-        case .w:
-            warningFeedback()
-        case .i(let impact):
-            impactOccurred(intensity: impact)
-        }
-    }
-}
-
-// MARK: - FeedbackGenerator Extension: FeedbackType
-
-extension FeedbackGenerator {
-    enum FeedbackType {
-        case s, e, w
-        case i(CGFloat)
-        
-        init?<Type>(_ val: Type) where Type: StringProtocol {
-            switch String(val) {
-            case "s":
-                self = .s
-            case "e":
-                self = .e
-            case "w":
-                self = .w
-            default:
-                return nil
-            }
-        }
     }
 }

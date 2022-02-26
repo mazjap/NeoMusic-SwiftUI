@@ -24,32 +24,6 @@ extension UIApplication {
         Self.shared.currentVC?.present(alert, animated: animated)
     }
     
-    func setHostingController<Content>(with view: Content, animate: Bool = false, from prev: LinearGradient? = nil) where Content: View {
-        let hostingController: HostingController<AnyView>
-        var displayPrev = true
-        if animate, let prev = prev {
-            hostingController = HostingController(rootView:
-                    ZStack {
-                        if displayPrev {
-                            prev
-                        }
-                        
-                        view.onAppear(
-                            perform: {
-                                withAnimation {
-                                    displayPrev = false
-                                }
-                            })
-                    }.asAny())
-        } else {
-            hostingController = HostingController(rootView: view.asAny())
-        }
-        
-        
-        keyWindow?.rootViewController = hostingController
-        Self.hostingVC = hostingController
-    }
-    
     func setNeedsStatusBarAppearanceUpdate() {
         Self.hostingVC?.setNeedsStatusBarAppearanceUpdate()
     }

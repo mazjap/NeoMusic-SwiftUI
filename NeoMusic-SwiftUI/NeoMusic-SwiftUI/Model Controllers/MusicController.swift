@@ -8,6 +8,7 @@
 //  Control system music player
 //
 
+import MusicKit
 import MediaPlayer
 import StoreKit
 import WidgetKit

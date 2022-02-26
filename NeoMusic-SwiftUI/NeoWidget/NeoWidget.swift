@@ -116,7 +116,7 @@ struct NeoWidget: Widget {
         StaticConfiguration(kind: kind, provider: Provider(controller: controller)) { entry in
             NeoWidgetEntryView(entry: entry, controller: controller)
         }
-        .configurationDisplayName("NeoWidget")
+        .configurationDisplayName(kind)
         .description("Music.")
     }
 }

@@ -83,7 +83,7 @@ struct MusicSlider: View {
                         .cornerRadius(lineHeight / 2)
                         .padding(.horizontal, sliderSize / 2)
                     
-                    LinearGradient(gradient: colorScheme.sliderGradient.gradient, startPoint: .top, endPoint: .bottom)
+                    LinearGradient(gradient: colorScheme.sliderGradient.gradient, startPoint: .bottom, endPoint: .top)
                         .frame(width: verifiedDistance, height: lineHeight - 2)
                         .cornerRadius((lineHeight - 2) / 2)
                         .padding(.horizontal, sliderSize / 2)
@@ -190,8 +190,11 @@ struct MusicSlider_Previews: PreviewProvider {
             LinearGradient(gradient: JCColorScheme.default.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea()
             
+            
             MusicSlider(colorScheme: Constants.defaultColorScheme, min: $zero, max: $five, current: $two, onChange: {_ in})
+                .environment(\.isEnabled, false)
                 .environmentObject(FeedbackGenerator(feedbackEnabled: false))
         }
+        .previewLayout(.fixed(width: 400, height: 100))
     }
 }

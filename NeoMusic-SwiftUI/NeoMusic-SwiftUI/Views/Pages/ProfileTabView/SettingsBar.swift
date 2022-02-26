@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SettingsBar: View {
     @EnvironmentObject private var settingsController: SettingsController
-    @State private var showingColorSchemeEditor = false
+    @State private var selectedItem: Int? = nil
     
     @Binding private var isOpen: Bool
     
@@ -30,7 +30,7 @@ struct SettingsBar: View {
                 HStack {
                     Button(action: {
                         withAnimation {
-                            showingColorSchemeEditor.toggle()
+                            selectedItem = 0
                         }
                     }) {
                         Image("colorscheme_icon")
@@ -38,7 +38,7 @@ struct SettingsBar: View {
                             .aspectRatio(contentMode: .fit)
                             .foregroundColor(settingsController.colorScheme.mainButtonColor.color)
                     }
-                    .buttonStyle(DefaultButtonStyle(color: backgroundColor, padding: Constants.buttonPadding - 10))
+                    .buttonStyle(DefaultButtonStyle(color: backgroundColor, padding: Constants.buttonPadding - 10, isSelected: selectedItem == 0))
                     .frame(width: Constants.buttonSize - 20, height: Constants.buttonSize - 20)
                     
                     Spacer()
@@ -54,7 +54,7 @@ struct SettingsBar: View {
             }
             .frame(height: Self.height)
 
-            if showingColorSchemeEditor {
+            if selectedItem == 0 {
                 ColorSchemeView(backgroundColor: backgroundColor)
             } else { // if (other cases) {
 
@@ -71,5 +71,7 @@ struct SettingsBar_Previews: PreviewProvider {
     
     static var previews: some View {
         SettingsBar(backgroundColor: .falseBlack, namespace: nspace, isOpen: $isOpen)
+            .environmentObject(SettingsController.shared)
+            .previewLayout(.fixed(width: 400, height: SettingsBar.height))
     }
 }

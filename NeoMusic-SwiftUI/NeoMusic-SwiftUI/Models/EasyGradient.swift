@@ -7,12 +7,27 @@
 
 import SwiftUI
 
-struct EasyGradient: Codable, Equatable, Hashable, CustomStringConvertible {
-    
+struct EasyGradient: Codable, Hashable, Identifiable, CustomStringConvertible, RawRepresentable {
     // MARK: - Variables
+    
+    var rawValue: String {
+        do {
+            if let value = String(data: try JSONEncoder().encode(self), encoding: .utf8) {
+                return value
+            }
+        } catch {
+            print(error)
+        }
+        
+        return "[]"
+    }
     
     var description: String {
         "\(easyColors)"
+    }
+    
+    var id: String {
+        rawValue
     }
     
     private(set) var easyColors: [EasyColor]
@@ -61,6 +76,16 @@ struct EasyGradient: Codable, Equatable, Hashable, CustomStringConvertible {
         }
         
         self.easyColors = items
+    }
+    
+    init?(rawValue: String) {
+        guard let data = rawValue.data(using: .utf8),
+            let value = try? JSONDecoder().decode(EasyGradient.self, from: data)
+        else {
+            return nil
+        }
+        
+        self = value
     }
     
     // MARK: - Functions
@@ -126,6 +151,24 @@ struct EasyGradient: Codable, Equatable, Hashable, CustomStringConvertible {
     }
     
     static let none = EasyGradient([EasyColor.clear])
+}
+
+extension EasyGradient {
+    enum CodingKeys: String, CodingKey {
+        case easyColors
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.easyColors = try container.decode([EasyColor].self, forKey: .easyColors)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = try encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(easyColors, forKey: .easyColors)
+    }
 }
 
 // MARK: Gradient Extension: reversed

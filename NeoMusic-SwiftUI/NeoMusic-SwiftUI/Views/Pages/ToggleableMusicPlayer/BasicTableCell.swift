@@ -59,7 +59,7 @@ struct UpNextRow_Previews: PreviewProvider {
 }
 
 
-@_functionBuilder
+@resultBuilder
 struct BasicCellBuilder {
     static func buildBlock(_ children: BasicTableCell...) -> [BasicTableCell] {
         children

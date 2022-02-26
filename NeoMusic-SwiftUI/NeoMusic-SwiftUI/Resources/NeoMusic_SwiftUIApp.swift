@@ -9,33 +9,32 @@ import SwiftUI
 
 @main
 struct NeoMusic_SwiftUIApp: App {
-    
+    @StateObject private var settingsController = SettingsController.shared
     @StateObject private var musicController = MusicController()
     @StateObject private var feedbackGenerator = FeedbackGenerator(feedbackEnabled: SettingsController.shared.feedbackEnabled)
-    
+    @State private var isLoading = true
     @State private var gradient = JCColorScheme.default.backgroundGradient.gradient
     
     var body: some Scene {
         WindowGroup {
-            Rectangle()
-                .fill(LinearGradient(gradient: gradient, startPoint: .top, endPoint: .bottom))
-                .ignoresSafeArea()
-                .onAppear(perform: {
-                    let settingsController = SettingsController.shared
-                    gradient = settingsController.colorScheme.backgroundGradient.gradient
-                    
-                    UIApplication.shared.setHostingController(
-                        with: RootView()
-                                .environmentObject(settingsController)
-                                .environmentObject(musicController)
-                                .environmentObject(feedbackGenerator)
-                                .environment(\.managedObjectContext, CoreDataStack.shared.userContext)
-                                .asAny(),
-                        animate: true,
-                        from: LinearGradient(gradient: gradient, startPoint: .top, endPoint: .bottom)
-                    )
-                }
-            )
+            if isLoading {
+                LinearGradient(gradient: gradient, startPoint: .top, endPoint: .bottom)
+                    .ignoresSafeArea()
+                    .onAppear(perform: {
+                        withAnimation {
+                            gradient = settingsController.colorScheme.backgroundGradient.gradient
+                            
+                            isLoading = false
+                        }
+                    }
+                )
+            } else {
+                RootView()
+                    .environmentObject(settingsController)
+                    .environmentObject(musicController)
+                    .environmentObject(feedbackGenerator)
+                    .environment(\.managedObjectContext, CoreDataStack.shared.userContext)
+            }
         }
     }
 }

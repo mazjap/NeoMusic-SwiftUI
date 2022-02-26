@@ -42,10 +42,17 @@ struct RotatableImage: View {
     
     var body: some View {
         GeometryReader { geometry in
-            Circle()
-                .fill(LinearGradient(gradient: Gradient(colors: colorScheme.backgroundGradient.colors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
-                .clipShape(Circle())
-                .neumorph(color: colorScheme.backgroundGradient.first.average(to: colorScheme.backgroundGradient.last), size: size, cornerRadius: .infinity, isConcave: false)
+            LinearGradient(
+                gradient: Gradient(
+                    colors: colorScheme.backgroundGradient.colors.reversed()
+                ),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            .clipShape(Circle())
+            .neumorph(color: colorScheme.backgroundGradient.first.average(to: colorScheme.backgroundGradient.last), size: size, cornerRadius: .infinity, isConcave: false)
+//                .neumorph(Circle(), color: colorScheme.backgroundGradient.first.average(to: colorScheme.backgroundGradient.last), spread: 10, radius: 10)
+//                .neumorph(color: , size: size, cornerRadius: .infinity, isConcave: false)
                 .overlay(
             image
                 .resizable()
@@ -111,8 +118,13 @@ struct Artwork_Previews: PreviewProvider {
     @State static var rotation: Double = 0
     
     static var previews: some View {
-        RotatableImage(colorScheme: .default, image: .placeholder, rotation: $rotation)
-            .spacing()
-            .previewLayout(.fixed(width: 400, height: 400))
+        ZStack {
+            Color.falseWhite
+            
+            RotatableImage(colorScheme: .default, image: .placeholder, rotation: $rotation)
+                .spacing()
+                .previewLayout(.fixed(width: 400, height: 400))
+        }
+        .ignoresSafeArea()
     }
 }

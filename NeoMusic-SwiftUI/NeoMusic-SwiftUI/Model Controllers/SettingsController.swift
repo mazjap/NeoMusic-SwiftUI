@@ -14,8 +14,10 @@ class SettingsController: ObservableObject {
     
     // MARK: - Variables
     
-    @Published private(set) var colorScheme: JCColorScheme = JCColorScheme.default
+//    @Published private(set) var colorScheme: JCColorScheme = JCColorScheme.default
     @Published private(set) var feedbackEnabled: Bool = true
+    
+    @AppStorage(SettingsController.keys.colorSchemeKey, store: .standard) private(set) var colorScheme = JCColorScheme.default
     
     private let queue = DispatchQueue(label: "com.mazjap.NeoMusic-SwiftUI.SettingsController.settingsQueue", attributes: .concurrent)
     private let userDefaults = UserDefaults.standard

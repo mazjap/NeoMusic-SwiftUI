@@ -16,5 +16,11 @@ extension Binding {
             handler(newVal)
         }
     }
+    
+    init(_ defaultValue: Value) {
+        self.init {
+            defaultValue
+        } set: { _ in }
+    }
 }
 
