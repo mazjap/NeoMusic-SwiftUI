@@ -1,13 +1,3 @@
-//
-//  RootView.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 8/25/20.
-//
-//  Purpose:
-//  Root view, separates app into tabs, creates shared values.
-//
-
 import SwiftUI
 
 struct RootView: View {
@@ -21,51 +11,30 @@ struct RootView: View {
     @StateObject private var messageController = MessageController.shared
     @State private var musicPlayerIsOpen: Bool = true
     
-    
     // MARK: - Body
     
     var body: some View {
         GeometryReader { geometry in
-            ZStack {
-                LinearGradient(gradient: settingsController.colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
-                    .ignoresSafeArea(edges: .top)
-                    .frame(height: geometry.size.height - TabBar.height)
-                    .offset(y: -TabBar.height / 2)
-                
-                TabBar {
-                    TabItem(title: "Search", imageName: "magnifyingglass") {
-                        SearchView()
-                    }
+            TabBar(tabItem: AppTab.self) { item in
+                ZStack {
+                    LinearGradient(gradient: settingsController.colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
+                        .edgesIgnoringSafeArea(.top)
                     
-                    TabItem(title: "Music", imageName: musicController.isPlaying ? "pause.fill" : "play.fill") {
-                        MusicView()
-                    }
-                    
-                    TabItem(title: "Profile", imageName: "person.fill") {
-                        ProfileView()
-                    }
-                }
-                .accentColor(settingsController.colorScheme.textColor.color)
-                
-                MusicPlayer(isOpen: $musicPlayerIsOpen)
-                    .frame(height: geometry.size.height - TabBar.height)
-                    .offset(y: musicPlayerIsOpen ? -TabBar.height / 2 : geometry.size.height / 2 - TabBar.height - MusicPlayer.musicPlayerHeightOffset / 2)
-                
-                if let message = messageController.message {
-                    let size = CGSize(width: UIScreen.main.bounds.width * 0.45, height: UIScreen.main.bounds.height * 0.15)
-                    
-                    ZStack {
-                        settingsController.colorScheme.backgroundGradient.first.opacity(0.75)
-                            .frame(size: size)
-                            .cornerRadius(10)
+                    ZStack(alignment: .bottom) {
+                        switch item {
+                        case .search:
+                            SearchView()
+                        case .music:
+                            MusicView()
+                        case .profile:
+                            ProfileView()
+                        }
                         
-                        Text(message.value)
-                            .foregroundColor(message.type.color)
-                            .frame(size: size)
+                        MusicPlayer(isOpen: $musicPlayerIsOpen)
                     }
-                    .offset(y: size.height - UIScreen.main.bounds.height / 2)
                 }
             }
+            .accentColor(settingsController.colorScheme.textColor.color)
         }
     }
 }

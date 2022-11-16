@@ -1,10 +1,3 @@
-//
-//  CDEasyColor+Convenience.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 11/20/20.
-//
-
 import CoreData
 
 extension CDEasyColor {

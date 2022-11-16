@@ -1,10 +1,3 @@
-//
-//  EasyGradient.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 11/21/20.
-//
-
 import SwiftUI
 
 struct EasyGradient: Codable, Hashable, Identifiable, CustomStringConvertible, RawRepresentable {
@@ -165,7 +158,7 @@ extension EasyGradient {
     }
     
     func encode(to encoder: Encoder) throws {
-        var container = try encoder.container(keyedBy: CodingKeys.self)
+        var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(easyColors, forKey: .easyColors)
     }

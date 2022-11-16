@@ -1,10 +1,3 @@
-//
-//  FeedbackGenerator.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 10/12/20.
-//
-
 import SwiftUI
 import CoreHaptics
 

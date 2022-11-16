@@ -1,10 +1,3 @@
-//
-//  UpNextView.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 11/18/20.
-//
-
 import SwiftUI
 
 struct UpNextView: View {
@@ -18,11 +11,18 @@ struct UpNextView: View {
     
     var body: some View {
         ScrollViewReader { reader in
-            Table(selectedIndexPath: $selectedIndex.onChanged(selectionChanged(to:))) {
-                ForEach(musicController.upNextSongs, id: \.id) { song in
-                    BasicTableCell(label: song.title, detail: song.artist, image: Image(uiImage: song.albumArtwork))
-                        .foregroundColor(colorScheme.backgroundGradient.last)
+            TableView(data: .init(get: { musicController.upNextSongs }, set: { _ in }), id: \.id) { song in
+                HStack {
+                    VStack {
+                        Text(song.title)
+                        Text(song.artist)
+                    }
+                    
+                    Spacer()
+                    
+                    Image(uiImage: song.albumArtwork)
                 }
+                .foregroundColor(colorScheme.backgroundGradient.last)
             }
             .foregroundColor(colorScheme.textColor.color)
             .background(colorScheme.backgroundGradient.last)

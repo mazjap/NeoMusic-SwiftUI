@@ -1,10 +1,3 @@
-//
-//  MessageController.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 11/5/20.
-//
-
 import Foundation
 
 class MessageController: ObservableObject {

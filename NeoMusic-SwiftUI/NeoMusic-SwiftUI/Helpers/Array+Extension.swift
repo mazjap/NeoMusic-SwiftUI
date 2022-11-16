@@ -1,10 +1,3 @@
-//
-//  Array+Extension.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 12/28/20.
-//
-
 import MediaPlayer
 
 // MARK: - Extension Array: AMSong

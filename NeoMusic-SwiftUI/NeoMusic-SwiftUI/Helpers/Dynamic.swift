@@ -1,11 +1,3 @@
-//
-//  Dynamic.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Mhd Hejazi on 4/15/20.
-//  Copyright © 2020 Samabox. All rights reserved.
-//
-
 import Foundation
 
 @dynamicCallable

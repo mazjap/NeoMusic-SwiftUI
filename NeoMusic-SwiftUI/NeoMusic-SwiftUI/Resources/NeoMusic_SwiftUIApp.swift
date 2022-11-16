@@ -1,10 +1,3 @@
-//
-//  NeoMusic_SwiftUIApp.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 8/24/20.
-//
-
 import SwiftUI
 
 @main
@@ -20,14 +13,13 @@ struct NeoMusic_SwiftUIApp: App {
             if isLoading {
                 LinearGradient(gradient: gradient, startPoint: .top, endPoint: .bottom)
                     .ignoresSafeArea()
-                    .onAppear(perform: {
+                    .onAppear {
                         withAnimation {
                             gradient = settingsController.colorScheme.backgroundGradient.gradient
                             
                             isLoading = false
                         }
                     }
-                )
             } else {
                 RootView()
                     .environmentObject(settingsController)

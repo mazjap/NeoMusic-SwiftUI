@@ -1,20 +1,9 @@
-//
-//  SettingsController.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 8/25/20.
-//
-//  Purpose:
-//  Persistently save user settings and info
-//
-
 import SwiftUI
 
 class SettingsController: ObservableObject {
     
     // MARK: - Variables
     
-//    @Published private(set) var colorScheme: JCColorScheme = JCColorScheme.default
     @Published private(set) var feedbackEnabled: Bool = true
     
     @AppStorage(SettingsController.keys.colorSchemeKey, store: .standard) private(set) var colorScheme = JCColorScheme.default

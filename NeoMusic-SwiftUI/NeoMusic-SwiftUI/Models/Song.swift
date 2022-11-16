@@ -1,13 +1,3 @@
-//
-//  Song.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 8/25/20.
-//
-//  Purpose:
-//  Encapsulate song data
-//
-
 import WidgetKit
 import SwiftUI
 import MediaPlayer

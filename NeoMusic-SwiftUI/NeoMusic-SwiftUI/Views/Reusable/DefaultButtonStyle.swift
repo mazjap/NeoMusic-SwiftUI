@@ -1,13 +1,3 @@
-//
-//  DefaultButtonStyle.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 8/25/20.
-//
-//  Purpose:
-//  Round button with custom gradient and image, for UI
-//
-
 import SwiftUI
 
 struct DefaultButtonStyle: ButtonStyle {

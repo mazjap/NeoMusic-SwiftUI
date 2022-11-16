@@ -1,10 +1,3 @@
-//
-//  AnyShape.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 12/12/20.
-//
-
 import SwiftUI
 
 public struct AnyShape: InsettableShape {

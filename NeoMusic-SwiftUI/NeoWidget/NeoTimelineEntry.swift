@@ -1,10 +1,3 @@
-//
-//  NeoTimelineEntry.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 12/30/20.
-//
-
 import WidgetKit
 
 struct NeoTimelineEntry: TimelineEntry {

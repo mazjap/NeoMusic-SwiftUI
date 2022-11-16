@@ -1,78 +1,33 @@
-//
-//  TableView.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 12/13/21.
-//
-
 import SwiftUI
 
-struct TableView<Data, Row>: View where Row: View {
-    @Binding private var data: [Data]
-    private let content: (Data) -> Row
+struct TableView<Data, ID, Row>: View where Row: View, Data: RandomAccessCollection, ID: Hashable {
+    @Binding private var data: Data
+    private let content: (Data.Element) -> Row
+    private let id: KeyPath<Data.Element, ID>
     
-    private var refreshAction: ((() -> Void) -> Void)?
-    private var style: UITableView.Style = .plain
-    private var allowsMultipleSelection: Bool = true
-    private var allowsMultipleSelectionDuringEditing: Bool = true
-    private var separatorStyle: UITableViewCell.SeparatorStyle = .none
+    init(data: Binding<Data>, @ViewBuilder row: @escaping (Data.Element) -> Row) where ID == Data.Element {
+        self.init(data: data, id: \.self, row: row)
+    }
     
-    init(data: Binding<[Data]>, @ViewBuilder row: @escaping (Data) -> Row) {
+    init(data: Binding<Data>, id: KeyPath<Data.Element, ID>, @ViewBuilder row: @escaping (Data.Element) -> Row) {
         self._data = data
+        self.id = id
         self.content = row
+        
     }
     
     var body: some View {
-        UITableViewRepresentable(
-            data: $data,
-            content: content,
-            refreshAction: refreshAction,
-            style: style,
-            allowsMultipleSelection: allowsMultipleSelection,
-            allowsMultipleSelectionDuringEditing: allowsMultipleSelectionDuringEditing,
-            separatorStyle: separatorStyle
-        )
-    }
-    
-    func style(_ newValue: UITableView.Style) -> Self {
-        var copy = self
-        copy.style = newValue
-        
-        return copy
-    }
-    
-    func allowsMultipleSelection(_ newValue: Bool) -> Self {
-        var copy = self
-        copy.allowsMultipleSelection = newValue
-        
-        return copy
-    }
-    
-    func allowsMultipleSelectionDuringEditing(_ newValue: Bool) -> Self {
-        var copy = self
-        copy.allowsMultipleSelectionDuringEditing = newValue
-        
-        return copy
-    }
-    
-    func separatorStyle(_ newValue: UITableViewCell.SeparatorStyle = .none) -> Self {
-        var copy = self
-        copy.separatorStyle = newValue
-        
-        return copy
-    }
-    
-    func refreshable(_ newValue: ((() -> Void) -> Void)? = nil) -> Self {
-        var copy = self
-        copy.refreshAction = newValue
-        
-        return copy
+        ScrollView(.vertical, showsIndicators: true) {
+            LazyVStack(alignment: .leading) {
+                ForEach(data, id: id, content: content)
+            }
+        }
     }
 }
 
 struct TableView_Previews: PreviewProvider {
     static var previews: some View {
-        TableView(data: .init([])) {
+        TableView(data: .constant([1, 2, 3])) { _ in
             EmptyView()
         }
     }

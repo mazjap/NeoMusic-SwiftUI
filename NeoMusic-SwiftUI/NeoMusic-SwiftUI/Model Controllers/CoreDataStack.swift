@@ -1,10 +1,3 @@
-//
-//  CoreDataStack.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 11/20/20.
-//
-
 import CoreData
 
 class CoreDataStack {

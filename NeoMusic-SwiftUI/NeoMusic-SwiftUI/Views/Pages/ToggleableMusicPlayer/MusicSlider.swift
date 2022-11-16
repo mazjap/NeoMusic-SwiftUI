@@ -1,13 +1,3 @@
-//
-//  MusicSlider.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 8/25/20.
-//
-//  Purpose:
-//  Custom slider that displays and changes current playing duration
-//
-
 import SwiftUI
 
 struct MusicSlider: View {

@@ -1,10 +1,3 @@
-//
-//  SearchBar.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 9/30/20.
-//
-
 import SwiftUI
 
 struct SearchBar: View {

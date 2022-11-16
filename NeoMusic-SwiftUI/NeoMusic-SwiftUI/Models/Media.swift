@@ -1,10 +1,3 @@
-//
-//  Media.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 11/1/20.
-//
-
 import MediaPlayer
 import SwiftUI
 

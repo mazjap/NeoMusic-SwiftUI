@@ -1,22 +1,7 @@
-//
-//  NeoMusic_SwiftUITests.swift
-//  NeoMusic-SwiftUITests
-//
-//  Created by Jordan Christensen on 8/24/20.
-//
-
 import XCTest
 import SwiftUI
 import MediaPlayer
 @testable import NeoMusic_SwiftUI
-import os.signpost
-
-let log = OSLog(
-    subsystem: "com.johnsundell.app",
-    category: "RecordLoading"
-)
-
-
 
 class NeoMusic_SwiftUITests: XCTestCase {
     var settingsController = SettingsController.shared

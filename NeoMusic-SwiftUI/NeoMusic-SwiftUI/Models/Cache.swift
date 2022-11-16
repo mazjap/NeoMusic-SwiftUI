@@ -1,10 +1,3 @@
-//
-//  Cache.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 11/1/20.
-//
-
 import Foundation
 
 class Cache<Key, Value> where Key: Hashable {

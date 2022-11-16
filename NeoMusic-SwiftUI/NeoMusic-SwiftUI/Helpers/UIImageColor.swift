@@ -1,11 +1,3 @@
-//
-//  UIImageColors.swift
-//  https://github.com/jathu/UIImageColors
-//
-//  Created by Jathu Satkunarajah (@jathu) on 2015-06-11 - Toronto
-//  Based on Cocoa version by Panic Inc. - Portland
-//
-
 import UIKit
 
 public struct UIImageColors {

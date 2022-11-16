@@ -1,10 +1,3 @@
-//
-//  BarButton.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 10/26/20.
-//
-
 import SwiftUI
 
 struct BarButton: View {

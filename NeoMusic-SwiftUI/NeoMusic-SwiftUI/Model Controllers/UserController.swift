@@ -1,11 +1,4 @@
-//
-//  UserController.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 11/21/20.
-//
-
-import AVFoundation
+import SwiftUI
 
 class UserController: ObservableObject {
     @Published var user: User?
@@ -42,10 +35,4 @@ class UserController: ObservableObject {
         
         return true
     }
-}
-
-class AudioDistorter: ObservableObject {
-    let engine = AVAudioEngine()
-    let speedControl = AVAudioUnitVarispeed()
-    let pitchControl = AVAudioUnitTimePitch()
 }

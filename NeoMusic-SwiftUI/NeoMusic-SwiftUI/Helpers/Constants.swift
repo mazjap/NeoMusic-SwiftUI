@@ -1,13 +1,3 @@
-//
-//  Constants.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 8/25/20.
-//
-//  Purpose:
-//  Encapsulate project-wide reused variables
-//
-
 import SwiftUI
 
 struct Constants {

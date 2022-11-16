@@ -1,10 +1,3 @@
-//
-//  SliderShape.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 11/17/20.
-//
-
 import SwiftUI
 
 struct SliderShape: Shape {

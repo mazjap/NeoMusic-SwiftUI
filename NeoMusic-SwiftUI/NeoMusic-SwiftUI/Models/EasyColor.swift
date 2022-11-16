@@ -1,10 +1,3 @@
-//
-//  EasyColor.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 11/21/20.
-//
-
 import SwiftUI
 
 struct EasyColor: Codable, Hashable, Identifiable, CustomStringConvertible, RawRepresentable {

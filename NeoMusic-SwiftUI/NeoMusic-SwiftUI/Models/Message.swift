@@ -1,10 +1,3 @@
-//
-//  Message.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 11/5/20.
-//
-
 import SwiftUI
 
 struct Message {

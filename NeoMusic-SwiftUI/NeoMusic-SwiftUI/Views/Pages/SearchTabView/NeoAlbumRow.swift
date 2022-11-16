@@ -1,17 +1,6 @@
-//
-//  NeoAlbumRow.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 11/18/20.
-//
-
 import SwiftUI
 
 struct NeoAlbumRow: View {
-    
-    // MARK: - State
-    
-    @Binding var selectedAlbum: Album?
     
     // MARK: - Variables
     
@@ -19,13 +8,6 @@ struct NeoAlbumRow: View {
     let textColor: Color
     let album: Album
     let cornerRadius: CGFloat = 20
-    
-    var gesture: some Gesture {
-        TapGesture(count: 1)
-            .onEnded { _ in
-                selectedAlbum = album
-            }
-    }
     
     // MARK: - Body
     
@@ -60,7 +42,6 @@ struct NeoAlbumRow: View {
         }
         .spacing(.horizontal)
         .frame(height: SearchView.cellHeight)
-        .gesture(gesture)
     }
 }
 
@@ -69,11 +50,11 @@ struct NeoAlbumRow: View {
 struct NeoAlbumRow_Previews: PreviewProvider {
     static var previews: some View {
         List {
-            NeoAlbumRow(selectedAlbum: Binding<Optional<Album>>(get: { .noAlbum }, set: { _ in }), backgroundColor: JCColorScheme.default.backgroundGradient.first, textColor: JCColorScheme.default.textColor.color, album: .noAlbum)
+            NeoAlbumRow(backgroundColor: JCColorScheme.default.backgroundGradient.first, textColor: JCColorScheme.default.textColor.color, album: .noAlbum)
             
-            NeoAlbumRow(selectedAlbum: Binding<Optional<Album>>(get: { .noAlbum }, set: { _ in }), backgroundColor: .falseBlack, textColor: .gray, album: .noAlbum)
+            NeoAlbumRow(backgroundColor: .falseBlack, textColor: .gray, album: .noAlbum)
             
-            NeoAlbumRow(selectedAlbum: Binding<Optional<Album>>(get: { .noAlbum }, set: { _ in }), backgroundColor: .falseWhite, textColor: .gray, album: .noAlbum)
+            NeoAlbumRow(backgroundColor: .falseWhite, textColor: .gray, album: .noAlbum)
         }
     }
 }

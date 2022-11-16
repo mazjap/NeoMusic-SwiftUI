@@ -1,10 +1,3 @@
-//
-//  NeoSongRow.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 10/2/20.
-//
-
 import SwiftUI
 
 struct NeoSongRow: View {
@@ -13,21 +6,12 @@ struct NeoSongRow: View {
     
     @EnvironmentObject private var musicController: MusicController
     
-    @Binding var selectedSong: AMSong?
-    
     // MARK: - Variables
     
     let backgroundColor: Color
     let textColor: Color
     let song: AMSong
     let cornerRadius: CGFloat = 20
-    
-    var gesture: some Gesture {
-        TapGesture(count: 1)
-            .onEnded { _ in
-                selectedSong = song
-            }
-    }
     
     // MARK: - Body
     
@@ -66,7 +50,6 @@ struct NeoSongRow: View {
         }
         .spacing(.horizontal)
         .frame(height: SearchView.cellHeight)
-        .gesture(gesture)
     }
 }
 
@@ -75,11 +58,11 @@ struct NeoSongRow: View {
 struct NeoSongRow_Previews: PreviewProvider {
     static var previews: some View {
         List {
-            NeoSongRow(selectedSong: Binding<Optional<AMSong>>(get: { .noSong }, set: { _ in }), backgroundColor: JCColorScheme.default.backgroundGradient.first, textColor: JCColorScheme.default.textColor.color, song: .noSong)
+            NeoSongRow(backgroundColor: JCColorScheme.default.backgroundGradient.first, textColor: JCColorScheme.default.textColor.color, song: .noSong)
             
-            NeoSongRow(selectedSong: Binding<Optional<AMSong>>(get: { .noSong }, set: { _ in }), backgroundColor: .falseBlack, textColor: .gray, song: .noSong)
+            NeoSongRow(backgroundColor: .falseBlack, textColor: .gray, song: .noSong)
             
-            NeoSongRow(selectedSong: Binding<Optional<AMSong>>(get: { .noSong }, set: { _ in }), backgroundColor: .falseWhite, textColor: .gray, song: .noSong)
+            NeoSongRow(backgroundColor: .falseWhite, textColor: .gray, song: .noSong)
         }
     }
 }

@@ -1,10 +1,3 @@
-//
-//  UIDevice+Network.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 11/11/20.
-//
-
 import UIKit
 import SystemConfiguration
 

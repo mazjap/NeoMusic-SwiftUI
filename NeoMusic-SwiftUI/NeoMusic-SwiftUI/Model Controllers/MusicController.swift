@@ -1,13 +1,3 @@
-//
-//  MusicController.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 8/25/20.
-//
-//  Purpose:
-//  Control system music player
-//
-
 import MusicKit
 import MediaPlayer
 import StoreKit

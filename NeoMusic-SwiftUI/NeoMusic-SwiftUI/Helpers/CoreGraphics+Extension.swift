@@ -1,10 +1,3 @@
-//
-//  CoreGraphics+Extension.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 12/13/21.
-//
-
 import CoreGraphics
 
 extension CGFloat {

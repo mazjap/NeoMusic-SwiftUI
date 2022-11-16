@@ -1,10 +1,3 @@
-//
-//  CSPresets.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 11/12/20.
-//
-
 import SwiftUI
 
 struct CSPresets: View {
@@ -41,7 +34,7 @@ struct CSPresets: View {
                 VStack {
                     let arrs = schemes.arrs
                     
-                    ForEach(0..<arrs.count) { i in
+                    ForEach(0..<arrs.count, id: \.self) { i in
                         let arr = arrs[i]
                         HStack {
                             ForEach(arr, id: \.id) { cs in
@@ -57,7 +50,7 @@ struct CSPresets: View {
                     }
                     
                     Spacer()
-                        .frame(height: TabBar.height + MusicPlayer.musicPlayerHeightOffset)
+                        .frame(height: tabBarHeight + MusicPlayer.musicPlayerHeightOffset)
                 }
             }
         }

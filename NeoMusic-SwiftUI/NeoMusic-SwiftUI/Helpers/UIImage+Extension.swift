@@ -1,10 +1,3 @@
-//
-//  UIImage+Extension.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 11/12/20.
-//
-
 import UIKit
 
 extension UIImage {

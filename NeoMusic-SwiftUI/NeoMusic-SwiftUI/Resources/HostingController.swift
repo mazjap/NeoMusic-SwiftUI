@@ -1,10 +1,3 @@
-//
-//  HostingController.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 10/13/20.
-//
-
 import SwiftUI
 
 class HostingController<Content>: UIHostingController<Content> where Content: View {
@@ -12,4 +5,3 @@ class HostingController<Content>: UIHostingController<Content> where Content: Vi
         SettingsController.shared.colorScheme.textColor.color.perceivedBrightness >= 0.6 ? .lightContent : .darkContent
     }
 }
-

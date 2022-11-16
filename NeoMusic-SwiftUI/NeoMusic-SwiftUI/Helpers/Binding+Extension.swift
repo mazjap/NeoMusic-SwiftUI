@@ -1,10 +1,3 @@
-//
-//  Binding+Extension.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 11/24/20.
-//
-
 import SwiftUI
 
 extension Binding {

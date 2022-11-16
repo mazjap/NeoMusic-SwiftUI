@@ -1,111 +1,85 @@
-//
-//  CustomTabBar.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 9/4/20.
-//
-//  Inspired by:
-//  https://www.objc.io/blog/2020/02/25/swiftui-tab-bar/
-//
-
 import SwiftUI
 
-struct TabBar: View {
+protocol Tabbable {
+    var title: String { get }
+    var image: Image { get }
+}
+
+extension Tabbable where Self: RawRepresentable, Self.RawValue == String {
+    var title: String {
+        rawValue
+    }
+}
+
+struct TabBar<TabItem: CaseIterable & Tabbable, Content: View>: View {
     
     // MARK: - State
     
     @EnvironmentObject private var settingsController: SettingsController
     @EnvironmentObject private var feedbackGenerator: FeedbackGenerator
     
-    @GestureState private var dragOffset: CGFloat = 0
-    @State private var otherOffset: CGFloat = 0
+    @GestureState private var dragOffset: DragState = .inactive
     
     @State private var selectedIndex: Int
     
+    
     // MARK: - Variables
     
+    private let content: (TabItem) -> Content
     private let items: [TabItem]
+    
+    private var contentOffset: CGFloat {
+        CGFloat(selectedIndex) * UIScreen.main.bounds.width
+    }
     
     // MARK: - Initializers
     
-    init(startIndex: Int = 0, @TabBuilder _ items: () -> [TabItem]) {
-        self.items = items()
-        
-        self._selectedIndex = .init(initialValue: (startIndex < self.items.count && startIndex >= 0 ? startIndex : 0))
+    init(tabItem: TabItem.Type, startIndex: Int = 0, @ViewBuilder content: @escaping (TabItem) -> Content) {
+        self.content = content
+        self.items = Array(tabItem.allCases)
+        self._selectedIndex = .init(initialValue: (startIndex < TabItem.allCases.count && startIndex >= 0 ? startIndex : 0))
     }
     
     // MARK: - Body
     
     var body: some View {
-        VStack {
-            Spacer()
-            
+        GeometryReader { geometry in
             ZStack {
-                
-                items[selectedIndex - 1 < 0 ? items.count - 1 : selectedIndex - 1].content
-                    .offset(x: -UIScreen.main.bounds.width + dragOffset + otherOffset)
-                
-                items[selectedIndex].content
-                    .offset(x: dragOffset + otherOffset)
-                    .gesture(
-                        DragGesture()
-                            .updating($dragOffset) { value, state, _ in
-                                if value.startLocation.x > UIScreen.main.bounds.width - 50 || value.startLocation.x < 50 {
-                                    state = value.translation.width
-                                }
-                            }
-                            .onEnded { value in
-                                guard value.startLocation.x > UIScreen.main.bounds.width - 50 ||
-                                        value.startLocation.x < 50 else { return }
+                VStack(alignment: .leading, spacing: 0) {
+                    content(items[selectedIndex])
+                        .frame(width: geometry.size.width)
+                        .layoutPriority(2)
+                    
+                    ZStack(alignment: .leading) {
+                        settingsController.colorScheme.backgroundGradient.last
+                            .edgesIgnoringSafeArea(.bottom)
+                            .zIndex(-2)
+                        
+                        HStack {
+                            Spacer()
+                            
+                            ForEach(0..<items.count, id: \.self) { i in
+                                item(at: i)
                                 
-                                if value.translation.width > 50 {
-                                    changeIndex(to: selectedIndex == 0 ? items.count - 1 : selectedIndex - 1)
-                                    otherOffset = -value.translation.width
-                                } else {
-                                    changeIndex(to: selectedIndex == items.count - 1 ? 0 : selectedIndex + 1)
-                                    otherOffset = -value.translation.width
-                                }
-                                
-                                withAnimation() {
-                                    otherOffset = 0
-                                }
+                                Spacer()
                             }
-                    )
-                
-                
-                items[selectedIndex + 1 >= items.count ? 0 : selectedIndex + 1].content
-                    .offset(x: UIScreen.main.bounds.width + dragOffset + otherOffset)
-            }
-
-            Spacer()
-            
-            ZStack {
-                Rectangle()
-                    .foregroundColor(settingsController.colorScheme.backgroundGradient.last)
-                    .ignoresSafeArea(edges: .bottom)
-                
-                HStack {
-                    Spacer()
-                    ForEach(0..<items.count) { i in
-                        item(at: i)
-                        Spacer()
+                        }
+                        .overlayPreferenceValue(TabBarPreferenceKey.self) {
+                            self.indicator($0)
+                        }
                     }
+                    .frame(height: tabBarHeight)
+                    .zIndex(-1)
                 }
-                .overlayPreferenceValue(TabBarPreferenceKey.self) {
-                    self.indicator($0)
-                }
-                .spacing()
             }
-            .frame(height: Self.height)
         }
     }
     
     // MARK: - Private Functions
     
     private func changeIndex(to index: Int) {
-        guard index >= 0, index < items.count else { return }
         withAnimation(.spring(response: 0.35, dampingFraction: 0.7, blendDuration: 1)) {
-            self.selectedIndex = index
+            self.selectedIndex = index % items.count
         }
         
         feedbackGenerator.impactOccurred()
@@ -116,9 +90,11 @@ struct TabBar: View {
             changeIndex(to: index)
         }) {
             VStack {
-                items[index].image
+                let tabItem = items[index]
                 
-                items[index].title
+                tabItem.image
+                
+                Text(tabItem.title)
             }
         }
         .anchorPreference(key: TabBarPreferenceKey.self, value: .bounds) {
@@ -139,11 +115,9 @@ struct TabBar: View {
             }
         }
     }
-    
-    // MARK: - Static Variables
-    
-    static var height = UIScreen.main.bounds.height / 12
 }
+
+let tabBarHeight = UIScreen.main.bounds.height / 12
 
 // MARK: - TabBar: PreferenceKey
 
@@ -156,39 +130,50 @@ struct TabBarPreferenceKey: PreferenceKey {
     
 }
 
-// MARK: - TabBar: TabBuilder
-
-@resultBuilder
-struct TabBuilder {
-    static func buildBlock(_ children: TabItem...) -> [TabItem] {
-        children
-    }
-}
-
 // MARK: - Preview
 
 struct TabBar_Previews: PreviewProvider {
-    static var previews: some View {
-        ZStack {
-            Rectangle()
-                .foregroundColor(.gray)
-                .ignoresSafeArea(edges: .top)
+    enum PreviewTab: String, CaseIterable, Tabbable {
+        case circle = "Circle"
+        case square = "Square"
+        case square2
+        case square3
+        case square4
+        
+        var image: Image {
+            let name: String = {
+                switch self {
+                case .circle:
+                    return "circle.fill"
+                default:
+                    return "square.fill"
+                }
+            }()
             
-            TabBar {
-                TabItem(title: "Circle", imageName: "circle.fill") {
+            return Image(systemName: name)
+        }
+    }
+    
+    static var previews: some View {
+        TabBar(tabItem: PreviewTab.self) { item in
+            ZStack {
+                Color.gray
+                    .ignoresSafeArea(edges: .top)
+                
+                switch item {
+                case .circle:
                     VStack {
                         Text("Content goes here:")
                         
                         Circle()
                             .foregroundColor(.blue)
                     }
-                }
-                
-                TabItem(title: "Rectangle", imageName: "square.fill") {
+                default:
                     VStack {
-                        Text("Content goes here:")
+                        Text("Content goes here: \(item.title)")
                         
                         Rectangle()
+                            .frame(width: 300, height: 300)
                             .foregroundColor(.red)
                     }
                 }

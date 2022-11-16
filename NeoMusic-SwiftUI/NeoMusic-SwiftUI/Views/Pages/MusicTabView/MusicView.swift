@@ -1,10 +1,3 @@
-//
-//  MusicView.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 10/22/20.
-//
-
 import SwiftUI
 
 struct MusicView: View {
@@ -21,8 +14,8 @@ struct MusicView: View {
             ZStack {
                 LinearGradient(gradient: settingsController.colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
                     .edgesIgnoringSafeArea(.top)
-                    .frame(height: geometry.size.height + MusicPlayer.musicPlayerHeightOffset - TabBar.height)
-                    .offset(y: -TabBar.height / 2)
+                    .frame(height: geometry.size.height + MusicPlayer.musicPlayerHeightOffset - tabBarHeight)
+                    .offset(y: -tabBarHeight / 2)
                 
                 Text("Music View")
                     .foregroundColor(settingsController.colorScheme.textColor.color)

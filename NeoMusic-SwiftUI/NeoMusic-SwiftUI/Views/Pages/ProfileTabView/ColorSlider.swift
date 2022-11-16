@@ -1,10 +1,3 @@
-//
-//  ColorSlider.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 11/16/20.
-//
-
 import SwiftUI
 
 struct ColorSlider: View {

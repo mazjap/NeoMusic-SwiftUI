@@ -1,10 +1,3 @@
-//
-//  HTTPMethod.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 11/6/20.
-//
-
 import Foundation
 
 enum HTTPMethod: String {

@@ -1,10 +1,3 @@
-//
-//  View+Neumorph.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 11/9/20.
-//
-
 import SwiftUI
 
 struct Neumorph: ViewModifier {
@@ -43,8 +36,7 @@ struct Neumorph: ViewModifier {
 
                                 )
                         } else: {
-                            $0
-                                .shadow(color: Color.black.opacity(opacities.black), radius: radius, x: distance, y: distance)
+                            $0.shadow(color: Color.black.opacity(opacities.black), radius: radius, x: distance, y: distance)
                                 .shadow(color: Color.white.opacity(opacities.white), radius: radius, x: -distance, y: -distance)
                         }
             )

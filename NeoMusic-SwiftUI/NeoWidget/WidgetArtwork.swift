@@ -1,10 +1,3 @@
-//
-//  WidgetArtwork.swift
-//  NeoWidgetExtension
-//
-//  Created by Jordan Christensen on 9/2/20.
-//
-
 import SwiftUI
 
 struct WidgetArtwork: View {

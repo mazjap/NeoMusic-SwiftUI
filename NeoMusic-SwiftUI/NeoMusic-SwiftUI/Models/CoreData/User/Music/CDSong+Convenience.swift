@@ -1,10 +1,3 @@
-//
-//  CDSong+Convenience.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 11/21/20.
-//
-
 import CoreData
 
 extension CDSong {

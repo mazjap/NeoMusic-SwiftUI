@@ -1,13 +1,3 @@
-//
-//  Queue.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 10/2/20.
-//
-//  Purpose:
-//  An advanced Queue that uses a LinkedList to store data
-//
-
 import Foundation
 
 // MARK: - QueueDelegate

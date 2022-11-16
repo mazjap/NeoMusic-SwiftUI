@@ -1,17 +1,6 @@
-//
-//  NeoAristRow.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 11/18/20.
-//
-
 import SwiftUI
 
 struct NeoArtistRow: View {
-    
-    // MARK: - State
-    
-    @Binding var selectedArtist: Artist?
     
     // MARK: - Variables
     
@@ -19,13 +8,6 @@ struct NeoArtistRow: View {
     let textColor: Color
     let artist: Artist
     let cornerRadius: CGFloat = 20
-    
-    var gesture: some Gesture {
-        TapGesture(count: 1)
-            .onEnded { _ in
-                selectedArtist = artist
-            }
-    }
     
     // MARK: - Body
     
@@ -61,7 +43,6 @@ struct NeoArtistRow: View {
         }
         .spacing(.horizontal)
         .frame(height: SearchView.cellHeight)
-        .gesture(gesture)
     }
 }
 
@@ -70,11 +51,11 @@ struct NeoArtistRow: View {
 struct NeoArtistRow_Previews: PreviewProvider {
     static var previews: some View {
         List {
-            NeoArtistRow(selectedArtist: Binding<Optional<Artist>>(get: { .noArtist }, set: { _ in }), backgroundColor: JCColorScheme.default.backgroundGradient.first, textColor: JCColorScheme.default.textColor.color, artist: .noArtist)
+            NeoArtistRow(backgroundColor: JCColorScheme.default.backgroundGradient.first, textColor: JCColorScheme.default.textColor.color, artist: .noArtist)
             
-            NeoArtistRow(selectedArtist: Binding<Optional<Artist>>(get: { .noArtist }, set: { _ in }), backgroundColor: .falseBlack, textColor: .gray, artist: .noArtist)
+            NeoArtistRow(backgroundColor: .falseBlack, textColor: .gray, artist: .noArtist)
             
-            NeoArtistRow(selectedArtist: Binding<Optional<Artist>>(get: { .noArtist }, set: { _ in }), backgroundColor: .falseWhite, textColor: .gray, artist: .noArtist)
+            NeoArtistRow(backgroundColor: .falseWhite, textColor: .gray, artist: .noArtist)
         }
     }
 }

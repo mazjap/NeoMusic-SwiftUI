@@ -1,10 +1,3 @@
-//
-//  Font+Extension.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 11/9/20.
-//
-
 import SwiftUI
 
 extension Font {

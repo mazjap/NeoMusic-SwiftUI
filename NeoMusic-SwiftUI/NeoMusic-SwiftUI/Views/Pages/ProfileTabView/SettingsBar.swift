@@ -1,10 +1,3 @@
-//
-//  SettingsBar.swift
-//  NeoMusic-SwiftUI
-//
-//  Created by Jordan Christensen on 12/1/20.
-//
-
 import SwiftUI
 
 struct SettingsBar: View {

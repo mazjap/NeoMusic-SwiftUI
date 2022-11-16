@@ -1,10 +1,3 @@
-//
-//  NeoWidget.swift
-//  NeoWidget
-//
-//  Created by Jordan Christensen on 9/2/20.
-//
-
 import WidgetKit
 import SwiftUI
 
@@ -59,11 +52,19 @@ struct NeoWidgetEntryView: View {
                     VStack {
                         Spacer()
                         
-                        ForEach(1..<entry.songs.count) { i in
+                        ForEach(0..<entry.songs.count) { i in
                             let song = entry.songs[i]
                             
-                            BasicTableCell(label: song.title, detail: song.artist, image: Image(uiImage: song.albumArtwork))
-                                .foregroundColor(colorScheme.textColor.color)
+                            HStack {
+                                VStack {
+                                    Text(song.title)
+                                    Text(song.artist)
+                                }
+                                
+                                Spacer()
+                                
+                                Image(uiImage: song.albumArtwork)
+                            }
                             
                             if i != entry.songs.count - 1 {
                                 Spacer()
