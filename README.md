@@ -46,7 +46,20 @@ $ git clone https://github.com/mazjap/NeoMusic-SwiftUI.git
 $ open NeoMusic-SwiftUI/NeoMusic-SwiftUI/NeoMusic-SwiftUI.xcodeproj
 ```
 - Step 3: 
+Add file called Hidden.swift that contains a static `apple_music_api_key` variable in the Helpers group:
 
+```swift
+struct Hidden {
+    static let apple_music_api_key = "" // Your Apple Music api key from AppStoreConnect (Leaving as an empty string will still work with local music & searching, but some network features will not)
+}
+```
+
+- Step 4:
+Ensure `Hidden.swift` has target membership for both `NeoMusic-SwiftUI` as well as `NeoWidgetExtension`
+
+![](https://user-images.githubusercontent.com/24785257/202228885-6694de04-c9a7-4333-b0e8-d338cc55f93a.png)
+
+- Step 5:
 Connect device or select simulator from drop down and run project
 
 ---
