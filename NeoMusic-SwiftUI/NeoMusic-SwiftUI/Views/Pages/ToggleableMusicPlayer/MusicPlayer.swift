@@ -21,7 +21,7 @@ struct MusicPlayer: View {
     
     // MARK: - Properties
     
-    let timer = Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()
+    private let timer = Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()
     
     // MARK: - Body
     
@@ -127,46 +127,45 @@ struct OpenPlayer: View {
                     
                     image
                     
-                    songTitle
-                        .spacing(.horizontal)
+                    title
                     
-                    songArtist
+                    artist
                     
-                    songSlider
+                    slider
                     
-                    songControls
+                    controls
                 }
                 .padding(.bottom, 20)
                 
-//            if showUpNextView {
-//                UpNextView(colorScheme: settingsController.colorScheme)
-//                    .matchedGeometryEffect(id: MusicPlayer.upNextViewKey, in: nspace)
-//                    .frame(width: MusicPlayer.upNextViewWidth)
-//                    .offset(x: upNextDragOffset)
-//                    .gesture(
-//                        DragGesture()
-//                            .onChanged { value in
-//                                upNextDragOffset = max(min(value.translation.width, MusicPlayer.upNextViewWidth), 0)
-//                            }
-//                            .onEnded { value in
-//                                if upNextDragOffset > MusicPlayer.upNextViewWidth / 3 {
+//                if showUpNextView {
+//                    UpNextView(colorScheme: settingsController.colorScheme)
+//                        .matchedGeometryEffect(id: MusicPlayer.upNextViewKey, in: nspace)
+//                        .frame(width: MusicPlayer.upNextViewWidth)
+//                        .offset(x: upNextDragOffset)
+//                        .gesture(
+//                            DragGesture()
+//                                .onChanged { value in
+//                                    upNextDragOffset = max(min(value.translation.width, MusicPlayer.upNextViewWidth), 0)
+//                                }
+//                                .onEnded { value in
+//                                    if upNextDragOffset > MusicPlayer.upNextViewWidth / 3 {
+//                                        withAnimation {
+//                                            showUpNextView.toggle()
+//                                        }
+//                                    }
+//
 //                                    withAnimation {
-//                                        showUpNextView.toggle()
+//                                        upNextDragOffset = 0
 //                                    }
 //                                }
-//
-//                                withAnimation {
-//                                    upNextDragOffset = 0
-//                                }
-//                            }
-//                    )
-//            } else {
-//                Rectangle()
-//                    .matchedGeometryEffect(id: MusicPlayer.upNextViewKey, in: nspace)
-//                    .foregroundColor(settingsController.colorScheme.backgroundGradient.last)
-//                    .frame(width: MusicPlayer.upNextViewWidth)
-//                    .offset(x: MusicPlayer.upNextViewWidth)
-//            }
+//                        )
+//                } else {
+//                    Rectangle()
+//                        .matchedGeometryEffect(id: MusicPlayer.upNextViewKey, in: nspace)
+//                        .foregroundColor(settingsController.colorScheme.backgroundGradient.last)
+//                        .frame(width: MusicPlayer.upNextViewWidth)
+//                        .offset(x: MusicPlayer.upNextViewWidth)
+//                }
             }
             .offset(y: isOpen ? offset : 0)
             .frame(height: geometry.size.height - offset, alignment: .bottom)
@@ -262,7 +261,7 @@ struct OpenPlayer: View {
         .padding(.horizontal)
     }
     
-    private var songTitle: some View {
+    private var title: some View {
         HStack {
             Text(musicController.currentSong.title)
                 .lineLimit(1)
@@ -277,7 +276,7 @@ struct OpenPlayer: View {
         }
     }
     
-    private var songArtist: some View {
+    private var artist: some View {
         Text(musicController.currentSong.artist)
             .lineLimit(1)
             .font(.subheadline)
@@ -286,7 +285,7 @@ struct OpenPlayer: View {
             .spacing(.horizontal)
     }
     
-    private var songSlider: some View {
+    private var slider: some View {
         VStack {
             MusicSlider(colorScheme: settingsController.colorScheme, min: $startTime, max: $totalTime, current: $currentTime) { time in
                 musicController.set(time: time)
@@ -296,7 +295,7 @@ struct OpenPlayer: View {
         }
     }
     
-    private var songControls: some View {
+    private var controls: some View {
         HStack {
             Spacer()
             
@@ -398,18 +397,18 @@ struct ClosedPlayer: View {
                 background
                 
                 VStack(alignment: .leading, spacing: 0) {
-                    progress.frame(width: currentTime / totalTime * geometry.size.width, height: 2)
+                    progress.frame(width: max(0, currentTime / totalTime * geometry.size.width), height: 2)
                     
                     Spacer().frame(minHeight: 0)
                     
                     HStack {
                         image
                         
-                        songInformation
+                        information
                         
                         Spacer()
                         
-                        buttonControls
+                        controls
                             .spacing(.horizontal)
                     }
                     .layoutPriority(1)
@@ -468,7 +467,7 @@ struct ClosedPlayer: View {
             }
     }
     
-    private var songInformation: some View {
+    private var information: some View {
         VStack(alignment: .leading) {
             HStack {
                 let font: Font = .footnote
@@ -495,7 +494,7 @@ struct ClosedPlayer: View {
         }
     }
     
-    private var buttonControls: some View {
+    private var controls: some View {
         HStack {
             let background = settingsController.colorScheme.backgroundGradient.first.average(to: settingsController.colorScheme.backgroundGradient.last)
             

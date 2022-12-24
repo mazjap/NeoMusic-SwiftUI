@@ -127,14 +127,12 @@ extension JCColorScheme: Identifiable, CustomStringConvertible, Hashable, RawRep
 // MARK: - JCColorScheme Extension: ColorType
 
 extension JCColorScheme {
-    
-    
-    enum ColorType: CaseIterable {
-        case backgroundGradient
-        case sliderGradient
-        case textColor
-        case buttonColor
-        case secondaryButtonColor
+    enum ColorType: String, CaseIterable {
+        case backgroundGradient = "Background Gradient"
+        case sliderGradient = "Slider Gradient"
+        case textColor = "Text Color"
+        case buttonColor = "Button Color"
+        case secondaryButtonColor = "Secondary Button Color"
         
         var isGradient: Bool {
             switch self {

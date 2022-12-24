@@ -1,7 +1,7 @@
 import SwiftUI
 
 enum AppTab: String, CaseIterable, Tabbable {
-    case search = "String"
+    case search = "Search"
     case music = "Music"
     case profile = "Profile"
     

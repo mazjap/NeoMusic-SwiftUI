@@ -17,65 +17,51 @@ struct ProfileView: View {
     // MARK: - Body
     
     var body: some View {
-        ZStack {
-            LinearGradient(gradient: settingsController.colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
-                .edgesIgnoringSafeArea(.all)
-            
-            HStack {
-                VStack(alignment: .leading) {
-                    Text("Settings")
-                        .font(.largeTitle)
-                        .foregroundColor(settingsController.colorScheme.textColor.color)
-                    
-                    settingsTable
-                    
-                    Spacer()
-                }
-                .padding(.top, 50)
-
-                Spacer()
+        NavigationView {
+            ZStack {
+                LinearGradient(gradient: settingsController.colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
+                    .edgesIgnoringSafeArea(.all)
                 
-                // TODO: - App info
+                settingsTable
             }
-            .padding(.leading, 20)
-            .edgesIgnoringSafeArea(.init(arrayLiteral: []))
+            .navigationTitle("Settings")
         }
-        .edgesIgnoringSafeArea(.all)
     }
     
     private var settingsTable: some View {
-        TableView(data: .constant(SettingsItem.allCases)) { item in
-            switch item {
-            case .theme:
-                NavigationLink {
-                    ColorSchemeView(backgroundColor: .black)
-                } label: {
-                    Text("Theme")
-                }
-            case .connectedAccounts:
-                NavigationLink {
-                    
-                } label: {
-                    Text("Connected Accounts")
-                }
-            case .restorePurchases:
-                Text("Restore Purchases")
-                    .onTapGesture {
-                        print("Need to implement")
-                    }
-            case .promoCode:
-                HStack {
-                    TextField("Promo", text: $promoText)
-                        .background(RoundedRectangle(cornerRadius: 4).foregroundColor(.white))
-                    
-                    Button(action: {
-                        // TODO: - Promo code
-                        
-                    }, label: {
-                        Text("Submit")
-                    })
-                }
+        List {
+            NavigationLink {
+                ColorSchemeView(backgroundColor: .black)
+            } label: {
+                Text("Theme")
             }
+            
+            NavigationLink {
+                
+            } label: {
+                Text("Connected Accounts")
+            }
+            
+            Text("Restore Purchases")
+                .onTapGesture {
+                    print("Need to implement")
+                }
+            
+            HStack {
+                TextField("Promo", text: $promoText)
+                    .background(RoundedRectangle(cornerRadius: 4).foregroundColor(.white))
+                
+                Button(action: {
+                    // TODO: - Promo code
+                    
+                }, label: {
+                    Text("Submit")
+                })
+            }
+        }
+        .onAppear {
+            UIScrollView.appearance().backgroundColor = .clear
+            UITableView.appearance().backgroundColor = .clear
         }
     }
     
@@ -101,7 +87,7 @@ struct ProfileView_Previews: PreviewProvider {
     }
 }
 
-enum SettingsItem: CaseIterable {
+enum SettingsItem: Int, CaseIterable {
     case theme
     case connectedAccounts
     case restorePurchases

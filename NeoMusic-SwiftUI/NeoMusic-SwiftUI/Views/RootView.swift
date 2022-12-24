@@ -9,7 +9,7 @@ struct RootView: View {
     @EnvironmentObject private var musicController: MusicController
     
     @StateObject private var messageController = MessageController.shared
-    @State private var musicPlayerIsOpen: Bool = true
+    @State private var musicPlayerIsOpen: Bool = false
     
     // MARK: - Body
     
