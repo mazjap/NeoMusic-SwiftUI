@@ -20,8 +20,7 @@ struct TabBar<TabItem: CaseIterable & Tabbable, Content: View>: View {
     
     @GestureState private var dragOffset: DragState = .inactive
     
-    @State private var selectedIndex: Int
-    
+    @State private var selectedIndex = 0
     
     // MARK: - Variables
     
@@ -34,43 +33,39 @@ struct TabBar<TabItem: CaseIterable & Tabbable, Content: View>: View {
     
     // MARK: - Initializers
     
-    init(tabItem: TabItem.Type, startIndex: Int = 0, @ViewBuilder content: @escaping (TabItem) -> Content) {
-        self.content = content
+    init(tabItem: TabItem.Type, @ViewBuilder content: @escaping (TabItem) -> Content) {
         self.items = Array(tabItem.allCases)
-        self._selectedIndex = .init(initialValue: (startIndex < TabItem.allCases.count && startIndex >= 0 ? startIndex : 0))
+        self.content = content
     }
     
     // MARK: - Body
     
     var body: some View {
         GeometryReader { geometry in
-            ZStack {
-                VStack(alignment: .leading, spacing: 0) {
-                    content(items[selectedIndex])
-                        .frame(width: geometry.size.width)
-                        .layoutPriority(2)
+            VStack(alignment: .leading, spacing: 0) {
+                content(items[selectedIndex])
+                    .frame(width: geometry.size.width)
+                    .frame(idealHeight: .infinity)
+                
+                ZStack(alignment: .leading) {
+                    settingsController.colorScheme.backgroundGradient.last
+                        .edgesIgnoringSafeArea(.bottom)
+                        .zIndex(-2)
                     
-                    ZStack(alignment: .leading) {
-                        settingsController.colorScheme.backgroundGradient.last
-                            .edgesIgnoringSafeArea(.bottom)
-                            .zIndex(-2)
+                    HStack {
+                        Spacer()
                         
-                        HStack {
-                            Spacer()
+                        ForEach(0..<items.count, id: \.self) { i in
+                            item(at: i)
                             
-                            ForEach(0..<items.count, id: \.self) { i in
-                                item(at: i)
-                                
-                                Spacer()
-                            }
-                        }
-                        .overlayPreferenceValue(TabBarPreferenceKey.self) {
-                            self.indicator($0)
+                            Spacer()
                         }
                     }
-                    .frame(height: tabBarHeight)
-                    .zIndex(-1)
+                    .overlayPreferenceValue(TabBarPreferenceKey.self) {
+                        self.indicator($0)
+                    }
                 }
+                .frame(height: tabBarHeight)
             }
         }
     }

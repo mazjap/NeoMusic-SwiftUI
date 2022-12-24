@@ -20,16 +20,23 @@ struct RootView: View {
                     LinearGradient(gradient: settingsController.colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
                         .edgesIgnoringSafeArea(.top)
                     
-                    ZStack(alignment: .bottom) {
-                        switch item {
-                        case .search:
-                            SearchView()
-                        case .music:
-                            MusicView()
-                        case .profile:
-                            ProfileView()
+                    VStack(spacing: 0) {
+                        Group {
+                            switch item {
+                            case .search:
+                                SearchView()
+                            case .music:
+                                MusicView()
+                            case .profile:
+                                ProfileView()
+                            }
                         }
+                        .frame(idealHeight: .infinity)
                         
+                        Spacer()
+                            .frame(height: MusicPlayer.musicPlayerHeightOffset)
+                    }
+                    .overlay(alignment: .bottom) {
                         MusicPlayer(isOpen: $musicPlayerIsOpen)
                     }
                 }
