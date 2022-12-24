@@ -115,9 +115,11 @@ struct MusicSlider: View {
                                     action(songDuration)
                                     feedbackGenerator.impactOccurred(intensity: abs(x - tempSeekingDuration) / totalDistance)
                                     
-                                    sideToPop = .none
                                     isSeeking = false
                                     
+                                    withAnimation {
+                                        sideToPop = .none
+                                    }
                                 }
                         )
                     

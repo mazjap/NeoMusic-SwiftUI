@@ -5,6 +5,9 @@ import SwiftUI
 struct MusicPlayer: View {
     
     // MARK: - State
+    
+    @EnvironmentObject private var musicController: MusicController
+    
     @Namespace private var nspace
     
     @State private var startTime: Double = 0
@@ -16,43 +19,61 @@ struct MusicPlayer: View {
     
     @Binding var isOpen: Bool
     
+    // MARK: - Properties
+    
+    let timer = Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()
+    
     // MARK: - Body
     
     var body: some View {
-        if isOpen {
-            OpenPlayer(
-                namespace: nspace,
-                isOpen: $isOpen,
-                rotation: $rotation,
-                start: $startTime,
-                end: $totalTime,
-                current: $currentTime,
-                showUpNext: $upNextViewOpen
-            )
-        } else {
-            ClosedPlayer(
-                namespace: nspace,
-                isOpen: $isOpen,
-                rotation: $rotation
-            )
+        Group {
+            if isOpen {
+                OpenPlayer(
+                    namespace: nspace,
+                    isOpen: $isOpen,
+                    rotation: $rotation,
+                    start: $startTime,
+                    end: $totalTime,
+                    current: $currentTime,
+                    showUpNext: $upNextViewOpen
+                )
+            } else {
+                ClosedPlayer(
+                    namespace: nspace,
+                    totalTime: $totalTime,
+                    currentTime: $currentTime,
+                    isOpen: $isOpen,
+                    rotation: $rotation
+                )
+            }
+        }
+        .onReceive(timer) { _ in
+            if musicController.currentPlaybackTime == musicController.totalPlaybackTime {
+                currentTime = 0
+                totalTime = 0.01
+            } else {
+                currentTime = musicController.currentPlaybackTime
+                totalTime = musicController.totalPlaybackTime
+            }
         }
     }
     
     // MARK: - Static Variables
     
-    static let base = "MusicPlayer."
+    fileprivate static let base = "MusicPlayer."
     
-    static let   backgroundKey = base + "Background"
-    static let      artworkKey = base + "Artwork"
-    static let    songTitleKey = base + "SongTitle"
-    static let songExplicitKey = base + "IsSongExplicit"
-    static let   songArtistKey = base + "SongArtist"
-    static let   backButtonKey = base + "BackButton"
-    static let  pauseButtonKey = base + "PauseButton"
-    static let   skipButtonKey = base + "SkipButton"
+    fileprivate static let backgroundKey   = base + "Background"
+    fileprivate static let artworkKey      = base + "Artwork"
+    fileprivate static let songTitleKey    = base + "Title"
+    fileprivate static let songExplicitKey = base + "IsExplicit"
+    fileprivate static let songArtistKey   = base + "Artist"
+    fileprivate static let songSlider      = base + "Slider"
+    fileprivate static let backButtonKey   = base + "Back"
+    fileprivate static let pauseButtonKey  = base + "Pause"
+    fileprivate static let skipButtonKey   = base + "Skip"
     
+    fileprivate static let upNextViewWidth: CGFloat = 200
     static let musicPlayerHeightOffset: CGFloat = 100
-    static let upNextViewWidth: CGFloat = 200
 }
 
 // MARK: - OpenPlayer
@@ -76,11 +97,9 @@ struct OpenPlayer: View {
     @Binding private var totalTime: Double
     @Binding private var currentTime: Double
     
-    // MARK: - Variables
+    // MARK: - Properties
     
     private let nspace: Namespace.ID
-    
-    let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
     
     // MARK: - Initializers
     
@@ -97,27 +116,28 @@ struct OpenPlayer: View {
     // MARK: - Body
     
     var body: some View {
-        ZStack(alignment: .trailing) {
-            background
-            
-            VStack {
-                topNav.padding([.top, .leading, .trailing], 16)
+        GeometryReader { geometry in
+            ZStack(alignment: .trailing) {
+                background
                 
-                Spacer()
+                VStack {
+                    topNav.padding([.top, .leading, .trailing], 16)
+                    
+                    Spacer()
+                    
+                    image
+                    
+                    songTitle
+                        .spacing(.horizontal)
+                    
+                    songArtist
+                    
+                    songSlider
+                    
+                    songControls
+                }
+                .padding(.bottom, 20)
                 
-                image
-                
-                songTitle
-                    .spacing(.horizontal)
-                
-                songArtist
-                
-                songSlider
-                
-                songControls
-            }
-            .padding(.bottom, 20)
-            
 //            if showUpNextView {
 //                UpNextView(colorScheme: settingsController.colorScheme)
 //                    .matchedGeometryEffect(id: MusicPlayer.upNextViewKey, in: nspace)
@@ -147,36 +167,38 @@ struct OpenPlayer: View {
 //                    .frame(width: MusicPlayer.upNextViewWidth)
 //                    .offset(x: MusicPlayer.upNextViewWidth)
 //            }
-        }
-        .offset(y: isOpen ? offset : 0)
-        .gesture(
-            DragGesture()
-                .onChanged { value in
-                    if !isOpen {
-                        return
-                    }
-                    
-                    if isOpen && value.translation.height >= 0 {
-                        offset = value.translation.height
-                    }
-                    
-                    if offset > 50 {
-                        withAnimation {
-                            isOpen.toggle()
-                            feedbackGenerator.impactOccurred()
+            }
+            .offset(y: isOpen ? offset : 0)
+            .frame(height: geometry.size.height - offset, alignment: .bottom)
+            .gesture(
+                DragGesture()
+                    .onChanged { value in
+                        if !isOpen {
+                            return
+                        }
+                        
+                        if isOpen && value.translation.height >= 0 {
+                            offset = value.translation.height
+                        }
+                        
+                        if offset > 50 {
+                            withAnimation {
+                                isOpen.toggle()
+                                feedbackGenerator.impactOccurred()
+                            }
                         }
                     }
-                }
-                .onEnded { value in
-                    withAnimation {
-                        offset = 0
+                    .onEnded { value in
+                        withAnimation {
+                            offset = 0
+                        }
                     }
-                }
-        )
+            )
+        }
     }
     
     private var background: some View {
-        LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.backgroundGradient.colors), startPoint: .top, endPoint: .bottom)
+        LinearGradient(gradient: settingsController.colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
             .edgesIgnoringSafeArea(.top)
             .transition(.scaleAndSlide)
             .matchedGeometryEffect(id: MusicPlayer.backgroundKey, in: nspace, isSource: !isOpen)
@@ -209,7 +231,6 @@ struct OpenPlayer: View {
             
             Spacer()
             
-            
             Button(action: {
                 withAnimation {
                     showUpNextView.toggle()
@@ -236,6 +257,7 @@ struct OpenPlayer: View {
         )
         .padding(5)
         .neumorph(color: settingsController.colorScheme.backgroundGradient.first.average(to: settingsController.colorScheme.backgroundGradient.last), size: .artwork, cornerRadius: .infinity, isConcave: false)
+        .frame(minWidth: MusicPlayer.musicPlayerHeightOffset - Constants.spacing * 2, minHeight: MusicPlayer.musicPlayerHeightOffset - Constants.spacing * 2)
         .matchedGeometryEffect(id: MusicPlayer.artworkKey, in: nspace, isSource: !isOpen)
         .padding(.horizontal)
     }
@@ -269,16 +291,8 @@ struct OpenPlayer: View {
             MusicSlider(colorScheme: settingsController.colorScheme, min: $startTime, max: $totalTime, current: $currentTime) { time in
                 musicController.set(time: time)
             }
+            .matchedGeometryEffect(id: MusicPlayer.songSlider, in: nspace, isSource: !isOpen)
             .padding(.horizontal, 5)
-            .onReceive(timer) { _ in
-                if musicController.currentPlaybackTime == musicController.totalPlaybackTime {
-                    currentTime = 0
-                    totalTime = 0.01
-                } else {
-                    currentTime = musicController.currentPlaybackTime
-                    totalTime = musicController.totalPlaybackTime
-                }
-            }
         }
     }
     
@@ -298,7 +312,7 @@ struct OpenPlayer: View {
             }
             .transition(.scaleAndSlide)
             .buttonStyle(DefaultButtonStyle(color: settingsController.colorScheme.backgroundGradient.last))
-            .frame(width: Constants.buttonSize, height: Constants.buttonSize)
+            .frame(width: Constants.buttonSize / (isOpen ? 1 : 3), height: Constants.buttonSize / (isOpen ? 1 : 3))
             .matchedGeometryEffect(id: MusicPlayer.backButtonKey, in: nspace, isSource: !isOpen)
                 
             Spacer()
@@ -318,7 +332,7 @@ struct OpenPlayer: View {
             }
             .transition(.scaleAndSlide)
             .buttonStyle(DefaultButtonStyle(color: settingsController.colorScheme.backgroundGradient.last, padding: Constants.buttonPadding, isSelected: musicController.isPlaying))
-            .frame(width: Constants.buttonSize, height: Constants.buttonSize)
+            .frame(width: Constants.buttonSize / (isOpen ? 1 : 3), height: Constants.buttonSize / (isOpen ? 1 : 3))
             .matchedGeometryEffect(id: MusicPlayer.pauseButtonKey, in: nspace, isSource: !isOpen)
             
             Spacer()
@@ -356,6 +370,9 @@ struct ClosedPlayer: View {
     @State private var offset: CGFloat = 0
     @State private var spinDuration: Double = 0
     
+    @Binding private var totalTime: Double
+    @Binding private var currentTime: Double
+    
     @Binding private var isOpen: Bool
     @Binding private var rotation: Angle
     
@@ -365,8 +382,10 @@ struct ClosedPlayer: View {
     
     // MARK: - Initializers
     
-    init(namespace: Namespace.ID, isOpen: Binding<Bool>, rotation: Binding<Angle>) {
+    init(namespace: Namespace.ID, totalTime: Binding<Double>, currentTime: Binding<Double>, isOpen: Binding<Bool>, rotation: Binding<Angle>) {
         nspace = namespace
+        _totalTime = totalTime
+        _currentTime = currentTime
         _isOpen = isOpen
         _rotation = rotation
     }
@@ -374,28 +393,38 @@ struct ClosedPlayer: View {
     // MARK: - Body
     
     var body: some View {
-        ZStack {
-            background
-            
-            HStack {
-                image
+        GeometryReader { geometry in
+            ZStack {
+                background
                 
-                songInformation
-                
-                Spacer()
-                
-                buttonControls
-                .spacing(.horizontal)
+                VStack(alignment: .leading, spacing: 0) {
+                    progress.frame(width: currentTime / totalTime * geometry.size.width, height: 2)
+                    
+                    Spacer().frame(minHeight: 0)
+                    
+                    HStack {
+                        image
+                        
+                        songInformation
+                        
+                        Spacer()
+                        
+                        buttonControls
+                            .spacing(.horizontal)
+                    }
+                    .layoutPriority(1)
+                    
+                    Spacer().frame(minHeight: 0)
+                }
             }
         }
         .frame(height: MusicPlayer.musicPlayerHeightOffset + (isOpen ? 0 : abs(offset)))
-        .offset(y: isOpen ? 0 : offset / 2)
         .gesture(DragGesture(coordinateSpace: .global)
             .onChanged { value in
                 guard !isOpen else { return }
                 
                 if value.translation.height <= 0 {
-                    offset = value.translation.height
+                    offset = value.translation.height / 2
                 }
                 
                 if offset < -50 {
@@ -414,10 +443,15 @@ struct ClosedPlayer: View {
     }
     
     private var background: some View {
-        LinearGradient(gradient: Gradient(colors: settingsController.colorScheme.backgroundGradient.colors), startPoint: .top, endPoint: .bottom)
+        LinearGradient(gradient: settingsController.colorScheme.backgroundGradient.gradient, startPoint: .top, endPoint: .bottom)
             .transition(.scaleAndSlide)
             .matchedGeometryEffect(id: MusicPlayer.backgroundKey, in: nspace, isSource: isOpen)
             .edgesIgnoringSafeArea(.top)
+    }
+    
+    private var progress: some View {
+        LinearGradient(gradient: settingsController.colorScheme.sliderGradient.gradient, startPoint: .top, endPoint: .bottom)
+            .matchedGeometryEffect(id: MusicPlayer.songSlider, in: nspace, properties: .position, isSource: isOpen)
     }
     
     private var image: some View {
