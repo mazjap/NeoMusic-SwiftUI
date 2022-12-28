@@ -41,6 +41,23 @@ extension View {
             falseModification(self)
         }
     }
+    
+    @_disfavoredOverload
+    func onChange<Element: Equatable>(of element: Element, priority: TaskPriority? = nil, action: @escaping (Element) async -> Void) -> some View {
+        self.onChange(of: element) { element in
+            Task {
+                await action(element)
+            }
+        }
+    }
+    
+    func onAppear(priority: TaskPriority? = nil, action: @escaping () async -> Void) -> some View {
+        return self.onAppear {
+            Task {
+                await action()
+            }
+        }
+    }
 }
 
 extension UIDevice {

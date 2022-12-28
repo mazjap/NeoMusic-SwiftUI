@@ -281,60 +281,44 @@ class MusicController: ObservableObject {
                     request.setValue("Bearer \(self.apiKey)", forHTTPHeaderField: "Authorization")
                     request.setValue(userToken, forHTTPHeaderField: "Music-User-Token")
                     
-                    URLSession.shared.dataTask(with: request) { data, response, error in
-                        if let error = error {
-                            NSLog("f:\(#file)l:\(#line) Error: \(error)")
-                            // TODO: - Display error in MessageController
-                            return
-                        }
-                        
-                        if let response = response as? HTTPURLResponse,
-                           response.statusCode != 200 {
-                            NSLog("Invalid response code returned: \(response.statusCode)")
-                            return
-                        }
-                        
-                        guard let data = data else {
-                            NSLog("f:\(#file)l:\(#line) Error: No data returned from server")
-                            return
-                        }
-                        
-                        do {
-                            guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String : Any] else {
-                                NSLog("f:\(#file)l:\(#line) Error: JSON could not be decoded")
-                                return
-                            }
-                            
-                            guard let results = json["results"] as? [String : Any],
-                                  let tempSongs = results["songs"] as? [String : Any],
-                                  let tempAlbums = results["albums"] as? [String : Any],
-                                  let tempArtists = results["artists"] as? [String : Any],
-                                  let songJson = tempSongs["data"],
-                                  let albumJson = tempAlbums["data"],
-                                  let artistJson = tempArtists["data"] else { return }
-                            
-                            print(songJson)
-                            print(albumJson)
-                            print(artistJson)
-                            
-                            let songs = try JSONSerialization.data(withJSONObject: songJson)
-                            let albums = try JSONSerialization.data(withJSONObject: albumJson)
-                            let artists = try JSONSerialization.data(withJSONObject: artistJson)
-                            
-                            
-                            let songArray: [AMSong] = try JSONDecoder().decode([AMSong].self, from: songs)
-                            let albumArray: [Album] = try JSONDecoder().decode([Album].self, from: albums)
-                            let artistArray: [Artist] = try JSONDecoder().decode([Artist].self, from: artists)
-                            
-                            DispatchQueue.main.async { [weak self] in
-                                guard let self = self else { return }
-                                
-                                self.searchResults = (songArray, artistArray, albumArray)
-                            }
-                        } catch {
-                            NSLog("f:\(#file)l:\(#line) Error: \(error)")
-                        }
-                    }.resume()
+                    let (data, response) = try await withTaskCancellationHandler {
+                        try await URLSession.shared.data(for: request)
+                    } onCancel: {
+                        print("sad day, the request was cancelled")
+                    }
+                    
+                    if let response = response as? HTTPURLResponse,
+                       response.statusCode != 200 {
+                        NSLog("Invalid response code returned: \(response.statusCode)")
+                        // TODO: - use nserror()
+                        throw NSError()
+                    }
+                    
+                    guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String : Any] else {
+                        NSLog("f:\(#file)l:\(#line) Error: JSON could not be decoded")
+                        return
+                    }
+                    
+                    guard let results = json["results"] as? [String : Any],
+                          let tempSongs = results["songs"] as? [String : Any],
+                          let tempAlbums = results["albums"] as? [String : Any],
+                          let tempArtists = results["artists"] as? [String : Any],
+                          let songJson = tempSongs["data"],
+                          let albumJson = tempAlbums["data"],
+                          let artistJson = tempArtists["data"] else { return }
+                    
+                    let songs = try JSONSerialization.data(withJSONObject: songJson)
+                    let albums = try JSONSerialization.data(withJSONObject: albumJson)
+                    let artists = try JSONSerialization.data(withJSONObject: artistJson)
+                    
+                    
+                    let songArray: [AMSong] = try JSONDecoder().decode([AMSong].self, from: songs)
+                    let albumArray: [Album] = try JSONDecoder().decode([Album].self, from: albums)
+                    let artistArray: [Artist] = try JSONDecoder().decode([Artist].self, from: artists)
+                    
+                    await MainActor.run {
+                        self.searchResults = (songArray, artistArray, albumArray)
+                    }
                 }
             } else {
                 NSLog("f:\(#file)l:\(#line) Error: No country code found, unable to perform search")

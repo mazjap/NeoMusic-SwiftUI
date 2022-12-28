@@ -1,34 +1,77 @@
 import SwiftUI
 
-class DelayedTask<Success, Failure: Error> {
-    private var task: Task<Success, Failure>?
+class DelayedTask {
+    typealias T = Task<Void, Never>
     
-    var isCancelled: Bool {
-        task?.isCancelled ?? true
-    }
+    @MainActor
+    private var t: (parent: T, child: T?, id: UInt16)?
     
-    func setTask(_ task: @escaping @Sendable () async -> Success, priority: TaskPriority? = nil, after seconds: TimeInterval? = nil) where Failure == Never {
-        self.cancel()
-        
-        if let seconds {
-            self.task = Task<Success, Never>(priority: priority) {
-                do {
-                    try await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
-                } catch {
-                    // TODO: - use nserror
-                    NSLog("\(error as NSError)")
+    @MainActor
+    private var parent: T? {
+        get {
+            t?.parent
+        }
+        set {
+            if let newValue {
+                self.t?.child?.cancel()
+                self.t?.parent.cancel()
+                
+                if t != nil {
+                    print("Cancelled task with id: \(id!)")
+                    self.t = nil
                 }
                 
-                return await task()
+                self.t = (newValue, nil, .random(in: 0...UInt16.max))
+                print("Starting task with id: \(id!)")
+            } else {
+                self.t = nil
             }
-        } else {
-            self.task = Task<Success, Never>(priority: priority, operation: task)
         }
     }
     
+    @MainActor
+    private var child: T? {
+        t?.child
+    }
+    
+    @MainActor
+    private var id: UInt16? {
+        t?.id
+    }
+    
+    @MainActor
+    var isCancelled: Bool {
+        t?.parent.isCancelled ?? true
+    }
+    
+    @MainActor
+    func setTask(_ task: @escaping @Sendable () async -> Void, priority: TaskPriority? = nil, after seconds: TimeInterval = 0.01) {
+        self.parent = Task(priority: priority) {
+            guard let startId = self.id else {
+                self.cancel()
+                return
+            }
+            
+            do {
+                try await withTaskCancellationHandler(operation: {
+                    try await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
+                }) { @MainActor in
+                    self.cancel()
+                }
+            } catch {
+                // TODO: - use nserror
+                NSLog("\(error as NSError)")
+            }
+            
+            guard self.id == startId, !self.isCancelled else { return }
+            
+            self.t!.child = Task(priority: priority, operation: task)
+        }
+    }
+    
+    @MainActor
     func cancel() {
-        task?.cancel()
-        task = nil
+        parent = nil
     }
 }
 
@@ -42,7 +85,7 @@ struct SearchView: View {
     @State private var segmentedIndex: Int = 0
     @State private var searchType: SearchType = .library
     
-    private var task = DelayedTask<Void, Never>()
+    private var task = DelayedTask()
     
     
     // MARK: - Variables
@@ -145,17 +188,12 @@ struct SearchView: View {
                 .offset(y: offsetHeight / 2)
             }
         }
-        .onChange(of: searchType) { newValue in
-            task.setTask({
-                do {
-                    try await musicController.search(searchTerm, type: searchType)
-                } catch {
-                    // TODO: - use nserror
-                    NSLog("\(error as NSError)")
-                }
-            })
-        }
-        .onChange(of: searchType) { newValue in
+        .onChange(of: searchTerm) { newValue in
+            guard !searchTerm.isEmpty else {
+                task.cancel()
+                return
+            }
+            
             task.setTask({
                     do {
                         try await musicController.search(searchTerm, type: searchType)
@@ -164,7 +202,23 @@ struct SearchView: View {
                         NSLog("\(error as NSError)")
                     }
                 },
-                after: 2
+                after: 1
+            )
+        }
+        .onChange(of: searchType) { newValue in
+            guard !searchTerm.isEmpty else {
+                task.cancel()
+                return
+            }
+            
+            task.setTask({
+                    do {
+                        try await musicController.search(searchTerm, type: searchType)
+                    } catch {
+                        // TODO: - use nserror
+                        NSLog("\(error as NSError)")
+                    }
+                }
             )
         }
     }
