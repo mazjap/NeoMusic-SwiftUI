@@ -288,7 +288,9 @@ struct OpenPlayer: View {
     private var slider: some View {
         VStack {
             MusicSlider(colorScheme: settingsController.colorScheme, min: $startTime, max: $totalTime, current: $currentTime) { time in
-                musicController.set(time: time)
+                Task {
+                    await musicController.set(time: time)
+                }
             }
             .matchedGeometryEffect(id: MusicPlayer.songSlider, in: nspace, isSource: !isOpen)
             .padding(.horizontal, 5)
@@ -300,8 +302,11 @@ struct OpenPlayer: View {
             Spacer()
             
             Button(action: {
-                musicController.skipToPreviousItem()
                 feedbackGenerator.warningFeedback()
+                
+                Task {
+                    await musicController.skipToPreviousItem()
+                }
             }) {
                 Image(systemName: "backward.fill")
                     .resizable()
@@ -317,8 +322,13 @@ struct OpenPlayer: View {
             Spacer()
             
             Button(action: {
-                withAnimation {
-                    musicController.toggle()
+                Task {
+                    do {
+                        try await musicController.toggle()
+                    } catch {
+                        // TODO: - use nserror
+                        NSLog("\(error as NSError)")
+                    }
                 }
                 
                 feedbackGenerator.warningFeedback()
@@ -337,8 +347,11 @@ struct OpenPlayer: View {
             Spacer()
             
             Button(action: {
-                musicController.skipToNextItem()
                 feedbackGenerator.warningFeedback()
+                
+                Task {
+                    await musicController.skipToNextItem()
+                }
             }) {
                 Image(systemName: "forward.fill")
                     .resizable()
@@ -499,8 +512,10 @@ struct ClosedPlayer: View {
             let background = settingsController.colorScheme.backgroundGradient.first.average(to: settingsController.colorScheme.backgroundGradient.last)
             
             Button(action: {
-                musicController.skipToPreviousItem()
                 feedbackGenerator.warningFeedback()
+                Task {
+                    await musicController.skipToPreviousItem()
+                }
             }) {
                 Image(systemName: "backward.fill")
                     .resizable()
@@ -514,11 +529,17 @@ struct ClosedPlayer: View {
             .matchedGeometryEffect(id: MusicPlayer.backButtonKey, in: nspace, isSource: isOpen)
             
             Button(action: {
-                withAnimation {
-                    musicController.toggle()
+                feedbackGenerator.warningFeedback()
+                
+                Task {
+                    do {
+                        try await musicController.toggle()
+                    } catch {
+                        // TODO: - use nserror
+                        NSLog("\(error as NSError)")
+                    }
                 }
                 
-                feedbackGenerator.warningFeedback()
             }) {
                 Image(systemName: musicController.isPlaying ? "pause.fill" : "play.fill")
                     .resizable()
@@ -532,8 +553,10 @@ struct ClosedPlayer: View {
             .matchedGeometryEffect(id: MusicPlayer.pauseButtonKey, in: nspace, isSource: isOpen)
             
             Button(action: {
-                musicController.skipToNextItem()
                 feedbackGenerator.warningFeedback()
+                Task {
+                    await musicController.skipToNextItem()
+                }
             }) {
                 Image(systemName: "forward.fill")
                     .resizable()

@@ -17,6 +17,7 @@ class MusicController: ObservableObject {
     
     private var isCloudAuthorized: Bool
     
+    @MainActor
     private var player: MPMusicPlayerController = .systemMusicPlayer {
         didSet {
             dynamicPlayer = Dynamic(player)
@@ -28,13 +29,14 @@ class MusicController: ObservableObject {
     private var needsUpdate: Bool = true {
         didSet {
             if needsUpdate {
-                DispatchQueue.global(qos: .background).async {
-                    _ = self.upNextSongs
+                Task {
+                    _  = await self.upNextSongs
                 }
             }
         }
     }
     
+    @MainActor
     private(set) var queue = Queue<Song>()
     
     private let baseURL = URL(string: "https://api.music.apple.com/v1/")!
@@ -42,14 +44,17 @@ class MusicController: ObservableObject {
     
     private var task: DispatchWorkItem? = nil
     
+    @MainActor
     var currentPlaybackTime: TimeInterval {
         player.currentPlaybackTime
     }
     
+    @MainActor
     var totalPlaybackTime: TimeInterval {
         return currentSong.duration
     }
     
+    @MainActor
     var isEmpty: Bool {
         return searchResults.songs.isEmpty && searchResults.albums.isEmpty && searchResults.artists.isEmpty
     }
@@ -61,6 +66,7 @@ class MusicController: ObservableObject {
     
     // MARK: - Published Variables
     
+    @MainActor
     @Published var currentSong: Song = AMSong.noSong {
         didSet {
             if oldValue.id != "0" {
@@ -79,78 +85,50 @@ class MusicController: ObservableObject {
     @Published var isPlaying: Bool = false
     @Published var lastPlayed: [AMSong]
     
+    @MainActor
     @Published var searchResults: (songs: [AMSong], artists: [Artist], albums: [Album]) = ([], [], [])
-    @Published var isSearching: Bool = false {
-        didSet {
-            NSLog(isSearching && !searchTerm.isEmpty ? "Searching for songs with search term, \"\(searchTerm)\"" : "Done searching.")
-        }
-    }
-    
-    @Published var searchType: SearchType {
-        didSet {
-            if !searchTerm.isEmpty {
-                search()
-            }
-        }
-    }
-    
-    @Published var searchTerm: String {
-        didSet {
-            task?.cancel()
-            
-            task = DispatchWorkItem { [weak self] in
-                guard let self = self else { return }
-                self.search()
-            }
-            
-            if let task = task {
-                DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: DispatchTime.now().advanced(by: DispatchTimeInterval.seconds(1)), execute: task)
-            }
-        }
-    }
+    @MainActor
+    @Published var isSearching: Bool = false
     
     // MARK: - Initializers
     
-    init(searchTerm: String = "", searchType: SearchType = .library, lastPlayed: [AMSong] = []) {
-        self.lastPlayed = lastPlayed
-        self.searchType = searchType
-        self.searchTerm = ""
-        self.dynamicPlayer = Dynamic(player)
-        
+    init(lastPlayed: [AMSong] = []) {
         let auth = SKCloudServiceController.authorizationStatus()
         self.isCloudAuthorized = auth == .authorized || auth == .restricted
         
+        self.lastPlayed = lastPlayed
+        self.dynamicPlayer = Dynamic(player)
+        
         queue.delegate = self
         
-        if auth == .notDetermined {
-            SKCloudServiceController.requestAuthorization { status in
-                switch status {
-                case .authorized, .restricted:
-                    self.isCloudAuthorized = true
-                default:
-                    NSLog("Cloud access was denied")
-                    self.isCloudAuthorized = false
+        Task {
+            do {
+                if auth == .notDetermined {
+                    switch await SKCloudServiceController.requestAuthorization() {
+                    case .authorized, .restricted:
+                        self.isCloudAuthorized = true
+                    default:
+                        NSLog("Cloud access was denied")
+                        self.isCloudAuthorized = false
+                    }
                 }
+                
+                self.countryCode = try await fetchCountryCode()
+                self.userToken = try await fetchUserToken()
+                
+                if await checkAuthorized() {
+                    await setup()
+                }
+            } catch {
+                // TODO: - use nserror
+                NSLog("\(error as NSError)")
             }
-        }
-        
-        fetchUserToken { [weak self] token in
-            self?.userToken = token
-        }
-        
-        fetchCountryCode { [weak self] code in
-            self?.countryCode = code
-        }
-        
-        self.searchTerm = searchTerm
-        
-        if checkAuthorized() {
-            setup()
         }
     }
     
     // MARK: - Private Functions
     
+    @MainActor
     private func setup() {
         player.beginGeneratingPlaybackNotifications()
         
@@ -165,114 +143,91 @@ class MusicController: ObservableObject {
         songChanged()
     }
     
-    func checkAuthorized() -> Bool {
+    func checkAuthorized() async -> Bool {
         switch MPMediaLibrary.authorizationStatus() {
         case .authorized, .restricted:
             return true
         case .notDetermined:
-            MPMediaLibrary.requestAuthorization { [weak self] auth in
-                if auth == .authorized || auth == .restricted {
-                    self?.setup()
-                }
+            let auth = await MPMediaLibrary.requestAuthorization()
+            if auth == .authorized || auth == .restricted {
+                await self.setup()
             }
             
-            return false
+            return await checkAuthorized()
         default:
-            
-            
             return false
         }
     }
     
+    @MainActor
     private func pause() {
-        guard checkAuthorized() else { return }
-        
         player.pause()
         
         WidgetCenter.shared.reloadAllTimelines()
     }
     
-    private func play() {
-        guard checkAuthorized() else { return }
+    private func play() async throws {
+        try await player.prepareToPlay()
         
-        player.prepareToPlay { error in
-            if let error = error {
-                NSLog("f:\(#file)l:\(#line) Error: \(error)")
-            }
+        await MainActor.run {
+            player.play()
             
-            DispatchQueue.main.async { [weak self] in
-                self?.player.play()
-            }
+            WidgetCenter.shared.reloadAllTimelines()
         }
-        
-        WidgetCenter.shared.reloadAllTimelines()
     }
     
     private func addToUpNext(media: [MPMediaItem]) {
         let descriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: MPMediaItemCollection(items: media))
         
-        player.prepend(descriptor)
-        
-        WidgetCenter.shared.reloadAllTimelines()
+        Task { @MainActor in
+            player.prepend(descriptor)
+            
+            WidgetCenter.shared.reloadAllTimelines()
+        }
     }
     
     private func addToUpLater(media: [MPMediaItem]) {
         let descriptor = MPMusicPlayerMediaItemQueueDescriptor(itemCollection: MPMediaItemCollection(items: media))
         
-        player.append(descriptor)
-        
-        WidgetCenter.shared.reloadAllTimelines()
+        Task { @MainActor in
+            player.append(descriptor)
+            
+            WidgetCenter.shared.reloadAllTimelines()
+        }
     }
     
-    private func setQueue(media: [MPMediaItem]) {
+    private func setQueue(media: [MPMediaItem]) async {
         let ids = media.map { $0.playbackStoreID }
         
-        DispatchQueue.main.async {
+        await MainActor.run {
             self.player.setQueue(with: ids)
             self.player.prepareToPlay()
             self.player.play()
-        }
-        
-        WidgetCenter.shared.reloadAllTimelines()
-    }
-    
-    private func fetchUserToken(completion: @escaping (String?) -> Void) {
-        SKCloudServiceController().requestUserToken(forDeveloperToken: self.apiKey) { token, error in
-            if let error = error {
-                NSLog("f:\(#file)l:\(#line) Error: \(error)")
-            }
             
-            completion(token)
+            WidgetCenter.shared.reloadAllTimelines()
         }
     }
     
-    private func fetchCountryCode(completion: @escaping (String?) -> Void) {
-        SKCloudServiceController().requestStorefrontCountryCode { cc, error in
-            if let error = error {
-                NSLog("f:\(#file)l:\(#line) Error: \(error)")
-            }
-            
-            completion(cc)
-        }
+    private func fetchUserToken() async throws -> String {
+        try await SKCloudServiceController().requestUserToken(forDeveloperToken: self.apiKey)
+    }
+    
+    private func fetchCountryCode() async throws -> String {
+        try await SKCloudServiceController().requestStorefrontCountryCode()
     }
     
     // MARK: - Public Functions
     
-    func search() {
-        DispatchQueue.main.async {
+    func search(_ term: String, type: SearchType) async throws {
+        let search = term.lowercased()
+        
+        guard !term.isEmpty else { return }
+        
+        await MainActor.run {
             self.isSearching = true
         }
         
-        guard !searchTerm.isEmpty else {
-            DispatchQueue.main.async {
-                self.isSearching = false
-            }
-            return
-        }
-        
-        let search = searchTerm.lowercased()
-        
-        if searchType == .library {
+        if type == .library {
             let titleQuery = MPMediaQuery.songs()
             let artistQuery = MPMediaQuery.artists()
             let albumQuery = MPMediaQuery.albums()
@@ -297,16 +252,14 @@ class MusicController: ObservableObject {
             }
             
             let songList = (titleQuery.items ?? []).toSongs()
-            let artistList = artistIDSet.compactMap { artist(for: $0) }
-            let albumList = albumIDSet.compactMap { album(for: $0) }
+            let artistList = try artistIDSet.compactMap { try artist(for: $0) }
+            let albumList = try albumIDSet.compactMap { try album(for: $0) }
             
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                
-                self.searchResults = (songList, artistList, albumList)
-                self.isSearching = false
+            await MainActor.run {
+                searchResults = (songList, artistList, albumList)
+                isSearching = false
             }
-        } else if searchType == .applemusic {
+        } else if type == .applemusic {
             if let countryCode = countryCode {
                 let url = baseURL
                     .appendingPathComponent("catalog")
@@ -316,7 +269,7 @@ class MusicController: ObservableObject {
                 var urlComponenets = URLComponents(url: url, resolvingAgainstBaseURL: false)
                 
                 urlComponenets?.queryItems = [
-                    URLQueryItem(name: "term", value: searchTerm),
+                    URLQueryItem(name: "term", value: search),
                     URLQueryItem(name: "limit", value: "3"),
                     URLQueryItem(name: "types", value: "songs,artists,albums")
                 ]
@@ -392,88 +345,93 @@ class MusicController: ObservableObject {
     
     // MARK: - Music Control Functions
     
-    func set(time: TimeInterval) {
-        guard checkAuthorized() else { return }
-        
-        player.currentPlaybackTime = time
+    func set(time: TimeInterval) async {
+        await player.currentPlaybackTime = time
     }
     
-    func toggle() {
-        guard checkAuthorized() else { return }
-        
-        isPlaying ? pause() : play()
+    func toggle() async throws {
+        isPlaying ? await pause() : try await play()
     }
     
-    func skipToPreviousItem() {
-        guard checkAuthorized() else { return }
+    @MainActor
+    func skipToPreviousItem() async {
+        guard await checkAuthorized() else { return }
         
         if currentPlaybackTime <= 5 {
             player.skipToPreviousItem()
         } else {
-            set(time: 0)
+            await set(time: 0)
         }
     }
     
-    func skipToNextItem() {
-        guard checkAuthorized() else { return }
+    @MainActor
+    func skipToNextItem() async {
+        guard await checkAuthorized() else { return }
         
         player.skipToNextItem()
     }
     
-    func setQueue(with songs: [Song]) {
-        guard checkAuthorized() else { return }
+    @MainActor
+    func setQueue(with songs: [Song]) async {
+        guard await checkAuthorized() else { return }
         
         queue.clear()
         queue.push(songs)
     }
     
-    func setQueue(with album: Album) {
-        guard checkAuthorized() else { return }
-        
-        setQueue(with: album.items)
+    @MainActor
+    func setQueue(with album: Album) async {
+        await setQueue(with: album.items)
     }
     
-    func setQueue(with artist: Artist) {
-        guard checkAuthorized() else { return }
-        
-        setQueue(with: artist.items)
+    @MainActor
+    func setQueue(with artist: Artist) async {
+        await setQueue(with: artist.items)
     }
     
+    @MainActor
     func addToUpNext(_ song: Song) {
         addToUpNext([song])
     }
     
+    @MainActor
     func addToUpNext(_ songs: [Song]) {
         queue.pushToFront(songs)
     }
     
+    @MainActor
     func addToUpNext(_ album: Album) {
         addToUpNext(album.items)
     }
     
+    @MainActor
     func addToUpNext(_ artist: Artist) {
         addToUpNext(artist.items)
     }
     
+    @MainActor
     func addToUpLater(_ song: Song) {
         addToUpLater([song])
     }
     
+    @MainActor
     func addToUpLater(_ songs: [Song]) {
         queue.push(songs)
     }
     
+    @MainActor
     func addToUpLater(_ album: Album) {
         addToUpLater(album.items)
     }
     
+    @MainActor
     func addToUpLater(_ artist: Artist) {
         addToUpLater(artist.items)
     }
     
     // MARK: - Song Functions
     
-    func album(for id: UInt64) -> Album {
+    func album(for id: UInt64) throws -> Album {
         let temp: Album
         
         if let album = Self.albumCache.value(for: id) {
@@ -483,14 +441,15 @@ class MusicController: ObservableObject {
             temp = Album(title: item.albumTitle, artwork: item.artwork?.image(at: CGSize(width: 500, height: 500)), items: items.map { AMSong($0) }, id: id)
             Self.albumCache.cache(value: temp, for: id)
         } else {
-            temp = .noAlbum
+            // TODO: - Use AppError
+            throw NSError()
         }
         
         return temp
     }
     
-    func artist(for id: UInt64) -> Artist {
-        var temp: Artist = .noArtist
+    func artist(for id: UInt64) throws -> Artist {
+        let temp: Artist
         
         if let artist = Self.artistCache.value(for: id) {
             temp = artist
@@ -523,15 +482,17 @@ class MusicController: ObservableObject {
                 return nil
             }, id: id)
         } else {
+            // TODO: - Use NSError
+            throw NSError()
             // TODO: - Spotify, Youtube, Soundcloud support
         }
         
         return temp
     }
     
-    func album(for song: Song) -> Album {
+    func album(for song: Song) throws -> Album {
         if let song = song as? AMSong {
-            return album(for: song.albumPersistentID)
+            return try album(for: song.albumPersistentID)
         } else {
             // TODO: - Other cases
         }
@@ -539,9 +500,9 @@ class MusicController: ObservableObject {
         return .noAlbum
     }
     
-    func artist(for song: Song) -> Artist {
+    func artist(for song: Song) throws -> Artist {
         if let song = song as? AMSong {
-            return artist(for: song.artistPersistentID)
+            return try artist(for: song.artistPersistentID)
         } else {
             // TODO: - Other cases
         }
@@ -549,10 +510,11 @@ class MusicController: ObservableObject {
         return .noArtist
     }
     
-    func artist(for album: Album) -> Artist {
-        artist(for: album.items[0])
+    func artist(for album: Album) throws -> Artist {
+        try artist(for: album.items[0])
     }
     
+    @MainActor
     func getEntry(at offset: Int = 0, with date: Date = Date(), size: WidgetFamily = .systemSmall) -> (entry: NeoTimelineEntry, isPlaying: Bool) {
         var media: [MPMediaItem?] = [item(at: currentIndex + offset)]
         
@@ -581,11 +543,10 @@ class MusicController: ObservableObject {
         }
     }
     
+    @MainActor
     @objc func songChanged() {
         guard let media = player.nowPlayingItem else { return }
-        DispatchQueue.main.async {
-            self.currentSong = AMSong(media)
-        }
+        self.currentSong = AMSong(media)
     }
     
     // MARK: - Static Variables
@@ -616,10 +577,12 @@ extension MusicController {
         return dynamicPlayer.numberOfItems.unwrapped() ?? 0
     }
     
+    @MainActor
     var currentIndex: Int {
         return player.indexOfNowPlayingItem
     }
     
+    @MainActor
     var upNextSongs: [Song] {
         queue.arr
     }
@@ -650,10 +613,6 @@ extension MusicController {
         case title, artist, album
     }
     
-    enum SearchType {
-        case library, applemusic
-    }
-    
     enum NetworkError: Error {
         case encodingError
         case badResponse
@@ -663,4 +622,8 @@ extension MusicController {
         case invalidInput
         case otherError(String)
     }
+}
+
+enum SearchType {
+    case library, applemusic
 }

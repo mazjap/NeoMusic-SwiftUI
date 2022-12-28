@@ -8,11 +8,13 @@ struct Provider: TimelineProvider {
         .noEntry
     }
 
+    @MainActor
     func getSnapshot(in context: Context, completion: @escaping (NeoTimelineEntry) -> ()) {
         let entry = controller.getEntry()
         completion(entry.entry)
     }
 
+    @MainActor
     func getTimeline(in context: Context, completion: @escaping (Timeline<NeoTimelineEntry>) -> ()) {
         let firstEntry: Entry
         let isPlaying: Bool
@@ -37,7 +39,7 @@ struct NeoWidgetEntryView: View {
     private let controller: MusicController
     private let colorScheme: JCColorScheme
     
-    init(entry: NeoTimelineEntry = .noEntry, controller: MusicController = .init(), colorScheme: JCColorScheme = .default) {
+    init(entry: NeoTimelineEntry = .noEntry, controller: MusicController = Self.musicController, colorScheme: JCColorScheme = .default) {
         self.entry = entry
         self.controller = controller
         self.colorScheme = colorScheme
@@ -52,9 +54,7 @@ struct NeoWidgetEntryView: View {
                     VStack {
                         Spacer()
                         
-                        ForEach(0..<entry.songs.count) { i in
-                            let song = entry.songs[i]
-                            
+                        ForEach(Array(entry.songs.enumerated()), id: \.element.id) { (i, song) in
                             HStack {
                                 VStack {
                                     Text(song.title)
@@ -106,6 +106,8 @@ struct NeoWidgetEntryView: View {
         colorScheme.textColor.color
             .frame(height: 1)
     }
+    
+    static let musicController = MusicController()
 }
 
 @main

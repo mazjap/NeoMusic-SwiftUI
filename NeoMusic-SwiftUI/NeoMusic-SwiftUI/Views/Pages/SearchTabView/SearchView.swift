@@ -1,13 +1,49 @@
 import SwiftUI
 
+class DelayedTask<Success, Failure: Error> {
+    private var task: Task<Success, Failure>?
+    
+    var isCancelled: Bool {
+        task?.isCancelled ?? true
+    }
+    
+    func setTask(_ task: @escaping @Sendable () async -> Success, priority: TaskPriority? = nil, after seconds: TimeInterval? = nil) where Failure == Never {
+        self.cancel()
+        
+        if let seconds {
+            self.task = Task<Success, Never>(priority: priority) {
+                do {
+                    try await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
+                } catch {
+                    // TODO: - use nserror
+                    NSLog("\(error as NSError)")
+                }
+                
+                return await task()
+            }
+        } else {
+            self.task = Task<Success, Never>(priority: priority, operation: task)
+        }
+    }
+    
+    func cancel() {
+        task?.cancel()
+        task = nil
+    }
+}
+
 struct SearchView: View {
     // MARK: - State
     @EnvironmentObject private var settingsController: SettingsController
     @EnvironmentObject private var musicController: MusicController
     @EnvironmentObject private var feedbackGenerator: FeedbackGenerator
     
-    @State private var text: String = ""
+    @State private var searchTerm: String = ""
     @State private var segmentedIndex: Int = 0
+    @State private var searchType: SearchType = .library
+    
+    private var task = DelayedTask<Void, Never>()
+    
     
     // MARK: - Variables
     
@@ -16,7 +52,6 @@ struct SearchView: View {
     // MARK: - Initializers
     
     init() {
-        
         let backgroundColor = SettingsController.shared.colorScheme.backgroundGradient.first.uiColor
         let tableAppearance = UITableView.appearance()
         let cellAppearance = UITableViewCell.appearance()
@@ -34,22 +69,20 @@ struct SearchView: View {
                 SegmentedControl(index: $segmentedIndex, textColor: settingsController.colorScheme.textColor.color, background: settingsController.colorScheme.backgroundGradient.first)
                     .options(["Library", "Apple Music"])
                     .onChange(of: segmentedIndex) { newVal in
-                        musicController.searchType = (newVal == 0 ? .library : .applemusic)
+                        searchType = (newVal == 0 ? .library : .applemusic)
                     }
                     .spacing()
                 
-                let binding = Binding<String>(get: { return musicController.searchTerm }) { str in
-                    musicController.searchTerm = str
-                }
-                
-                SearchBar(searchText: binding, font: nil, colorScheme: settingsController.colorScheme,
-                onEditingChanged: { isEditing in }, onCommit: {})
-                    .resignsFirstResponderOnDrag()
-                    .onChange(of: text) { newVal in
-                        musicController.searchTerm = newVal
-                    }
-                    .frame(height: 50)
-                    .spacing(.horizontal)
+                SearchBar(
+                    searchText: $searchTerm,
+                    font: nil,
+                    colorScheme: settingsController.colorScheme,
+                    onEditingChanged: { isEditing in },
+                    onCommit: {}
+                )
+                .resignsFirstResponderOnDrag()
+                .frame(height: 50)
+                .spacing(.horizontal)
                 
                 ScrollView {
                     LazyVStack(pinnedViews: [.sectionHeaders]) {
@@ -61,9 +94,10 @@ struct SearchView: View {
                                 NavigationLink {
                                     
                                 } label: {
-                                    NeoSongRow(backgroundColor: backgroundColor, textColor: textColor, song: song)
-                                        .neumorph(color: settingsController.colorScheme.backgroundGradient.first, size: .button, cornerRadius: 20, isConcave: true)
+                                    SearchResultRow(backgroundColor: backgroundColor, textColor: textColor, result: song)
+                                        .neumorph(color: settingsController.colorScheme.backgroundGradient.first, size: .button, cornerRadius: 20, isConcave: false)
                                 }
+                                .padding([.horizontal, .bottom])
                             }
                         } header: {
                             Text("Songs")
@@ -77,9 +111,10 @@ struct SearchView: View {
                                 NavigationLink {
                                     
                                 } label: {
-                                    NeoAlbumRow(backgroundColor: backgroundColor, textColor: textColor, album: album)
-                                        .neumorph(color: settingsController.colorScheme.backgroundGradient.first, size: .button, cornerRadius: 20, isConcave: true)
+                                    SearchResultRow(backgroundColor: backgroundColor, textColor: textColor, result: album)
+                                        .neumorph(color: settingsController.colorScheme.backgroundGradient.first, size: .button, cornerRadius: 20, isConcave: false)
                                 }
+                                .padding([.horizontal, .bottom])
                             }
                         } header: {
                             Text("Albums")
@@ -93,9 +128,10 @@ struct SearchView: View {
                                 NavigationLink {
                                     
                                 } label: {
-                                    NeoArtistRow(backgroundColor: backgroundColor, textColor: textColor, artist: artist)
-                                        .neumorph(color: settingsController.colorScheme.backgroundGradient.first, size: .button, cornerRadius: 20, isConcave: true)
+                                    SearchResultRow(backgroundColor: backgroundColor, textColor: textColor, result: artist)
+                                        .neumorph(color: settingsController.colorScheme.backgroundGradient.first, size: .button, cornerRadius: 20, isConcave: false)
                                 }
+                                .padding([.horizontal, .bottom])
                             }
                         } header: {
                             Text("Artists")
@@ -104,10 +140,32 @@ struct SearchView: View {
                 }
                 .foregroundColor(settingsController.colorScheme.textColor.color)
                 .neumorph(color: settingsController.colorScheme.backgroundGradient.first, size: .list, cornerRadius: 20, isConcave: false)
-                .opacity(musicController.searchTerm.isEmpty || musicController.isEmpty ? 0 : 1)
+                .opacity(searchTerm.isEmpty || musicController.isEmpty ? 0 : 1)
                 .spacing()
                 .offset(y: offsetHeight / 2)
             }
+        }
+        .onChange(of: searchType) { newValue in
+            task.setTask({
+                do {
+                    try await musicController.search(searchTerm, type: searchType)
+                } catch {
+                    // TODO: - use nserror
+                    NSLog("\(error as NSError)")
+                }
+            })
+        }
+        .onChange(of: searchType) { newValue in
+            task.setTask({
+                    do {
+                        try await musicController.search(searchTerm, type: searchType)
+                    } catch {
+                        // TODO: - use nserror
+                        NSLog("\(error as NSError)")
+                    }
+                },
+                after: 2
+            )
         }
     }
     
